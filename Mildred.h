@@ -16,7 +16,7 @@ class Mildred {
 		static SDL_Renderer* renderer; 
 		static SDL_Window* window;
 		static int screenWidth, screenHeight, fieldOfView, sightDistance; 
-		static std::list<MapLine>* mapLines; 
+		static std::list<MapLine>* mapLines;
 
 	public: 
 		static bool isRunning;
@@ -28,13 +28,7 @@ class Mildred {
 		static void RenderPresent();
 		static void RenderClear();
 		static void DrawRect(int width, int height, int x, int y);
-
-		class Calc {
-			public:
-				static double ToRadians(int deg) {
-					
-					return (deg * (std::atan(1.0) * 4)) / 180;
-				}
-	};
+		static SDL_Renderer* GetRenderer();
+		static void HandleUserInput();
 };
 

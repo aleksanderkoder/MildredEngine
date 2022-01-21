@@ -3,12 +3,12 @@
 
 #include "Mildred.h"
 
-SDL_Renderer* Mildred::renderer; 
-SDL_Window* Mildred::window;
-bool Mildred::isRunning;
-int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView, Mildred::sightDistance;
-std::list<MapLine>* Mildred::mapLines;
-Player* player = new Player(250, 250, 25, 0, 3);
+ SDL_Renderer* Mildred::renderer;
+ SDL_Window* Mildred::window;
+ int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView, Mildred::sightDistance;
+ std::list<MapLine>* Mildred::mapLines;
+ bool Mildred::isRunning;
+ Player* Mildred::player;
 
 void Mildred::Init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -24,6 +24,7 @@ void Mildred::CreateWindow(string title, int width, int height) {
 
 	screenWidth = width;
 	screenHeight = height;
+	player = new Player(250, 250, 25, 0, 3);
 	isRunning = true;
 }
 
@@ -51,4 +52,28 @@ void Mildred::DrawRect(int width, int height, int x, int y) {
 	rect.x = x; 
 	rect.y = y;
 	SDL_RenderFillRect(renderer, &rect);
+}
+
+SDL_Renderer* Mildred::GetRenderer() {
+	return Mildred::renderer;
+}
+
+void Mildred::HandleUserInput() {
+	const Uint8* state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_W]) {
+		Mildred::player->MoveForward();
+	}
+	else if (state[SDL_SCANCODE_S]) {
+		Mildred::player->MoveBackward();
+	}
+	else if (state[SDL_SCANCODE_A]) {
+		Mildred::player->MoveLeft();
+	}
+	else if (state[SDL_SCANCODE_D]) {
+		Mildred::player->MoveRight();
+	}
+	
+	int mX, mY; 
+	SDL_GetRelativeMouseState(&mX, &mY); 
+	Mildred::player->AdjustAngle(&mX, &mY); 
 }

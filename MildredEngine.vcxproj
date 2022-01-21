@@ -155,12 +155,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Calc.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapLine.cpp" />
     <ClCompile Include="Mildred.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Calc.h" />
     <ClInclude Include="MapLine.h" />
     <ClInclude Include="Mildred.h" />
     <ClInclude Include="Player.h" />
