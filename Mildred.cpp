@@ -6,7 +6,7 @@
  SDL_Renderer* Mildred::renderer;
  SDL_Window* Mildred::window;
  int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView, Mildred::sightDistance;
- std::list<MapLine>* Mildred::mapLines;
+ std::vector<MapLine>* Mildred::mapLines;
  bool Mildred::isRunning;
  Player* Mildred::player;
 
@@ -52,6 +52,17 @@ void Mildred::DrawRect(int width, int height, int x, int y) {
 	rect.x = x; 
 	rect.y = y;
 	SDL_RenderFillRect(renderer, &rect);
+}
+
+void Mildred::CreateMapLine(int x, int y, int endX, int endY) {
+	MapLine ml(x, y, endX, endY);
+	mapLines->push_back(ml); 
+}
+void Mildred::DrawMapLines() {
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	for (int i = 0; i < mapLines->size(); i++) {
+		SDL_RenderDrawLine(renderer, mapLines[i].startX, mapLines[i].startY, mapLines[i].endX, mapLines[i].endY);
+	}
 }
 
 SDL_Renderer* Mildred::GetRenderer() {

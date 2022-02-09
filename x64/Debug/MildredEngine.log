@@ -1,4 +1,6 @@
-﻿  Main.cpp
+﻿  Calc.cpp
+  Main.cpp
+  MapLine.cpp
   Mildred.cpp
   Player.cpp
   Generating Code...

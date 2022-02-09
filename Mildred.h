@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <SDL.h>
-#include <list>
+#include <vector>
 #include "MapLine.h"
 #include "Player.h"
 
@@ -16,7 +16,7 @@ class Mildred {
 		static SDL_Renderer* renderer; 
 		static SDL_Window* window;
 		static int screenWidth, screenHeight, fieldOfView, sightDistance; 
-		static std::list<MapLine>* mapLines;
+		static std::vector<MapLine>* mapLines;
 
 	public: 
 		static bool isRunning;
@@ -28,7 +28,10 @@ class Mildred {
 		static void RenderPresent();
 		static void RenderClear();
 		static void DrawRect(int width, int height, int x, int y);
+		static void CreateMapLine(int x, int y, int endX, int endY);
+		static void DrawMapLines(); 
 		static SDL_Renderer* GetRenderer();
 		static void HandleUserInput();
+		static void CastRays(); 
 };
 

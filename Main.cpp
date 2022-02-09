@@ -1,7 +1,6 @@
 #include <iostream>
 #include <SDL.h>
 #include "Mildred.h"
-#include "MapLine.h"
 
 int main(int argc, char* argv[]) {
     Mildred::Init(); 
@@ -38,6 +37,7 @@ int main(int argc, char* argv[]) {
         Mildred::SetRenderDrawColor(0, 255, 0, 255);
         Mildred::DrawRect(50, 50, 150, 150);
         Mildred::player->DrawPlayerOnMinimap();
+        Mildred::CastRays(); 
         Mildred::RenderPresent(); 
         /*Mithril.HandlePressedKeys();
         Mithril.RenderClear();
