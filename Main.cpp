@@ -5,6 +5,7 @@
 int main(int argc, char* argv[]) {
     Mildred::Init(); 
     Mildred::CreateWindow("Mildred Engine", 1920, 1080);
+    Mildred::CreateMapLine(600, 200, 600, 550);
 
     SDL_Event e;
     while (Mildred::isRunning)
@@ -34,9 +35,10 @@ int main(int argc, char* argv[]) {
         Mildred::HandleUserInput();
         Mildred::SetRenderDrawColor(0, 0, 0, 255);
         Mildred::RenderClear();
-        Mildred::SetRenderDrawColor(0, 255, 0, 255);
-        Mildred::DrawRect(50, 50, 150, 150);
+        /*Mildred::SetRenderDrawColor(0, 255, 0, 255);
+        Mildred::DrawRect(50, 50, 150, 150);*/
         Mildred::player->DrawPlayerOnMinimap();
+        Mildred::DrawMapLines(); 
         Mildred::CastRays(); 
         Mildred::RenderPresent(); 
         /*Mithril.HandlePressedKeys();
