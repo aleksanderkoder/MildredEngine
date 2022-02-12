@@ -1,0 +1,25 @@
+﻿  Calc.cpp
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Calc.cpp(28,18): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Calc.cpp(29,18): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Calc.cpp(38,16): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  Main.cpp
+  MapLine.cpp
+  Mildred.cpp
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(101,104): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(101,66): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(103,18): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(104,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(106,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(115,95): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(116,95): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(121,120): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(121,109): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(121,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(121,51): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Player.cpp
+  Generating code
+  96 of 146 functions (65.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  MildredEngine.vcxproj -> C:\Users\Aleksander\Documents\GitHub\MildredEngine\x64\Release\MildredEngine.exe
