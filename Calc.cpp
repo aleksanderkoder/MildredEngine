@@ -5,7 +5,7 @@ double Calc::ToRadians(int deg) {
 	return (deg * (atan(1.0) * 4)) / 180;
 }
 
-int* Calc::LineToLineCollision(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+double* Calc::LineToLineCollision(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
     // calculate the distance to intersection point
     double uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
     double uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -23,18 +23,18 @@ int* Calc::LineToLineCollision(double x1, double y1, double x2, double y2, doubl
         ctxUI.closePath();*/
 
         // Use these values to determine projection slice height
-        int arr[2];
-        int* arrayPointer = arr;
+        double arr[2];
+        //double* arrayPointer = arr;
         arr[0] = intersectionX;
         arr[1] = intersectionY;
-        return arrayPointer;
+        return arr;
     }
     return NULL; 
 }
 
-int Calc::GetDistance(int x1, int y1, int x2, int y2) {
-    int y = x2 - x1;
-    int x = y2 - y1;
+double Calc::GetDistance(double x1, double y1, double x2, double y2) {
+    double y = x2 - x1;
+    double x = y2 - y1;
     return sqrt(x * x + y * y);
 }
 		

@@ -9,7 +9,7 @@
  int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 300;
  std::vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
  bool Mildred::isRunning;
- Player* Mildred::player;
+ Player* Mildred::player = new Player(250, 250, 30, 270, 3);
 
 void Mildred::Init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -26,7 +26,6 @@ void Mildred::CreateWindow(string title, int width, int height) {
 	SDL_SetRelativeMouseMode(SDL_TRUE); 
 	screenWidth = width;
 	screenHeight = height;
-	player = new Player(250, 250, 30, 0, 3);
 	isRunning = true;
 }
 
@@ -94,7 +93,7 @@ void Mildred::HandleUserInput() {
 	player->AdjustAngle(&mX, &mY); 
 }
 
-void Mildred::RenderWallSlice(int* lineCollisionPointer, int drawPoint) {
+void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
 		
@@ -112,14 +111,14 @@ void Mildred::CastRays() {
 	// One iteration for each pixel column of the screen resolution 
 	for (int i = 0; i < screenWidth; i++) {
 		// Calculate each ray's x and y point based on player view angle and iteration count
-		double rayAngleX = player->positionX + cos(player->viewAngle + Calc::ToRadians(stepInterval * i)) * sightDistance; 
-		double rayAngleY = player->positionY + sin(player->viewAngle + Calc::ToRadians(stepInterval * i)) * sightDistance;
+		double rayAngleX = player->positionX + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance; 
+		double rayAngleY = player->positionY + sin(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
 
 		// Only show every 30th angle line vision indicator
-		if (i % 30 == 0) {
+		//if (i % 30 == 0) {
 			SetRenderDrawColor(0, 0, 255, 255); 
 			SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY); 
-		}
+		//}
 
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapLines->size(); j++) {

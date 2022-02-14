@@ -4,7 +4,7 @@ class Player
 {
 public:
     double positionX, positionY, size, viewAngle, speed;
-    Player(int _positionX, int _positionY, int _size, int _viewAngle, double _speed);
+    Player(double _positionX, double _positionY, double _size, double _viewAngle, double _speed);
     void DrawAngleLine();
     void MoveForward();
     void MoveBackward();

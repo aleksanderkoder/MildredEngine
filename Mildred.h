@@ -32,7 +32,7 @@ class Mildred {
 		static void DrawMapLines(); 
 		static SDL_Renderer* GetRenderer();
 		static void HandleUserInput();
-		static void RenderWallSlice(int* lineCollisionPointer, int drawPoint); 
+		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint); 
 		static void CastRays(); 
 };
 

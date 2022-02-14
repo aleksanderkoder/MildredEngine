@@ -37,9 +37,9 @@ int main(int argc, char* argv[]) {
         Mildred::RenderClear();
         /*Mildred::SetRenderDrawColor(0, 255, 0, 255);
         Mildred::DrawRect(50, 50, 150, 150);*/
-        Mildred::player->DrawPlayerOnMinimap();
         Mildred::DrawMapLines(); 
         Mildred::CastRays(); 
+        Mildred::player->DrawPlayerOnMinimap();
         Mildred::RenderPresent(); 
         /*Mithril.HandlePressedKeys();
         Mithril.RenderClear();
