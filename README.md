@@ -3,6 +3,4 @@
 </p>
 
 # Mildred Engine
- A C++ version of Mithril Engine. 
- 
  Mildred Engine is a game engine made to facilitate easy development of raycasted pseudo-3D graphics rendered video games. Built on top of Simple Direct Media Layer.  
