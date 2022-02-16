@@ -34,5 +34,6 @@ class Mildred {
 		static void HandleUserInput();
 		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint); 
 		static void CastRays(); 
+		static void test(); 
 };
 

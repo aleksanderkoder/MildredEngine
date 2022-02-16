@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
         Mildred::DrawMapLines(); 
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
+        Mildred::test();
         Mildred::RenderPresent(); 
         /*Mithril.HandlePressedKeys();
         Mithril.RenderClear();

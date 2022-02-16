@@ -1,2 +1,11 @@
-﻿  Main.cpp
+﻿  Mildred.cpp
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(130,18): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(131,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(133,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(142,130): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(143,130): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(148,120): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(148,109): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(148,89): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Aleksander\Documents\GitHub\MildredEngine\Mildred.cpp(148,51): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   MildredEngine.vcxproj -> C:\Users\Aleksander\Documents\GitHub\MildredEngine\x64\Debug\MildredEngine.exe

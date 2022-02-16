@@ -93,6 +93,34 @@ void Mildred::HandleUserInput() {
 	player->AdjustAngle(&mX, &mY); 
 }
 
+void Mildred::test() {
+		SDL_Surface* image = SDL_LoadBMP("textures/stone-tex.bmp");
+		if (!image) {
+			std::cout << SDL_GetError() << std::endl; 
+		}
+
+		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+		SDL_FreeSurface(image);
+		image = NULL;
+
+		// Determines the shape of the texture 
+		SDL_Rect dst;
+		dst.x = 150;
+		dst.y = 0;
+		dst.w = 500;
+		dst.h = 250;
+		// Determines what part of texture to render
+		SDL_Rect r;
+		r.x = 0;
+		r.y = 0;
+		r.w = 50;
+		r.h = 50;
+
+		RenderClear();
+		SDL_RenderCopy(renderer, texture, &r, &dst);
+	
+}
+
 void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
