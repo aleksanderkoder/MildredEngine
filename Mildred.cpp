@@ -4,26 +4,27 @@
 #include "Mildred.h"
 #include "Calc.h"
 
- SDL_Renderer* Mildred::renderer;
- SDL_Window* Mildred::window;
- int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 300;
- std::vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
- bool Mildred::isRunning;
- Player* Mildred::player = new Player(250, 250, 30, 270, 3);
+SDL_Renderer* Mildred::renderer;
+SDL_Window* Mildred::window;
+int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 300;
+std::vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
+bool Mildred::isRunning;
+Player* Mildred::player = new Player(250, 250, 30, 270, 3);
+SDL_Texture* wallTex = NULL;
 
 void Mildred::Init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		std::cout << "There was an error initilizing SDL: " << SDL_GetError() << std::endl; 
+		std::cout << "There was an error initilizing SDL: " << SDL_GetError() << std::endl;
 	}
 }
 void Mildred::CreateWindow(string title, int width, int height) {
-	const char* t = title.c_str(); 
+	const char* t = title.c_str();
 	window = SDL_CreateWindow(t, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		width, height, SDL_WINDOW_SHOWN); 
+		width, height, SDL_WINDOW_SHOWN);
 
-	CreateRenderer(); 
+	CreateRenderer();
 
-	SDL_SetRelativeMouseMode(SDL_TRUE); 
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	screenWidth = width;
 	screenHeight = height;
 	isRunning = true;
@@ -35,7 +36,7 @@ void Mildred::CreateRenderer() {
 }
 
 void Mildred::SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-	SDL_SetRenderDrawColor(renderer, r, g, b, a); 
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
 void Mildred::RenderPresent() {
@@ -43,21 +44,21 @@ void Mildred::RenderPresent() {
 }
 
 void Mildred::RenderClear() {
-	SDL_RenderClear(renderer); 
+	SDL_RenderClear(renderer);
 }
 
 void Mildred::DrawRect(int width, int height, int x, int y) {
 	SDL_Rect rect;
 	rect.w = width;
 	rect.h = height;
-	rect.x = x; 
+	rect.x = x;
 	rect.y = y;
 	SDL_RenderFillRect(renderer, &rect);
 }
 
 void Mildred::CreateMapLine(int x, int y, int endX, int endY) {
 	MapLine ml(x, y, endX, endY);
-	mapLines->push_back(ml); 
+	mapLines->push_back(ml);
 }
 void Mildred::DrawMapLines() {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -85,52 +86,57 @@ void Mildred::HandleUserInput() {
 		player->MoveRight();
 	}
 	else if (state[SDL_SCANCODE_ESCAPE]) {
-		SDL_SetRelativeMouseMode(SDL_FALSE); 
+		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
-	
-	int mX, mY; 
-	SDL_GetRelativeMouseState(&mX, &mY); 
-	player->AdjustAngle(&mX, &mY); 
+
+	int mX, mY;
+	SDL_GetRelativeMouseState(&mX, &mY);
+	player->AdjustAngle(&mX, &mY);
 }
 
-void Mildred::test() {
+SDL_Texture* Mildred::GetTexture() {
+	if (!wallTex) {
 		SDL_Surface* image = SDL_LoadBMP("textures/stone-tex.bmp");
 		if (!image) {
-			std::cout << SDL_GetError() << std::endl; 
+			std::cout << SDL_GetError() << std::endl;
+			return NULL;
 		}
-
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
 		SDL_FreeSurface(image);
 		image = NULL;
-
-		// Determines the shape of the texture 
-		SDL_Rect dst;
-		dst.x = 150;
-		dst.y = 0;
-		dst.w = 500;
-		dst.h = 250;
-		// Determines what part of texture to render
-		SDL_Rect r;
-		r.x = 0;
-		r.y = 0;
-		r.w = 50;
-		r.h = 50;
-
-		RenderClear();
-		SDL_RenderCopy(renderer, texture, &r, &dst);
+		wallTex = texture; 
+		std::cout << "Wall tex set"; 
+		return wallTex;
+	}
+	//std::cout << "Tex already loaded"; 
+	return wallTex; 
 	
 }
 
 void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
-		
+
 		double collisionDistance = Calc::GetDistance(player->positionX + player->size / 2, player->positionY + player->size / 2, lineCollisionPointer[0], lineCollisionPointer[1]);
 		//std::cout << collisionDistance << "\n";
-		int colorShade = 255 - collisionDistance / 2.5; 
-		int sliceVerticalOffset = collisionDistance / 2; 
-		SetRenderDrawColor(colorShade, colorShade, colorShade, 255);
-		DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset); 
+		double colorShade = 255 - collisionDistance / 2.5;
+		double sliceVerticalOffset = collisionDistance / 2;
+		// Determines the shape and position of the texture 
+		SDL_Rect dst;
+		dst.x = drawPoint;
+		dst.y = sliceVerticalOffset; 
+		dst.w = 1;
+		dst.h = screenHeight - collisionDistance * 2;
+		// Determines what part of texture to render WORKING
+		SDL_Rect texturePart;
+		texturePart.x = drawPoint % 450;
+		texturePart.y = 1;
+		texturePart.w = 1;
+		texturePart.h = 450;
+
+		SDL_RenderCopy(renderer, GetTexture(), &texturePart, &dst);
+		//SetRenderDrawColor(colorShade, colorShade, colorShade, 255);
+		//DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset); 
 	}
 }
 
@@ -139,13 +145,13 @@ void Mildred::CastRays() {
 	// One iteration for each pixel column of the screen resolution 
 	for (int i = 0; i < screenWidth; i++) {
 		// Calculate each ray's x and y point based on player view angle and iteration count
-		double rayAngleX = player->positionX + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance; 
+		double rayAngleX = player->positionX + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
 		double rayAngleY = player->positionY + sin(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
 
 		// Only show every 30th angle line vision indicator
 		//if (i % 30 == 0) {
-			SetRenderDrawColor(0, 0, 255, 255); 
-			SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY); 
+		SetRenderDrawColor(0, 0, 255, 255);
+		SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY);
 		//}
 
 		// Check current angle line against existing walls to see if they collide
@@ -156,6 +162,20 @@ void Mildred::CastRays() {
 		}
 
 	}
-	/*std::cout << c << std::endl; 
+	/*std::cout << c << std::endl;
 	std::cout << stepInterval << std::endl;*/
+}
+
+void Mildred::HandleEvents() {
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		switch (e.type)
+		{
+		case SDL_QUIT:
+			Mildred::isRunning = false;
+			std::cout << "Quitting";
+			break;
+		}
+	}
 }

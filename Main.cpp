@@ -3,36 +3,15 @@
 #include "Mildred.h"
 
 int main(int argc, char* argv[]) {
+
     Mildred::Init(); 
     Mildred::CreateWindow("Mildred Engine", 1920, 1080);
     Mildred::CreateMapLine(600, 200, 600, 550);
 
-    SDL_Event e;
     while (Mildred::isRunning)
     {
-        // Check to see if there are any events and continue to do so until the queue is empty.
-        while (SDL_PollEvent(&e))
-        {
-            switch (e.type)
-            {
-            case SDL_QUIT:
-                Mildred::isRunning = false;
-                break;
-        //        // Handles keyboard inputs based on key pressed
-
-        //    case SDL.SDL_EventType.SDL_KEYDOWN:
-        //        Mithril.RegisterKeyPress(e.key.keysym.sym);
-        //        break;
-        //    case SDL.SDL_EventType.SDL_KEYUP:
-        //        Mithril.RemoveKeyPress(e.key.keysym.sym);
-        //        break;
-        //    case SDL.SDL_EventType.SDL_MOUSEMOTION:
-        //        Mithril.player.AdjustAngle(e.motion.xrel, e.motion.yrel);
-        //        break;
-            }
-        }
-
         Mildred::HandleUserInput();
+        Mildred::HandleEvents(); 
         Mildred::SetRenderDrawColor(0, 0, 0, 255);
         Mildred::RenderClear();
         /*Mildred::SetRenderDrawColor(0, 255, 0, 255);
@@ -40,17 +19,7 @@ int main(int argc, char* argv[]) {
         Mildred::DrawMapLines(); 
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
-        Mildred::test();
         Mildred::RenderPresent(); 
-        /*Mithril.HandlePressedKeys();
-        Mithril.RenderClear();
-
-        Mithril.SetRenderDrawColor(255, 255, 255, 255);
-        Mithril.DrawRect(100, 100, 100 + t, 100);
-        Mithril.DrawPlayerOnMinimap();
-        Mithril.DrawMapLines();
-
-        Mithril.RenderPresent();*/
     }
 
 
