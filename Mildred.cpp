@@ -2,15 +2,15 @@
 // Contains method implementations 
 
 #include "Mildred.h"
-#include "Calc.h"
 
 SDL_Renderer* Mildred::renderer;
 SDL_Window* Mildred::window;
 int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 300;
 std::vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
+AssetManager* Mildred::assetManager = new AssetManager(); 
 bool Mildred::isRunning;
 Player* Mildred::player = new Player(250, 250, 30, 270, 3);
-SDL_Texture* wallTex = NULL;
+SDL_Texture* wallTex; 
 
 void Mildred::Init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -56,8 +56,8 @@ void Mildred::DrawRect(int width, int height, int x, int y) {
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void Mildred::CreateMapLine(int x, int y, int endX, int endY) {
-	MapLine ml(x, y, endX, endY);
+void Mildred::CreateMapLine(int x, int y, int endX, int endY, string textureName) {
+	MapLine ml(x, y, endX, endY, textureName);
 	mapLines->push_back(ml);
 }
 void Mildred::DrawMapLines() {
@@ -113,30 +113,40 @@ SDL_Texture* Mildred::GetTexture() {
 	
 }
 
-void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint) {
+void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, string textureName) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
 
 		double collisionDistance = Calc::GetDistance(player->positionX + player->size / 2, player->positionY + player->size / 2, lineCollisionPointer[0], lineCollisionPointer[1]);
 		//std::cout << collisionDistance << "\n";
-		double colorShade = 255 - collisionDistance / 2.5;
-		double sliceVerticalOffset = collisionDistance / 2;
-		// Determines the shape and position of the texture 
-		SDL_Rect dst;
-		dst.x = drawPoint;
-		dst.y = sliceVerticalOffset; 
-		dst.w = 1;
-		dst.h = screenHeight - collisionDistance * 2;
-		// Determines what part of texture to render WORKING
-		SDL_Rect texturePart;
-		texturePart.x = drawPoint % 450;
-		texturePart.y = 1;
-		texturePart.w = 1;
-		texturePart.h = 450;
+		//double colorShade = 255 - collisionDistance / 2.5;
+		double sliceHeight = screenHeight - collisionDistance * 2;
+		double sliceVerticalOffset = (screenHeight - sliceHeight) / 2;
+		int textureHeight;
+		int textureWidth; 
+		//std::cout << textureName; 
+		SDL_Texture* currentTexture = assetManager->GetTextureByName(textureName); 
+		if (currentTexture) {
+			SDL_QueryTexture(currentTexture, NULL, NULL, &textureWidth, &textureHeight);
+			// Determines the shape and position of the texture 
+			SDL_Rect dst;
+			dst.x = drawPoint;
+			dst.y = sliceVerticalOffset;
+			dst.w = 1; // 1
+			dst.h = sliceHeight;
+			// Determines what part of texture to render WORKING
+			SDL_Rect texturePart;
+			texturePart.x = drawPoint % textureWidth;
+			texturePart.y = 1;
+			texturePart.w = 1;
+			texturePart.h = textureHeight;
 
-		SDL_RenderCopy(renderer, GetTexture(), &texturePart, &dst);
-		//SetRenderDrawColor(colorShade, colorShade, colorShade, 255);
-		//DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset); 
+			SDL_RenderCopy(renderer, currentTexture, &texturePart, &dst);
+		}
+		else {
+			SetRenderDrawColor(255, 0, 255, 255);
+			DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset); 
+		}
 	}
 }
 
@@ -157,7 +167,7 @@ void Mildred::CastRays() {
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapLines->size(); j++) {
 			// Render wall slice if they collide
-			RenderWallSlice(Calc::LineToLineCollision(player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i);
+			RenderWallSlice(Calc::LineToLineCollision(player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, (*mapLines)[j].textureName);
 
 		}
 

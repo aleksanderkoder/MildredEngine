@@ -6,7 +6,11 @@ int main(int argc, char* argv[]) {
 
     Mildred::Init(); 
     Mildred::CreateWindow("Mildred Engine", 1920, 1080);
-    Mildred::CreateMapLine(600, 200, 600, 550);
+    Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
+    Mildred::CreateMapLine(600, 200, 600, 550, "test");
+    Mildred::CreateMapLine(600, 200, 1000, 200, "hei");
+    Mildred::assetManager->PrintAllAssetInfo();
+  
 
     while (Mildred::isRunning)
     {
