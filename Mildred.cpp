@@ -5,25 +5,32 @@
 
 SDL_Renderer* Mildred::renderer;
 SDL_Window* Mildred::window;
-int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 300;
-std::vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
-AssetManager* Mildred::assetManager = new AssetManager(); 
+int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 450, Mildred::frameCount;
+vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
+AssetManager* Mildred::assetManager = new AssetManager();
 bool Mildred::isRunning;
 Player* Mildred::player = new Player(250, 250, 30, 270, 3);
-SDL_Texture* wallTex; 
+Uint64 Mildred::ticks, Mildred::oldFps;
+int test = 0;
 
 void Mildred::Init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		std::cout << "There was an error initilizing SDL: " << SDL_GetError() << std::endl;
+		cout << "There was an error initilizing SDL: " << SDL_GetError() << endl;
 	}
+	ticks = SDL_GetTicks64();	// Get store ticks since start for FPS counting
 }
 void Mildred::CreateWindow(string title, int width, int height) {
-	const char* t = title.c_str();
-	window = SDL_CreateWindow(t, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		width, height, SDL_WINDOW_SHOWN);
 
 	CreateRenderer();
 
+	// Check what graphics backend is used 
+	SDL_RendererInfo info;
+	SDL_GetRendererInfo(renderer, &info);
+	cout << "Graphics API: " << info.name << endl;
+
+	// Captures mouse to window
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	screenWidth = width;
 	screenHeight = height;
@@ -94,49 +101,32 @@ void Mildred::HandleUserInput() {
 	player->AdjustAngle(&mX, &mY);
 }
 
-SDL_Texture* Mildred::GetTexture() {
-	if (!wallTex) {
-		SDL_Surface* image = SDL_LoadBMP("textures/stone-tex.bmp");
-		if (!image) {
-			std::cout << SDL_GetError() << std::endl;
-			return NULL;
-		}
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-		SDL_FreeSurface(image);
-		image = NULL;
-		wallTex = texture; 
-		std::cout << "Wall tex set"; 
-		return wallTex;
-	}
-	//std::cout << "Tex already loaded"; 
-	return wallTex; 
-	
-}
-
-void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, string textureName) {
+bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, int lineLength, int lineStartX, int lineStartY, string textureName) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
-
+		//cout << "Length: " << lineLength << endl;
+		int distanceBetweenCollisionAndLineStart = Calc::GetDistance(lineCollisionPointer[0], lineCollisionPointer[1], lineStartX, lineStartY); 
 		double collisionDistance = Calc::GetDistance(player->positionX + player->size / 2, player->positionY + player->size / 2, lineCollisionPointer[0], lineCollisionPointer[1]);
-		//std::cout << collisionDistance << "\n";
+		cout << distanceBetweenCollisionAndLineStart << "\n";
 		//double colorShade = 255 - collisionDistance / 2.5;
 		double sliceHeight = screenHeight - collisionDistance * 2;
 		double sliceVerticalOffset = (screenHeight - sliceHeight) / 2;
-		int textureHeight;
-		int textureWidth; 
-		//std::cout << textureName; 
-		SDL_Texture* currentTexture = assetManager->GetTextureByName(textureName); 
+
+		SDL_Texture* currentTexture = assetManager->GetTextureByName(textureName);
 		if (currentTexture) {
+			int textureHeight;
+			int textureWidth;
 			SDL_QueryTexture(currentTexture, NULL, NULL, &textureWidth, &textureHeight);
 			// Determines the shape and position of the texture 
 			SDL_Rect dst;
 			dst.x = drawPoint;
 			dst.y = sliceVerticalOffset;
-			dst.w = 1; // 1
+			dst.w = 1; 
 			dst.h = sliceHeight;
-			// Determines what part of texture to render WORKING
+			// Determines what part of texture to render 
 			SDL_Rect texturePart;
-			texturePart.x = drawPoint % textureWidth;
+			// old: drawPoint % textureWidth; 
+			texturePart.x = distanceBetweenCollisionAndLineStart % textureWidth; // Doesn't texture map correctly
 			texturePart.y = 1;
 			texturePart.w = 1;
 			texturePart.h = textureHeight;
@@ -145,9 +135,11 @@ void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, strin
 		}
 		else {
 			SetRenderDrawColor(255, 0, 255, 255);
-			DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset); 
+			DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset);
 		}
+		return true;
 	}
+	return false;
 }
 
 void Mildred::CastRays() {
@@ -155,25 +147,28 @@ void Mildred::CastRays() {
 	// One iteration for each pixel column of the screen resolution 
 	for (int i = 0; i < screenWidth; i++) {
 		// Calculate each ray's x and y point based on player view angle and iteration count
-		double rayAngleX = player->positionX + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
-		double rayAngleY = player->positionY + sin(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
+		double rayAngleX = player->positionX + player->size / 2 + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
+		double rayAngleY = player->positionY + player->size / 2 + sin(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
 
-		// Only show every 30th angle line vision indicator
-		//if (i % 30 == 0) {
-		SetRenderDrawColor(0, 0, 255, 255);
-		SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY);
-		//}
+		// Only show every 50th angle line vision indicator
+		if (i % 50 == 0) {
+			SetRenderDrawColor(0, 0, 255, 255);
+			SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY);
+		}
 
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapLines->size(); j++) {
 			// Render wall slice if they collide
-			RenderWallSlice(Calc::LineToLineCollision(player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, (*mapLines)[j].textureName);
+			if (RenderWallSlice(Calc::LineToLineCollision(player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, Calc::GetDistance((*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].textureName)) {
+				break;	// Break loop to only draw one slice per column
+			}
+
 
 		}
 
 	}
-	/*std::cout << c << std::endl;
-	std::cout << stepInterval << std::endl;*/
+	/*cout << c << endl;
+	cout << stepInterval << endl;*/
 }
 
 void Mildred::HandleEvents() {
@@ -184,8 +179,54 @@ void Mildred::HandleEvents() {
 		{
 		case SDL_QUIT:
 			Mildred::isRunning = false;
-			std::cout << "Quitting";
+			cout << "Quitting";
 			break;
 		}
 	}
+}
+
+void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos) {
+	TTF_Font* font; // Declare a SDL_ttf font : font
+	TTF_Init(); // Initilize SDL_ttf
+	// This opens a font style and sets a size
+	font = TTF_OpenFont("fonts/arial.ttf", txtSize);
+
+	// Text color
+	SDL_Color color = { 0, 255, 0 };
+
+	// Create surface to render text on
+	SDL_Surface* surfaceMessage =
+		TTF_RenderText_Blended(font, msg.c_str(), color);
+
+	// Convert to texture
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	// Create a rectangle/shape of the message texture
+	SDL_Rect Message_rect;
+	Message_rect.x = xpos;
+	Message_rect.y = ypos;
+	Message_rect.w = surfaceMessage->w;
+	Message_rect.h = surfaceMessage->h;
+
+	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+	// Frees surface and texture
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
+
+void Mildred::DisplayFPS() {
+	frameCount++;
+	Uint64 now = SDL_GetTicks64();
+	if (frameCount >= 15) {
+
+		Uint64 fps = 1000 / (now - ticks);
+		oldFps = fps;
+		DisplayText("FPS: " + to_string(fps), 16, screenWidth - 100, 25);
+		frameCount = 0;
+	}
+	else {
+		DisplayText("FPS: " + to_string(oldFps), 16, screenWidth - 100, 25);
+	}
+	ticks = now;
 }

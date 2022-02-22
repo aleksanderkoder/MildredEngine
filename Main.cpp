@@ -1,28 +1,32 @@
 #include <iostream>
-#include <SDL.h>
 #include "Mildred.h"
 
 int main(int argc, char* argv[]) {
 
+    // Prepare engine settings 
     Mildred::Init(); 
     Mildred::CreateWindow("Mildred Engine", 1920, 1080);
     Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
+    Mildred::assetManager->CreateAsset("wall2", "texture", "textures/wall-1920.bmp");
+    Mildred::assetManager->CreateAsset("wallpaper", "texture", "textures/wallpaper.bmp");
     Mildred::CreateMapLine(600, 200, 600, 550, "test");
-    Mildred::CreateMapLine(600, 200, 1000, 200, "hei");
+    Mildred::CreateMapLine(600, 200, 1000, 200, "wall2");
+    Mildred::CreateMapLine(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
   
-
+    // Begin game loop
     while (Mildred::isRunning)
     {
+        // Runs every frame 
         Mildred::HandleUserInput();
         Mildred::HandleEvents(); 
         Mildred::SetRenderDrawColor(0, 0, 0, 255);
         Mildred::RenderClear();
-        /*Mildred::SetRenderDrawColor(0, 255, 0, 255);
-        Mildred::DrawRect(50, 50, 150, 150);*/
         Mildred::DrawMapLines(); 
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
+        //Mildred::DisplayText("hei din blei", 18, 1700, 25);
+        Mildred::DisplayFPS(); 
         Mildred::RenderPresent(); 
     }
 

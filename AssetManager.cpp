@@ -43,7 +43,7 @@ SDL_Texture* AssetManager::GetTextureByName(string name) {
 
 void AssetManager::PrintAllAssetInfo() {
 	for (int i = 0; i < assets->size(); i++) {
-		cout << "Asset " << i << ":" << endl << (*assets)[i].name << endl << (*assets)[i].type << endl << (*assets)[i].url << endl;
+		cout << "Asset " << i + 1 << ":" << endl << (*assets)[i].name << endl << (*assets)[i].type << endl << (*assets)[i].url << endl;
 		if (!(*assets)[i].tex) {
 			cout << "Texture set!" << endl; 
 		}
