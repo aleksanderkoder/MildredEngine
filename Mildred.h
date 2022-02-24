@@ -42,5 +42,6 @@ class Mildred {
 		static void HandleEvents(); 
 		static void DisplayText(string msg, int txtSize, int xpos, int ypos);
 		static void DisplayFPS(); 
+		static void DrawTempBackground();
 };
 

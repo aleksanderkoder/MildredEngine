@@ -104,13 +104,19 @@ void Mildred::HandleUserInput() {
 bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, int lineLength, int lineStartX, int lineStartY, string textureName) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
-		//cout << "Length: " << lineLength << endl;
-		int distanceBetweenCollisionAndLineStart = Calc::GetDistance(lineCollisionPointer[0], lineCollisionPointer[1], lineStartX, lineStartY); 
 		double collisionDistance = Calc::GetDistance(player->positionX + player->size / 2, player->positionY + player->size / 2, lineCollisionPointer[0], lineCollisionPointer[1]);
-		cout << distanceBetweenCollisionAndLineStart << "\n";
+		int distanceBetweenCollisionAndLineStart = Calc::GetDistance(lineCollisionPointer[0], lineCollisionPointer[1], lineStartX, lineStartY); 
+		//cout << "Length: " << lineLength << endl;
+		//cout << distanceBetweenCollisionAndLineStart << "\n";
 		//double colorShade = 255 - collisionDistance / 2.5;
 		double sliceHeight = screenHeight - collisionDistance * 2;
 		double sliceVerticalOffset = (screenHeight - sliceHeight) / 2;
+
+		//double angle = Calc::NormalizeAngleRad(player->viewAngle - (Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * drawPoint))); 
+		//double adjacent = cos(angle) * hypotenuse; 
+		//cout << " New angle: " << angle << endl;
+		//cout << "Fishbowl dist: " << hypotenuse << endl;
+		//cout << "Correct dist: " << adjacent << endl;
 
 		SDL_Texture* currentTexture = assetManager->GetTextureByName(textureName);
 		if (currentTexture) {
@@ -126,7 +132,7 @@ bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, int l
 			// Determines what part of texture to render 
 			SDL_Rect texturePart;
 			// old: drawPoint % textureWidth; 
-			texturePart.x = distanceBetweenCollisionAndLineStart % textureWidth; // Doesn't texture map correctly
+			texturePart.x = drawPoint % textureWidth; // Doesn't texture map correctly
 			texturePart.y = 1;
 			texturePart.w = 1;
 			texturePart.h = textureHeight;
@@ -145,16 +151,18 @@ bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, int l
 void Mildred::CastRays() {
 	double stepInterval = (double)fieldOfView / (double)screenWidth;
 	// One iteration for each pixel column of the screen resolution 
-	for (int i = 0; i < screenWidth; i++) {
+	for (int i = 1; i < screenWidth; i++) {
+		
 		// Calculate each ray's x and y point based on player view angle and iteration count
 		double rayAngleX = player->positionX + player->size / 2 + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
 		double rayAngleY = player->positionY + player->size / 2 + sin(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
 
+
 		// Only show every 50th angle line vision indicator
-		if (i % 50 == 0) {
+		//if (i % 50 == 0) {
 			SetRenderDrawColor(0, 0, 255, 255);
 			SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY);
-		}
+		//}
 
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapLines->size(); j++) {
@@ -162,7 +170,6 @@ void Mildred::CastRays() {
 			if (RenderWallSlice(Calc::LineToLineCollision(player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, Calc::GetDistance((*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].textureName)) {
 				break;	// Break loop to only draw one slice per column
 			}
-
 
 		}
 
@@ -229,4 +236,11 @@ void Mildred::DisplayFPS() {
 		DisplayText("FPS: " + to_string(oldFps), 16, screenWidth - 100, 25);
 	}
 	ticks = now;
+}
+
+void Mildred::DrawTempBackground() {
+	SetRenderDrawColor(235, 221, 202, 255);
+	DrawRect(screenWidth, screenHeight / 2, 1, screenHeight / 2);
+	SetRenderDrawColor(0, 100, 255, 255);
+	DrawRect(screenWidth, screenHeight / 2, 1, 1);
 }

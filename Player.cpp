@@ -45,7 +45,8 @@ void Player::DrawAngleLine() {
 void Player::AdjustAngle(int* xrel, int* yrel)
 {
     Player::viewAngle += Calc::ToRadians(*xrel / 3);
-    //Console.WriteLine(viewAngle);
+    //cout << "Viewangle: " << Player::viewAngle << endl;
+    //cout << "Normalized angle in radians: " << Calc::NormalizeAngleRad(Player::viewAngle) << endl;
     //viewAngle += yrel; 
 }
 
@@ -54,3 +55,10 @@ void Player::DrawPlayerOnMinimap() {
     Mildred::DrawRect(Player::size, Player::size, Player::positionX, Player::positionY);
     DrawAngleLine();
 }
+
+//void Player::DrawViewPlane() {
+//    int viewPlaneStartx = Player::positionX + Player::size / 2 + cos(Player::viewAngle - Calc::ToRadians(90)) * 500;
+//    int viewPlaneStartY = Player::positionY + Player::size / 2 + sin(Player::viewAngle - Calc::ToRadians(90)) * 500;
+//    Mildred::SetRenderDrawColor(0, 0, 255, 255);
+//    SDL_RenderDrawLine(Mildred::GetRenderer(), viewPlaneStartx, viewPlaneStartY, Player::positionX, Player::positionY);
+//}

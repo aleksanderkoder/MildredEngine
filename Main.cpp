@@ -23,6 +23,7 @@ int main(int argc, char* argv[]) {
         Mildred::SetRenderDrawColor(0, 0, 0, 255);
         Mildred::RenderClear();
         Mildred::DrawMapLines(); 
+        Mildred::DrawTempBackground();
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
         //Mildred::DisplayText("hei din blei", 18, 1700, 25);

@@ -1,8 +1,9 @@
 #include "Calc.h"
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 double Calc::ToRadians(int deg) {
-	return (deg * (atan(1.0) * 4)) / 180;
+	return deg * M_PI / 180;
 }
 
 double* Calc::LineToLineCollision(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
@@ -36,6 +37,16 @@ double Calc::GetDistance(double x1, double y1, double x2, double y2) {
     double y = x2 - x1;
     double x = y2 - y1;
     return sqrt(x * x + y * y);
+}
+
+double Calc::ToDegrees(double rad) {
+    return rad * 180 / M_PI;
+}
+ 
+double Calc::NormalizeAngleRad(double angle) {
+    double res = fmod(angle, 6.28319); 
+    if (res < 0) res *= -1; 
+    return res;
 }
 		
 		
