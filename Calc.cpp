@@ -48,6 +48,12 @@ double Calc::NormalizeAngleRad(double angle) {
     if (res < 0) res *= -1; 
     return res;
 }
+
+double NormalizeAngleDeg(double angle) {
+    double res = fmod(angle, 360);
+    if (res < 0) res *= -1;
+    return res;
+}
 		
 		
 		

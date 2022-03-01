@@ -18,7 +18,7 @@ class Mildred {
 	private:
 		static SDL_Renderer* renderer; 
 		static SDL_Window* window;
-		static int screenWidth, screenHeight, fieldOfView, sightDistance, frameCount; 
+		static int screenWidth, screenHeight, fieldOfView, viewDistance, frameCount; 
 		static vector<MapLine>* mapLines;
 		static Uint64 ticks, oldFps; 
 
@@ -37,7 +37,7 @@ class Mildred {
 		static void DrawMapLines(); 
 		static SDL_Renderer* GetRenderer();
 		static void HandleUserInput();
-		static bool RenderWallSlice(double* lineCollisionPointer, int drawPoint, int lineLenght, int lineStartX, int lineStartY, string textureName); 
+		static bool RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, string textureName); 
 		static void CastRays(); 
 		static void HandleEvents(); 
 		static void DisplayText(string msg, int txtSize, int xpos, int ypos);

@@ -5,7 +5,8 @@
 
 SDL_Renderer* Mildred::renderer;
 SDL_Window* Mildred::window;
-int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::sightDistance = 450, Mildred::frameCount;
+int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::viewDistance = 500, 
+Mildred::frameCount; 
 vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
 AssetManager* Mildred::assetManager = new AssetManager();
 bool Mildred::isRunning;
@@ -39,7 +40,7 @@ void Mildred::CreateWindow(string title, int width, int height) {
 
 void Mildred::CreateRenderer() {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
+	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "BEST"); 
 }
 
 void Mildred::SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
@@ -101,47 +102,40 @@ void Mildred::HandleUserInput() {
 	player->AdjustAngle(&mX, &mY);
 }
 
-bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, int lineLength, int lineStartX, int lineStartY, string textureName) {
+bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, double angleRad, int lineLength, int lineStartX, int lineStartY, string textureName) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
 		double collisionDistance = Calc::GetDistance(player->positionX + player->size / 2, player->positionY + player->size / 2, lineCollisionPointer[0], lineCollisionPointer[1]);
 		int distanceBetweenCollisionAndLineStart = Calc::GetDistance(lineCollisionPointer[0], lineCollisionPointer[1], lineStartX, lineStartY); 
-		//cout << "Length: " << lineLength << endl;
-		//cout << distanceBetweenCollisionAndLineStart << "\n";
-		//double colorShade = 255 - collisionDistance / 2.5;
-		double sliceHeight = screenHeight - collisionDistance * 2;
+		double sliceHeight = screenHeight - (collisionDistance * cos(angleRad - player->viewAngle)) * 2;
 		double sliceVerticalOffset = (screenHeight - sliceHeight) / 2;
-
-		//double angle = Calc::NormalizeAngleRad(player->viewAngle - (Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * drawPoint))); 
-		//double adjacent = cos(angle) * hypotenuse; 
-		//cout << " New angle: " << angle << endl;
-		//cout << "Fishbowl dist: " << hypotenuse << endl;
-		//cout << "Correct dist: " << adjacent << endl;
-
+		
 		SDL_Texture* currentTexture = assetManager->GetTextureByName(textureName);
 		if (currentTexture) {
 			int textureHeight;
 			int textureWidth;
 			SDL_QueryTexture(currentTexture, NULL, NULL, &textureWidth, &textureHeight);
+
 			// Determines the shape and position of the texture 
-			SDL_Rect dst;
+			SDL_FRect dst;
 			dst.x = drawPoint;
 			dst.y = sliceVerticalOffset;
 			dst.w = 1; 
 			dst.h = sliceHeight;
+
 			// Determines what part of texture to render 
 			SDL_Rect texturePart;
-			// old: drawPoint % textureWidth; 
 			texturePart.x = drawPoint % textureWidth; // Doesn't texture map correctly
 			texturePart.y = 1;
 			texturePart.w = 1;
 			texturePart.h = textureHeight;
 
-			SDL_RenderCopy(renderer, currentTexture, &texturePart, &dst);
+			SDL_RenderCopyF(renderer, currentTexture, &texturePart, &dst);
 		}
 		else {
-			SetRenderDrawColor(255, 0, 255, 255);
-			DrawRect(1, screenHeight - collisionDistance * 2, drawPoint, sliceVerticalOffset);
+			int colorShade = 255 - collisionDistance / 2.5;
+			SetRenderDrawColor(colorShade, colorShade, colorShade, 255);
+			DrawRect(1, sliceHeight, drawPoint, sliceVerticalOffset);
 		}
 		return true;
 	}
@@ -149,13 +143,19 @@ bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, int l
 }
 
 void Mildred::CastRays() {
+	// Base ray angle step interval based on fov
 	double stepInterval = (double)fieldOfView / (double)screenWidth;
+	// Offset to be used by rays to calculate ray angle relative to the center of vision 
+	double halfFov = Calc::ToRadians(fieldOfView / 2);
 	// One iteration for each pixel column of the screen resolution 
 	for (int i = 1; i < screenWidth; i++) {
-		
+		// Next step for ray angle to take
+		double nextStep = Calc::ToRadians(stepInterval * i);
+		// 
+		double rayAngleRadian = player->viewAngle - halfFov + nextStep;
 		// Calculate each ray's x and y point based on player view angle and iteration count
-		double rayAngleX = player->positionX + player->size / 2 + cos(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
-		double rayAngleY = player->positionY + player->size / 2 + sin(player->viewAngle - Calc::ToRadians(fieldOfView / 2) + Calc::ToRadians(stepInterval * i)) * sightDistance;
+		double rayAngleX = player->posXCentered + cos(rayAngleRadian) * viewDistance;
+		double rayAngleY = player->posYCentered + sin(rayAngleRadian) * viewDistance;
 
 
 		// Only show every 50th angle line vision indicator
@@ -167,15 +167,11 @@ void Mildred::CastRays() {
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapLines->size(); j++) {
 			// Render wall slice if they collide
-			if (RenderWallSlice(Calc::LineToLineCollision(player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, Calc::GetDistance((*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].textureName)) {
+			if (RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, rayAngleRadian, Calc::GetDistance((*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].textureName)) {
 				break;	// Break loop to only draw one slice per column
 			}
-
 		}
-
 	}
-	/*cout << c << endl;
-	cout << stepInterval << endl;*/
 }
 
 void Mildred::HandleEvents() {
@@ -225,7 +221,7 @@ void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos) {
 void Mildred::DisplayFPS() {
 	frameCount++;
 	Uint64 now = SDL_GetTicks64();
-	if (frameCount >= 15) {
+	if (frameCount >= 12) {
 
 		Uint64 fps = 1000 / (now - ticks);
 		oldFps = fps;
@@ -239,7 +235,7 @@ void Mildred::DisplayFPS() {
 }
 
 void Mildred::DrawTempBackground() {
-	SetRenderDrawColor(235, 221, 202, 255);
+	SetRenderDrawColor(101, 67, 33, 255);
 	DrawRect(screenWidth, screenHeight / 2, 1, screenHeight / 2);
 	SetRenderDrawColor(0, 100, 255, 255);
 	DrawRect(screenWidth, screenHeight / 2, 1, 1);

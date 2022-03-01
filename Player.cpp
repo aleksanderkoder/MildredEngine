@@ -11,27 +11,33 @@ Player::Player(double positionX, double positionY, double size, double viewAngle
     Player::size = size;
     Player::viewAngle = Calc::ToRadians(viewAngle);
     Player::speed = speed;
+    Player::posXCentered = positionX + size / 2;
+    Player::posYCentered = positionY + size / 2;
     
 }
 
 void Player::MoveForward() {
     Player::positionX = round(Player::positionX + cos(Player::viewAngle) * Player::speed);
     Player::positionY = round(Player::positionY + sin(Player::viewAngle) * Player::speed);
+    Player::UpdateCenteredPosition();
 }
 void Player::MoveBackward()
 {
     Player::positionX = round(Player::positionX + cos(Player::viewAngle + Calc::ToRadians(180)) * Player::speed);
     Player::positionY = round(Player::positionY + sin(Player::viewAngle + Calc::ToRadians(180)) * Player::speed);
+    Player::UpdateCenteredPosition();
 }
 void Player::MoveLeft()
 {
     Player::positionX = round(Player::positionX + cos(Player::viewAngle - Calc::ToRadians(90)) * Player::speed);
     Player::positionY = round(Player::positionY + sin(Player::viewAngle - Calc::ToRadians(90)) * Player::speed);
+    Player::UpdateCenteredPosition();
 }
 void Player::MoveRight()
 {
     Player::positionX = round(Player::positionX + cos(Player::viewAngle + Calc::ToRadians(90)) * Player::speed);
     Player::positionY = round(Player::positionY + sin(Player::viewAngle + Calc::ToRadians(90)) * Player::speed);
+    Player::UpdateCenteredPosition(); 
 }
 void Player::DrawAngleLine() {
     Mildred::SetRenderDrawColor(128, 0, 155, 255);
@@ -56,9 +62,7 @@ void Player::DrawPlayerOnMinimap() {
     DrawAngleLine();
 }
 
-//void Player::DrawViewPlane() {
-//    int viewPlaneStartx = Player::positionX + Player::size / 2 + cos(Player::viewAngle - Calc::ToRadians(90)) * 500;
-//    int viewPlaneStartY = Player::positionY + Player::size / 2 + sin(Player::viewAngle - Calc::ToRadians(90)) * 500;
-//    Mildred::SetRenderDrawColor(0, 0, 255, 255);
-//    SDL_RenderDrawLine(Mildred::GetRenderer(), viewPlaneStartx, viewPlaneStartY, Player::positionX, Player::positionY);
-//}
+void Player::UpdateCenteredPosition() {
+    Player::posXCentered = positionX + size / 2;
+    Player::posYCentered = positionY + size / 2;
+}

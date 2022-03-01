@@ -7,5 +7,6 @@ struct Calc
 	static double GetDistance(double x1, double y1, double x2, double y2);
 	static double ToDegrees(double rad);
 	static double NormalizeAngleRad(double angle);
+	static double NormalizeAngleDeg(double angle);
 };
 
