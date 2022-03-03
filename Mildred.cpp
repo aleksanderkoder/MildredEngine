@@ -151,7 +151,7 @@ void Mildred::CastRays() {
 	for (int i = 1; i < screenWidth; i++) {
 		// Next step for ray angle to take
 		double nextStep = Calc::ToRadians(stepInterval * i);
-		// 
+		// Calculate the angle of the new ray in radians
 		double rayAngleRadian = player->viewAngle - halfFov + nextStep;
 		// Calculate each ray's x and y point based on player view angle and iteration count
 		double rayAngleX = player->posXCentered + cos(rayAngleRadian) * viewDistance;
