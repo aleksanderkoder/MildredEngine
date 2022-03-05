@@ -148,7 +148,7 @@ void Mildred::CastRays() {
 	// Offset to be used by rays to calculate ray angle relative to the center of vision 
 	double halfFov = Calc::ToRadians(fieldOfView / 2);
 	// One iteration for each pixel column of the screen resolution 
-	for (int i = 1; i < screenWidth; i++) {
+	for (int i = 0; i < screenWidth; i++) {
 		// Next step for ray angle to take
 		double nextStep = Calc::ToRadians(stepInterval * i);
 		// Calculate the angle of the new ray in radians

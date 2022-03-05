@@ -6,9 +6,9 @@ int main(int argc, char* argv[]) {
     // Prepare engine settings 
     Mildred::Init(); 
     Mildred::CreateWindow("Mildred Engine", 1920, 1080);
-    Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
-    Mildred::assetManager->CreateAsset("wall2", "texture", "textures/wall-1920.bmp");
-    Mildred::assetManager->CreateAsset("wallpaper", "texture", "textures/wallpaper.bmp");
+    //Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
+    //Mildred::assetManager->CreateAsset("wall2", "texture", "textures/wall-1920.bmp");
+    //Mildred::assetManager->CreateAsset("wallpaper", "texture", "textures/wallpaper.bmp");
     Mildred::CreateMapLine(600, 200, 600, 550, "test");
     Mildred::CreateMapLine(600, 200, 1000, 200, "wall2");
     Mildred::CreateMapLine(1000, 200, 1000, 500, "wallpaper");
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
         Mildred::HandleEvents(); 
         Mildred::SetRenderDrawColor(0, 0, 0, 255);
         Mildred::RenderClear();
-        Mildred::DrawTempBackground();
+        //Mildred::DrawTempBackground();
         Mildred::DrawMapLines(); 
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
