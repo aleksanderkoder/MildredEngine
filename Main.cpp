@@ -6,12 +6,12 @@ int main(int argc, char* argv[]) {
     // Prepare engine settings 
     Mildred::Init(); 
     Mildred::CreateWindow("Mildred Engine", 1920, 1080);
-    //Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
-    //Mildred::assetManager->CreateAsset("wall2", "texture", "textures/wall-1920.bmp");
-    //Mildred::assetManager->CreateAsset("wallpaper", "texture", "textures/wallpaper.bmp");
-    Mildred::CreateMapLine(600, 200, 600, 550, "test");
-    Mildred::CreateMapLine(600, 200, 1000, 200, "wall2");
-    Mildred::CreateMapLine(1000, 200, 1000, 500, "wallpaper");
+    Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
+    Mildred::assetManager->CreateAsset("wall2", "texture", "textures/wall-1920.bmp");
+    Mildred::assetManager->CreateAsset("wallpaper", "texture", "textures/wallpaper.bmp");
+    Mildred::CreateMapBoundary(600, 200, 600, 550, "test");
+    Mildred::CreateMapBoundary(600, 200, 1000, 200, "wall2");
+    Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
   
     // Begin game loop
@@ -23,10 +23,10 @@ int main(int argc, char* argv[]) {
         Mildred::SetRenderDrawColor(0, 0, 0, 255);
         Mildred::RenderClear();
         //Mildred::DrawTempBackground();
-        Mildred::DrawMapLines(); 
+        Mildred::DrawMapBoundaries();
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
-        //Mildred::DisplayText("hei din blei", 18, 1700, 25);
+        Mildred::DisplayText("Hello, world!", 18, 1700, 25);
         Mildred::DisplayFPS(); 
         Mildred::RenderPresent(); 
     }

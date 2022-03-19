@@ -31,10 +31,8 @@ void AssetManager::LoadTexture(Asset& a) {
 }
 
 SDL_Texture* AssetManager::GetTextureByName(string name) {
-	//cout << assets->size(); 
 	for (int i = 0; i < assets->size(); i++) {
 		if ((*assets)[i].name == name) {
-			//cout << "Fant " << (*assets)[i].tex;
 			return (*assets)[i].tex; 
 		}
 	}
@@ -46,9 +44,9 @@ void AssetManager::PrintAllAssetInfo() {
 		cout << "Asset " << i + 1 << ":" << endl << (*assets)[i].name << endl << (*assets)[i].type << endl << (*assets)[i].url << endl;
 		if ((*assets)[i].tex) {
 			cout << "Texture set!" << endl; 
+			return;
 		}
-		else {
 			cout << "Texture not set!" << endl;
-		}
+			return;
 	}
 }

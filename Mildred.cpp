@@ -7,7 +7,7 @@ SDL_Renderer* Mildred::renderer;
 SDL_Window* Mildred::window;
 int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::viewDistance = 500, 
 Mildred::frameCount; 
-vector<MapLine>* Mildred::mapLines = new vector<MapLine>();
+vector<MapBoundary>* Mildred::mapBoundaries = new vector<MapBoundary>();
 AssetManager* Mildred::assetManager = new AssetManager();
 bool Mildred::isRunning;
 Player* Mildred::player = new Player(250, 250, 30, 270, 3);
@@ -21,7 +21,7 @@ void Mildred::Init() {
 	ticks = SDL_GetTicks64();	// Get store ticks since start for FPS counting
 }
 void Mildred::CreateWindow(string title, int width, int height) {
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		width, height, SDL_WINDOW_SHOWN);
 
 	CreateRenderer();
@@ -64,14 +64,14 @@ void Mildred::DrawRect(int width, int height, int x, int y) {
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void Mildred::CreateMapLine(int x, int y, int endX, int endY, string textureName) {
-	MapLine ml(x, y, endX, endY, textureName);
-	mapLines->push_back(ml);
+void Mildred::CreateMapBoundary(int x, int y, int endX, int endY, string textureName) {
+	MapBoundary ml(x, y, endX, endY, textureName);
+	mapBoundaries->push_back(ml);
 }
-void Mildred::DrawMapLines() {
+void Mildred::DrawMapBoundaries() {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	for (int i = 0; i < mapLines->size(); i++) {
-		SDL_RenderDrawLine(renderer, (*mapLines)[i].startX, (*mapLines)[i].startY, (*mapLines)[i].endX, (*mapLines)[i].endY);
+	for (int i = 0; i < mapBoundaries->size(); i++) {
+		SDL_RenderDrawLine(renderer, (*mapBoundaries)[i].startX, (*mapBoundaries)[i].startY, (*mapBoundaries)[i].endX, (*mapBoundaries)[i].endY);
 	}
 }
 
@@ -165,9 +165,9 @@ void Mildred::CastRays() {
 		//}
 
 		// Check current angle line against existing walls to see if they collide
-		for (int j = 0; j < mapLines->size(); j++) {
+		for (int j = 0; j < mapBoundaries->size(); j++) {
 			// Render wall slice if they collide
-			if (RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY, (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), i, rayAngleRadian, Calc::GetDistance((*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].endX, (*mapLines)[j].endY), (*mapLines)[j].startX, (*mapLines)[j].startY, (*mapLines)[j].textureName)) {
+			if (RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY, (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), i, rayAngleRadian, Calc::GetDistance((*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].textureName)) {
 				break;	// Break loop to only draw one slice per column
 			}
 		}

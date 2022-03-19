@@ -21,7 +21,7 @@
     <ClCompile Include="Mildred.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapLine.cpp">
+    <ClCompile Include="MapBoundary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
@@ -41,7 +41,7 @@
     <ClInclude Include="Mildred.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapLine.h">
+    <ClInclude Include="MapBoundary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">

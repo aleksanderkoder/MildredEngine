@@ -1,13 +1,12 @@
 // HEADER FILE
 // Contains class specification 
-#ifndef MILDRED_H
-#endif MILDRED_H
+#pragma once
 
 #include <iostream>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <vector>
-#include "MapLine.h"
+#include "MapBoundary.h"
 #include "Player.h"
 #include "Calc.h"
 #include "AssetManager.h"
@@ -19,7 +18,7 @@ class Mildred {
 		static SDL_Renderer* renderer; 
 		static SDL_Window* window;
 		static int screenWidth, screenHeight, fieldOfView, viewDistance, frameCount; 
-		static vector<MapLine>* mapLines;
+		static vector<MapBoundary>* mapBoundaries;
 		static Uint64 ticks, oldFps; 
 
 	public: 
@@ -33,8 +32,8 @@ class Mildred {
 		static void RenderPresent();
 		static void RenderClear();
 		static void DrawRect(int width, int height, int x, int y);
-		static void CreateMapLine(int x, int y, int endX, int endY, string textureName);
-		static void DrawMapLines(); 
+		static void CreateMapBoundary(int x, int y, int endX, int endY, string textureName);
+		static void DrawMapBoundaries();
 		static SDL_Renderer* GetRenderer();
 		static void HandleUserInput();
 		static bool RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, string textureName); 
