@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Calc.h"
 #include "AssetManager.h"
+#include "GUI.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ class Mildred {
 		static SDL_Window* window;
 		static int screenWidth, screenHeight, fieldOfView, viewDistance, frameCount; 
 		static vector<MapBoundary>* mapBoundaries;
-		static Uint64 ticks, oldFps; 
+		static Uint64 ticks, prevFps; 
 
 	public: 
 		static bool isRunning;
@@ -36,10 +37,10 @@ class Mildred {
 		static void DrawMapBoundaries();
 		static SDL_Renderer* GetRenderer();
 		static void HandleUserInput();
-		static bool RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, string textureName); 
+		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, string textureName); 
 		static void CastRays(); 
 		static void HandleEvents(); 
-		static void DisplayText(string msg, int txtSize, int xpos, int ypos);
+		static void DisplayText(string msg, int txtSize, int xpos, int ypos, SDL_Color color);
 		static void DisplayFPS(); 
 		static void DrawTempBackground();
 };

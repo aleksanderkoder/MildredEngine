@@ -9,11 +9,13 @@ int main(int argc, char* argv[]) {
     Mildred::assetManager->CreateAsset("test", "texture", "textures/stone-tex.bmp");
     Mildred::assetManager->CreateAsset("wall2", "texture", "textures/wall-1920.bmp");
     Mildred::assetManager->CreateAsset("wallpaper", "texture", "textures/wallpaper.bmp");
-    Mildred::CreateMapBoundary(600, 200, 600, 550, "test");
+    Mildred::CreateMapBoundary(600, 200, 600, 550, "test2");
     Mildred::CreateMapBoundary(600, 200, 1000, 200, "wall2");
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
-  
+    GUI::SetRenderTarget(Mildred::GetRenderer()); 
+    GUI::CreateButton("heeeei", 5350, 100, 50, 50); 
+    SDL_Color color = { 0, 255, 0 };
     // Begin game loop
     while (Mildred::isRunning)
     {
@@ -26,8 +28,10 @@ int main(int argc, char* argv[]) {
         Mildred::DrawMapBoundaries();
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();
-        Mildred::DisplayText("Hello, world!", 18, 1700, 25);
+        
+        Mildred::DisplayText("Hello, world!", 18, 1700, 25, color);
         Mildred::DisplayFPS(); 
+        GUI::Render(); 
         Mildred::RenderPresent(); 
     }
 

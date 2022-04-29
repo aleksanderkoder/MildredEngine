@@ -6,45 +6,45 @@
 
 Player::Player(double positionX, double positionY, double size, double viewAngle, double speed)
 {
-    Player::positionX = positionX;
-    Player::positionY = positionY;
-    Player::size = size;
-    Player::viewAngle = Calc::ToRadians(viewAngle);
-    Player::speed = speed;
-    Player::posXCentered = positionX + size / 2;
-    Player::posYCentered = positionY + size / 2;
+    this->positionX = positionX;
+    this->positionY = positionY;
+    this->size = size;
+    this->viewAngle = Calc::ToRadians(viewAngle);
+    this->speed = speed;
+    this->posXCentered = positionX + size / 2;
+    this->posYCentered = positionY + size / 2;
     
 }
 
 void Player::MoveForward() {
-    Player::positionX = round(Player::positionX + cos(Player::viewAngle) * Player::speed);
-    Player::positionY = round(Player::positionY + sin(Player::viewAngle) * Player::speed);
-    Player::UpdateCenteredPosition();
+    this->positionX = this->positionX + cos(this->viewAngle) * this->speed;
+    this->positionY = this->positionY + sin(this->viewAngle) * this->speed;
+    this->UpdateCenteredPosition();
 }
 void Player::MoveBackward()
 {
-    Player::positionX = round(Player::positionX + cos(Player::viewAngle + Calc::ToRadians(180)) * Player::speed);
-    Player::positionY = round(Player::positionY + sin(Player::viewAngle + Calc::ToRadians(180)) * Player::speed);
-    Player::UpdateCenteredPosition();
+    this->positionX = this->positionX + cos(this->viewAngle + Calc::ToRadians(180)) * this->speed;
+    this->positionY = this->positionY + sin(this->viewAngle + Calc::ToRadians(180)) * this->speed;
+    this->UpdateCenteredPosition();
 }
 void Player::MoveLeft()
 {
-    Player::positionX = round(Player::positionX + cos(Player::viewAngle - Calc::ToRadians(90)) * Player::speed);
-    Player::positionY = round(Player::positionY + sin(Player::viewAngle - Calc::ToRadians(90)) * Player::speed);
-    Player::UpdateCenteredPosition();
+    this->positionX = this->positionX + cos(this->viewAngle - Calc::ToRadians(90)) * this->speed;
+    this->positionY = this->positionY + sin(this->viewAngle - Calc::ToRadians(90)) * this->speed;
+    this->UpdateCenteredPosition();
 }
 void Player::MoveRight()
 {
-    Player::positionX = round(Player::positionX + cos(Player::viewAngle + Calc::ToRadians(90)) * Player::speed);
-    Player::positionY = round(Player::positionY + sin(Player::viewAngle + Calc::ToRadians(90)) * Player::speed);
-    Player::UpdateCenteredPosition(); 
+    this->positionX = this->positionX + cos(this->viewAngle + Calc::ToRadians(90)) * this->speed;
+    this->positionY = this->positionY + sin(this->viewAngle + Calc::ToRadians(90)) * this->speed;
+    this->UpdateCenteredPosition();
 }
 void Player::DrawAngleLine() {
     Mildred::SetRenderDrawColor(128, 0, 155, 255);
 
-    int x2 = round(Player::positionX + Player::size / 2 + cos(Player::viewAngle) * 150);
-    int y2 = round(Player::positionY + Player::size / 2 + sin(Player::viewAngle) * 150);
-    SDL_RenderDrawLine(Mildred::GetRenderer(), Player::positionX + size / 2, Player::positionY + Player::size / 2,
+    int x2 = this->positionX + this->size / 2 + cos(this->viewAngle) * 150;
+    int y2 = this->positionY + this->size / 2 + sin(this->viewAngle) * 150;
+    SDL_RenderDrawLine(Mildred::GetRenderer(), this->posXCentered, this->posYCentered,
         x2, y2);
 }
 
@@ -58,11 +58,11 @@ void Player::AdjustAngle(int* xrel, int* yrel)
 
 void Player::DrawPlayerOnMinimap() {
     Mildred::SetRenderDrawColor(0, 255, 0, 255);
-    Mildred::DrawRect(Player::size, Player::size, Player::positionX, Player::positionY);
+    Mildred::DrawRect(this->size, this->size, this->positionX, this->positionY);
     DrawAngleLine();
 }
 
 void Player::UpdateCenteredPosition() {
-    Player::posXCentered = positionX + size / 2;
-    Player::posYCentered = positionY + size / 2;
+    this->posXCentered = positionX + size / 2;
+    this->posYCentered = positionY + size / 2;
 }

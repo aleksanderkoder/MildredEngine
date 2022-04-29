@@ -11,7 +11,7 @@ vector<MapBoundary>* Mildred::mapBoundaries = new vector<MapBoundary>();
 AssetManager* Mildred::assetManager = new AssetManager();
 bool Mildred::isRunning;
 Player* Mildred::player = new Player(250, 250, 30, 270, 3);
-Uint64 Mildred::ticks, Mildred::oldFps;
+Uint64 Mildred::ticks, Mildred::prevFps;
 int test = 0;
 
 void Mildred::Init() {
@@ -84,16 +84,16 @@ void Mildred::HandleUserInput() {
 	if (state[SDL_SCANCODE_W]) {
 		player->MoveForward();
 	}
-	else if (state[SDL_SCANCODE_S]) {
+	if (state[SDL_SCANCODE_S]) {
 		player->MoveBackward();
 	}
-	else if (state[SDL_SCANCODE_A]) {
+	if (state[SDL_SCANCODE_A]) {
 		player->MoveLeft();
 	}
-	else if (state[SDL_SCANCODE_D]) {
+	if (state[SDL_SCANCODE_D]) {
 		player->MoveRight();
 	}
-	else if (state[SDL_SCANCODE_ESCAPE]) {
+	if (state[SDL_SCANCODE_ESCAPE]) {
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
 
@@ -102,12 +102,12 @@ void Mildred::HandleUserInput() {
 	player->AdjustAngle(&mX, &mY);
 }
 
-bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, double angleRad, int lineLength, int lineStartX, int lineStartY, string textureName) {
+void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, double angleRad, int lineLength, int lineStartX, int lineStartY, string textureName) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
-		double collisionDistance = Calc::GetDistance(player->positionX + player->size / 2, player->positionY + player->size / 2, lineCollisionPointer[0], lineCollisionPointer[1]);
+		double collisionDistance = Calc::GetDistance(player->posXCentered, player->posYCentered, lineCollisionPointer[0], lineCollisionPointer[1]);
 		int distanceBetweenCollisionAndLineStart = Calc::GetDistance(lineCollisionPointer[0], lineCollisionPointer[1], lineStartX, lineStartY); 
-		double sliceHeight = screenHeight - (collisionDistance * cos(angleRad - player->viewAngle)) * 2;
+		double sliceHeight = 40000 / (collisionDistance * cos(angleRad - player->viewAngle));
 		double sliceVerticalOffset = (screenHeight - sliceHeight) / 2;
 		
 		SDL_Texture* currentTexture = assetManager->GetTextureByName(textureName);
@@ -136,23 +136,27 @@ bool Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, doubl
 			int colorShade = 255 - collisionDistance / 2.5;
 			SetRenderDrawColor(colorShade, colorShade, colorShade, 255);
 			DrawRect(1, sliceHeight, drawPoint, sliceVerticalOffset);
+			//SDL_RenderDrawLine(renderer, drawPoint, sliceVerticalOffset, drawPoint, sliceHeight);
 		}
-		return true;
 	}
-	return false;
 }
 
 void Mildred::CastRays() {
 	// Base ray angle step interval based on fov
 	double stepInterval = (double)fieldOfView / (double)screenWidth;
+
 	// Offset to be used by rays to calculate ray angle relative to the center of vision 
 	double halfFov = Calc::ToRadians(fieldOfView / 2);
+
 	// One iteration for each pixel column of the screen resolution 
 	for (int i = 0; i < screenWidth; i++) {
+		
 		// Next step for ray angle to take
 		double nextStep = Calc::ToRadians(stepInterval * i);
+
 		// Calculate the angle of the new ray in radians
 		double rayAngleRadian = player->viewAngle - halfFov + nextStep;
+
 		// Calculate each ray's x and y point based on player view angle and iteration count
 		double rayAngleX = player->posXCentered + cos(rayAngleRadian) * viewDistance;
 		double rayAngleY = player->posYCentered + sin(rayAngleRadian) * viewDistance;
@@ -161,15 +165,14 @@ void Mildred::CastRays() {
 		// Only show every 50th angle line vision indicator
 		//if (i % 50 == 0) {
 			SetRenderDrawColor(0, 0, 255, 255);
-			SDL_RenderDrawLine(renderer, player->positionX + player->size / 2, player->positionY + player->size / 2, rayAngleX, rayAngleY);
+			SDL_RenderDrawLine(renderer, player->posXCentered, player->posYCentered, rayAngleX, rayAngleY);
 		//}
 
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapBoundaries->size(); j++) {
 			// Render wall slice if they collide
-			if (RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY, (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), i, rayAngleRadian, Calc::GetDistance((*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].textureName)) {
-				break;	// Break loop to only draw one slice per column
-			}
+			RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY, (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), i, rayAngleRadian, Calc::GetDistance((*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].textureName);
+
 		}
 	}
 }
@@ -188,14 +191,14 @@ void Mildred::HandleEvents() {
 	}
 }
 
-void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos) {
+void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos, SDL_Color color) {
 	TTF_Font* font; // Declare a SDL_ttf font : font
 	TTF_Init(); // Initilize SDL_ttf
 	// This opens a font style and sets a size
 	font = TTF_OpenFont("fonts/arial.ttf", txtSize);
 
 	// Text color
-	SDL_Color color = { 0, 255, 0 };
+	//SDL_Color color = { 0, 255, 0 };
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
@@ -221,15 +224,16 @@ void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos) {
 void Mildred::DisplayFPS() {
 	frameCount++;
 	Uint64 now = SDL_GetTicks64();
+	SDL_Color c = { 0, 255, 0 };
 	if (frameCount >= 12) {
 
 		Uint64 fps = 1000 / (now - ticks);
-		oldFps = fps;
-		DisplayText("FPS: " + to_string(fps), 16, screenWidth - 100, 25);
+		prevFps = fps;
+		DisplayText("FPS: " + to_string(fps), 16, screenWidth - 100, 25, c);
 		frameCount = 0;
 	}
 	else {
-		DisplayText("FPS: " + to_string(oldFps), 16, screenWidth - 100, 25);
+		DisplayText("FPS: " + to_string(prevFps), 16, screenWidth - 100, 25, c);
 	}
 	ticks = now;
 }
