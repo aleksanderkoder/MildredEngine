@@ -14,7 +14,8 @@ int main(int argc, char* argv[]) {
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
-    GUI::CreateButton("heeeei", 5350, 100, 50, 50); 
+    GUI::CreateButton("Hei", 350, 100, 50, 50); 
+    GUI::CreateButton("Hello, world!", 350, 100, 450, 50);
     SDL_Color color = { 0, 255, 0 };
     // Begin game loop
     while (Mildred::isRunning)
@@ -22,12 +23,12 @@ int main(int argc, char* argv[]) {
         // Runs every frame 
         Mildred::HandleUserInput();
         Mildred::HandleEvents(); 
-        Mildred::SetRenderDrawColor(0, 0, 0, 255);
+        Mildred::SetRenderDrawColor(255, 255, 255, 255);
         Mildred::RenderClear();
         //Mildred::DrawTempBackground();
-        Mildred::DrawMapBoundaries();
-        Mildred::CastRays(); 
-        Mildred::player->DrawPlayerOnMinimap();
+        //Mildred::DrawMapBoundaries();
+        //Mildred::CastRays(); 
+        //Mildred::player->DrawPlayerOnMinimap();
         
         Mildred::DisplayText("Hello, world!", 18, 1700, 25, color);
         Mildred::DisplayFPS(); 

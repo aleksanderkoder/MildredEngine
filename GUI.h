@@ -12,5 +12,6 @@ class GUI
 		static void SetRenderTarget(SDL_Renderer*);
 		static void CreateButton(string label, int width, int height, int x, int y);
 		static void Render(); 
+		static void CheckForHover(); 
 };
 

@@ -14,15 +14,39 @@ void GUI::CreateButton(string label, int width, int height, int x, int y) {
 }
 
 void GUI::Render() {
+	CheckForHover(); 
 	for (int i = 0; i < buttons->size(); i++) {
+		Button* curr = (*buttons)[i];
 		SDL_Rect rect;
-		rect.w = (*buttons)[i]->width;
-		rect.h = (*buttons)[i]->height;
-		rect.x = (*buttons)[i]->x;
-		rect.y = (*buttons)[i]->y;
-		SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 255); 
+		rect.w = curr->width;
+		rect.h = curr->height;
+		rect.x = curr->x;
+		rect.y = curr->y;
+
+		SDL_SetRenderDrawColor(targetRenderer, curr->renderColor.r, curr->renderColor.g, curr->renderColor.b, curr->renderColor.a);
 		SDL_RenderFillRect(targetRenderer, &rect);
-		SDL_Color c = { 0, 0, 0 };
-		Mildred::DisplayText((*buttons)[i]->label, 12, (*buttons)[i]->x, (*buttons)[i]->y, c); 
+
+		SDL_Color c = { 255, 255, 255 };
+		Mildred::DisplayText(curr->label, 12, curr->x + curr->width / 2 - 3 * curr->label.length(), curr->y + curr->height / 2 - 12, c);
+	}
+}
+
+void GUI::CheckForHover() {
+	int mX, mY;
+	SDL_GetMouseState(&mX, &mY);
+
+	for (int i = 0; i < buttons->size(); i++) {
+		Button* curr = (*buttons)[i];
+
+		// If mouse hovers over button
+		if (mX >= curr->x && mX <= curr->x + curr->width && mY >= curr->y && mY <= curr->y + curr->height) {
+			SDL_Color c = { 255, 0, 0, 175 }; 
+			curr->renderColor = c;
+		}
+		else {
+			SDL_Color c = { 255, 0, 0, 175 };
+			curr->renderColor = curr->originalColor;
+		}
+		
 	}
 }

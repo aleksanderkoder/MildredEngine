@@ -40,6 +40,8 @@ void Mildred::CreateWindow(string title, int width, int height) {
 
 void Mildred::CreateRenderer() {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	// To enable aplha channel on draw calls
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "BEST"); 
 }
 

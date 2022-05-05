@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "SDL.h"
 
 using namespace std; 
 
@@ -12,7 +13,10 @@ class Controls
 
 class Button: public Controls {
 	public:
-		string label; 
+		string label;
+		SDL_Color renderColor; 
+		SDL_Color originalColor; 
+		SDL_Color hoverColor; 
 		Button(string label, int width, int height, int x, int y); 
 };
 
