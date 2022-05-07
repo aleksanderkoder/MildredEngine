@@ -2,6 +2,7 @@
 
 vector<Button*>* GUI::buttons = new vector<Button*>(); 
 SDL_Renderer* GUI::targetRenderer;
+Uint32 GUI::mouseButtons; 
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
@@ -14,7 +15,7 @@ void GUI::CreateButton(string label, int width, int height, int x, int y) {
 }
 
 void GUI::Render() {
-	CheckForHover(); 
+	// Loop through all buttons
 	for (int i = 0; i < buttons->size(); i++) {
 		Button* curr = (*buttons)[i];
 		SDL_Rect rect;
@@ -23,7 +24,18 @@ void GUI::Render() {
 		rect.x = curr->x;
 		rect.y = curr->y;
 
-		SDL_SetRenderDrawColor(targetRenderer, curr->renderColor.r, curr->renderColor.g, curr->renderColor.b, curr->renderColor.a);
+		// If mouse hovers over button
+		if (OnButtonHover(curr) && mouseButtons == SDL_BUTTON(1)) {
+			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
+			curr->InvokeAction(); 
+		}
+		else if (OnButtonHover(curr)) {
+			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
+		}
+		else {
+			SDL_SetRenderDrawColor(targetRenderer, curr->color.r, curr->color.g, curr->color.b, curr->color.a);
+		}
+
 		SDL_RenderFillRect(targetRenderer, &rect);
 
 		SDL_Color c = { 255, 255, 255 };
@@ -31,22 +43,13 @@ void GUI::Render() {
 	}
 }
 
-void GUI::CheckForHover() {
+bool GUI::OnButtonHover(Button* b) {
 	int mX, mY;
-	SDL_GetMouseState(&mX, &mY);
-
-	for (int i = 0; i < buttons->size(); i++) {
-		Button* curr = (*buttons)[i];
+	mouseButtons = SDL_GetMouseState(&mX, &mY);
 
 		// If mouse hovers over button
-		if (mX >= curr->x && mX <= curr->x + curr->width && mY >= curr->y && mY <= curr->y + curr->height) {
-			SDL_Color c = { 255, 0, 0, 175 }; 
-			curr->renderColor = c;
+		if (mX >= b->x && mX <= b->x + b->width && mY >= b->y && mY <= b->y + b->height) {
+			return true; 
 		}
-		else {
-			SDL_Color c = { 255, 0, 0, 175 };
-			curr->renderColor = curr->originalColor;
-		}
-		
-	}
+		return false; 
 }

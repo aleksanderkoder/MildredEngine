@@ -73,7 +73,8 @@ void Mildred::CreateMapBoundary(int x, int y, int endX, int endY, string texture
 void Mildred::DrawMapBoundaries() {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	for (int i = 0; i < mapBoundaries->size(); i++) {
-		SDL_RenderDrawLine(renderer, (*mapBoundaries)[i].startX, (*mapBoundaries)[i].startY, (*mapBoundaries)[i].endX, (*mapBoundaries)[i].endY);
+		MapBoundary mb = (*mapBoundaries)[i]; 
+		SDL_RenderDrawLine(renderer, mb.startX, mb.startY, mb.endX, mb.endY);
 	}
 }
 
@@ -173,7 +174,10 @@ void Mildred::CastRays() {
 		// Check current angle line against existing walls to see if they collide
 		for (int j = 0; j < mapBoundaries->size(); j++) {
 			// Render wall slice if they collide
-			RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY, (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), i, rayAngleRadian, Calc::GetDistance((*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].endX, (*mapBoundaries)[j].endY), (*mapBoundaries)[j].startX, (*mapBoundaries)[j].startY, (*mapBoundaries)[j].textureName);
+			MapBoundary mb = (*mapBoundaries)[j];
+			RenderWallSlice(Calc::LineToLineCollision(player->posXCentered, player->posYCentered, rayAngleX, rayAngleY,
+				mb.startX, mb.startY, mb.endX, mb.endY), i, rayAngleRadian, 
+				Calc::GetDistance(mb.startX, mb.startY, mb.endX, mb.endY), mb.startX, mb.startY, mb.textureName);
 
 		}
 	}
