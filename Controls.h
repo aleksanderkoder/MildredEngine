@@ -9,7 +9,7 @@ typedef void (*ActionFunction)();
 class Controls
 {
 	public:
-		string type; 
+		string id; 
 		int width, height, x, y;
 };
 
@@ -19,8 +19,6 @@ class Button: public Controls {
 		SDL_Color color;  
 		SDL_Color hoverColor; 
 		ActionFunction af;
-		Button(string label, int width, int height, int x, int y); 
-		void AttachAction(ActionFunction& func);
-		void InvokeAction(); 
+		Button(string id, string label, int width, int height, int x, int y); 
 };
 

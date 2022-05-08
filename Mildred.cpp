@@ -32,7 +32,7 @@ void Mildred::CreateWindow(string title, int width, int height) {
 	cout << "Graphics API: " << info.name << endl;
 
 	// Captures mouse to window
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	//SDL_SetRelativeMouseMode(SDL_TRUE);
 	screenWidth = width;
 	screenHeight = height;
 	isRunning = true;
@@ -222,9 +222,10 @@ void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos, SDL_Color
 
 	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
 
-	// Frees surface and texture
+	// Frees resources 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
+	TTF_CloseFont(font); 
 }
 
 void Mildred::DisplayFPS() {

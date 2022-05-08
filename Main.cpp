@@ -14,8 +14,8 @@ int main(int argc, char* argv[]) {
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
-    GUI::CreateButton("Hei", 350, 100, 50, 50); 
-    GUI::CreateButton("Hello, world!", 350, 100, 450, 50);
+    GUI::CreateButton("knapp1", "Hei", 350, 100, 50, 50); 
+    GUI::CreateButton("knapp2", "Hello, world!", 350, 100, 450, 50);
     SDL_Color color = { 0, 255, 0 };
     // Begin game loop
     while (Mildred::isRunning)
@@ -25,46 +25,20 @@ int main(int argc, char* argv[]) {
         Mildred::HandleEvents(); 
         Mildred::SetRenderDrawColor(255, 255, 255, 255);
         Mildred::RenderClear();
-        //Mildred::DrawTempBackground();
         //Mildred::DrawMapBoundaries();
         //Mildred::CastRays(); 
         //Mildred::player->DrawPlayerOnMinimap();
         
         Mildred::DisplayText("Hello, world!", 18, 1700, 25, color);
         Mildred::DisplayFPS(); 
-        GUI::Render(); 
+        GUI::Render();
+        if (GUI::GetActivated() == "knapp24")
+            cout << "JAAAAA" << endl; 
+
         Mildred::RenderPresent(); 
     }
+   
+    // SDL_Delay(5000);
 
-
-    /*if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cout << "Failed to initialize the SDL2 library\n";
-        return -1;
-    }
-
-    SDL_Window* window = SDL_CreateWindow("SDL2 Window",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        680, 480,
-        0);
-
-    if (!window)
-    {
-        std::cout << "Failed to create window\n";
-        return -1;
-    }
-
-    SDL_Surface* window_surface = SDL_GetWindowSurface(window);
-
-    if (!window_surface)
-    {
-        std::cout << "Failed to get the surface from the window\n";
-        return -1;
-    }
-
-    SDL_UpdateWindowSurface(window);
-
-    SDL_Delay(5000);*/
 	return 0; 
 }

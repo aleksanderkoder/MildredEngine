@@ -10,10 +10,12 @@ class GUI
 		static SDL_Renderer* targetRenderer;
 		// Contains a bitmask for the mouse buttons, which can be tested using SDL_BUTTON(x)
 		static Uint32 mouseButtons;
+		static string activatedControlID;
 
 		static void SetRenderTarget(SDL_Renderer*);
-		static void CreateButton(string label, int width, int height, int x, int y);
+		static void CreateButton(string id, string label, int width, int height, int x, int y);
 		static void Render(); 
 		static bool OnButtonHover(Button* b);
+		static string GetActivated(); 
 };
 

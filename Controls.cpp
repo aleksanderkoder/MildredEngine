@@ -2,8 +2,8 @@
 
 typedef void (*myFunc)(); 
 
-Button::Button(string label, int width, int height, int x, int y) {
-	this->type = "button"; 
+Button::Button(string id, string label, int width, int height, int x, int y) {
+	this->id = id; 
 	this->label = label; 
 	this->width = width;
 	this->height = height;
@@ -15,10 +15,11 @@ Button::Button(string label, int width, int height, int x, int y) {
 	this->hoverColor = hc; 
 }
 
-void Button::AttachAction(ActionFunction& func) {
-	this->af = func;
-}
 
-void Button::InvokeAction() {
-	this->af();
-}
+//void Button::AttachAction(ActionFunction& func) {
+//	this->af = func;
+//}
+//
+//void Button::InvokeAction() {
+//	this->af();
+//}
