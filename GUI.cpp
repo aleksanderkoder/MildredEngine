@@ -6,6 +6,56 @@ Uint32 GUI::mouseButtons = NULL;
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
+	TTF_Init(); // Initilize SDL_ttf
+}
+
+void GUI::DisplayText(string msg, int fontSize, int xpos, int ypos, SDL_Color color) {
+	TTF_Font* font; // Declare a SDL_ttf font : font
+	// This opens a font style and sets a size
+	font = TTF_OpenFont("fonts/arial.ttf", fontSize);
+
+	// Create surface to render text on
+	SDL_Surface* surfaceMessage =
+		TTF_RenderText_Blended(font, msg.c_str(), color);
+
+	// Convert to texture
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
+
+	// Create a rectangle/shape of the message texture
+	SDL_Rect Message_rect;
+	Message_rect.x = xpos;
+	Message_rect.y = ypos;
+	Message_rect.w = surfaceMessage->w;
+	Message_rect.h = surfaceMessage->h;
+
+	SDL_RenderCopy(targetRenderer, Message, NULL, &Message_rect);
+
+	// Frees resources 
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+	TTF_CloseFont(font);
+}
+
+int* GUI::GetTextDimensions(string text, int fontSize) {
+	TTF_Font* font; // Declare a SDL_ttf font : font
+	// This opens a font style and sets a size
+	font = TTF_OpenFont("fonts/arial.ttf", fontSize);
+
+	// Text color
+	SDL_Color color = { 0, 0, 0 };
+
+	// Create surface to render text on
+	SDL_Surface* surfaceMessage =
+		TTF_RenderText_Blended(font, text.c_str(), color);
+
+	int dim[2];
+	dim[0] = surfaceMessage->w;
+	dim[1] = surfaceMessage->h;
+
+	SDL_FreeSurface(surfaceMessage);
+	TTF_CloseFont(font);
+
+	return dim; 
 }
 
 Button* GUI::CreateButton(string label, int width, int height, int x, int y) {
@@ -45,8 +95,10 @@ void GUI::Render() {
 
 		SDL_Color c = { 255, 255, 255 };
 
+		int* mesDim = GetTextDimensions(curr->label, 12); 
+
 		// Display button label
-		Mildred::DisplayText(curr->label, 12, curr->x + curr->width / 2 - 3 * curr->label.length(), curr->y + curr->height / 2 - 12, c);
+		DisplayText(curr->label, 12, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c);
 	}
 }
 

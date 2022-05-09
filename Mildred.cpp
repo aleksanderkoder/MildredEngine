@@ -197,37 +197,6 @@ void Mildred::HandleEvents() {
 	}
 }
 
-void Mildred::DisplayText(string msg, int txtSize, int xpos, int ypos, SDL_Color color) {
-	TTF_Font* font; // Declare a SDL_ttf font : font
-	TTF_Init(); // Initilize SDL_ttf
-	// This opens a font style and sets a size
-	font = TTF_OpenFont("fonts/arial.ttf", txtSize);
-
-	// Text color
-	//SDL_Color color = { 0, 255, 0 };
-
-	// Create surface to render text on
-	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, msg.c_str(), color);
-
-	// Convert to texture
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
-	// Create a rectangle/shape of the message texture
-	SDL_Rect Message_rect;
-	Message_rect.x = xpos;
-	Message_rect.y = ypos;
-	Message_rect.w = surfaceMessage->w;
-	Message_rect.h = surfaceMessage->h;
-
-	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
-	// Frees resources 
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
-	TTF_CloseFont(font); 
-}
-
 void Mildred::DisplayFPS() {
 	frameCount++;
 	Uint64 now = SDL_GetTicks64();
@@ -236,11 +205,11 @@ void Mildred::DisplayFPS() {
 
 		Uint64 fps = 1000 / (now - ticks);
 		prevFps = fps;
-		DisplayText("FPS: " + to_string(fps), 16, screenWidth - 100, 25, c);
+		GUI::DisplayText("FPS: " + to_string(fps), 16, screenWidth - 100, 25, c);
 		frameCount = 0;
 	}
 	else {
-		DisplayText("FPS: " + to_string(prevFps), 16, screenWidth - 100, 25, c);
+		GUI::DisplayText("FPS: " + to_string(prevFps), 16, screenWidth - 100, 25, c);
 	}
 	ticks = now;
 }

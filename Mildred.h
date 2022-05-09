@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <vector>
 #include "MapBoundary.h"
 #include "Player.h"
@@ -40,7 +39,6 @@ class Mildred {
 		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, string textureName); 
 		static void CastRays(); 
 		static void HandleEvents(); 
-		static void DisplayText(string msg, int txtSize, int xpos, int ypos, SDL_Color color);
 		static void DisplayFPS(); 
 		static void DrawTempBackground();
 };
