@@ -4,12 +4,9 @@
 
 using namespace std; 
 
-typedef void (*ActionFunction)();
-
 class Controls
 {
 	public:
-		string id; 
 		int width, height, x, y;
 };
 
@@ -18,7 +15,11 @@ class Button: public Controls {
 		string label;
 		SDL_Color color;  
 		SDL_Color hoverColor; 
-		ActionFunction af;
-		Button(string id, string label, int width, int height, int x, int y); 
+		Button(string label, int width, int height, int x, int y); 
+		void Bind(void (*fn)()); 
+		void Invoke(); 
+
+	private:
+		void (*onClickCallback)();
 };
 

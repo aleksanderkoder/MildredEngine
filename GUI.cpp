@@ -3,16 +3,15 @@
 vector<Button*>* GUI::buttons = new vector<Button*>(); 
 SDL_Renderer* GUI::targetRenderer;
 Uint32 GUI::mouseButtons = NULL; 
-string GUI::activatedControlID;
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 }
 
-void GUI::CreateButton(string id, string label, int width, int height, int x, int y) {
-	Button* b = new Button(id, label, width, height, x, y);
+Button* GUI::CreateButton(string label, int width, int height, int x, int y) {
+	Button* b = new Button(label, width, height, x, y);
 	buttons->push_back(b);
-
+	return b; 
 }
 
 void GUI::Render() {
@@ -30,7 +29,7 @@ void GUI::Render() {
 		// If mouse hovers over button and activates
 		if (OnButtonHover(curr) && mouseButtons == SDL_BUTTON(1)) {
 			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
-			activatedControlID = curr->id; 
+			curr->Invoke();
 		}
 		// If mouse hovers over
 		else if (OnButtonHover(curr)) {
@@ -65,10 +64,4 @@ bool GUI::OnButtonHover(Button* b) {
 			return true; 
 		}
 		return false; 
-}
-
-string GUI::GetActivated() {
-	string active = activatedControlID; 
-	activatedControlID = ""; 
-	return active; 
 }

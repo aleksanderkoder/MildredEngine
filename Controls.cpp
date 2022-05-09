@@ -1,9 +1,7 @@
 #include "Controls.h"
 
-typedef void (*myFunc)(); 
 
-Button::Button(string id, string label, int width, int height, int x, int y) {
-	this->id = id; 
+Button::Button(string label, int width, int height, int x, int y) {
 	this->label = label; 
 	this->width = width;
 	this->height = height;
@@ -16,10 +14,10 @@ Button::Button(string id, string label, int width, int height, int x, int y) {
 }
 
 
-//void Button::AttachAction(ActionFunction& func) {
-//	this->af = func;
-//}
-//
-//void Button::InvokeAction() {
-//	this->af();
-//}
+void Button::Bind(void (*fn)()) {
+	this->onClickCallback = fn;
+}
+void Button::Invoke() {
+	if (this->onClickCallback)
+		this->onClickCallback();
+}

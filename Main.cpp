@@ -1,6 +1,11 @@
 #include <iostream>
 #include "Mildred.h"
 
+void test() {
+    cout << "Hei fra test"; 
+    GUI::CreateButton("Hei", 350, 100, 650, 650);
+}
+
 int main(int argc, char* argv[]) {
 
     // Prepare engine settings 
@@ -14,9 +19,10 @@ int main(int argc, char* argv[]) {
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
-    GUI::CreateButton("knapp1", "Hei", 350, 100, 50, 50); 
-    GUI::CreateButton("knapp2", "Hello, world!", 350, 100, 450, 50);
+    Button* h = GUI::CreateButton("Hei", 350, 100, 50, 50); 
+    GUI::CreateButton("Hello, world!", 350, 100, 450, 50);
     SDL_Color color = { 0, 255, 0 };
+    h->Bind(test); 
     // Begin game loop
     while (Mildred::isRunning)
     {
@@ -32,8 +38,6 @@ int main(int argc, char* argv[]) {
         Mildred::DisplayText("Hello, world!", 18, 1700, 25, color);
         Mildred::DisplayFPS(); 
         GUI::Render();
-        if (GUI::GetActivated() == "knapp24")
-            cout << "JAAAAA" << endl; 
 
         Mildred::RenderPresent(); 
     }
