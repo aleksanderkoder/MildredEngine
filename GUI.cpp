@@ -3,20 +3,19 @@
 vector<Button*>* GUI::buttons = new vector<Button*>(); 
 SDL_Renderer* GUI::targetRenderer;
 Uint32 GUI::mouseButtons = NULL; 
+TTF_Font* GUI::currentFont;
+int GUI::fontSize = 12; 
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 	TTF_Init(); // Initilize SDL_ttf
 }
 
-void GUI::DisplayText(string msg, int fontSize, int xpos, int ypos, SDL_Color color) {
-	TTF_Font* font; // Declare a SDL_ttf font : font
-	// This opens a font style and sets a size
-	font = TTF_OpenFont("fonts/arial.ttf", fontSize);
+void GUI::DisplayText(string msg, int xpos, int ypos, SDL_Color color, int fontSize) {
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, msg.c_str(), color);
+		TTF_RenderText_Blended(currentFont, msg.c_str(), color);
 
 	// Convert to texture
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
@@ -33,28 +32,21 @@ void GUI::DisplayText(string msg, int fontSize, int xpos, int ypos, SDL_Color co
 	// Frees resources 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
-	TTF_CloseFont(font);
 }
 
 int* GUI::GetTextDimensions(string text, int fontSize) {
-	TTF_Font* font; // Declare a SDL_ttf font : font
-	// This opens a font style and sets a size
-	font = TTF_OpenFont("fonts/arial.ttf", fontSize);
-
 	// Text color
 	SDL_Color color = { 0, 0, 0 };
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, text.c_str(), color);
+		TTF_RenderText_Blended(currentFont, text.c_str(), color);
 
 	int dim[2];
 	dim[0] = surfaceMessage->w;
 	dim[1] = surfaceMessage->h;
 
 	SDL_FreeSurface(surfaceMessage);
-	TTF_CloseFont(font);
-
 	return dim; 
 }
 
@@ -98,7 +90,7 @@ void GUI::Render() {
 		int* mesDim = GetTextDimensions(curr->label, 12); 
 
 		// Display button label
-		DisplayText(curr->label, 12, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c);
+		DisplayText(curr->label, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c);
 	}
 }
 
@@ -116,4 +108,18 @@ bool GUI::OnButtonHover(Button* b) {
 			return true; 
 		}
 		return false; 
+}
+
+void GUI::SetFont(string fontUrl, int size) {
+	currentFont = TTF_OpenFont(fontUrl.c_str(), size);
+	if (!currentFont) {
+		string t = "Font error"; 
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t.c_str(), TTF_GetError(), NULL);
+		exit(0);
+	}
+	fontSize = size; 
+}
+
+void GUI::Init() {
+	TTF_Init(); 
 }

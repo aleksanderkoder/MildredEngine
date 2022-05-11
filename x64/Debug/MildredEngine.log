@@ -1,3 +1,5 @@
 ﻿  GUI.cpp
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(58): warning C4172: returning address of local variable or temporary: dim
+  Main.cpp
+  Generating Code...
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(50): warning C4172: returning address of local variable or temporary: dim
   MildredEngine.vcxproj -> C:\Users\neon1\Documents\MildredEngine\x64\Debug\MildredEngine.exe

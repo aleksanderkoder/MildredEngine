@@ -20,6 +20,8 @@ int main(int argc, char* argv[]) {
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
 
+    GUI::Init(); 
+    GUI::SetFont("fonts/OpenSans-Regular.ttf", 20); 
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
     Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250); 
@@ -39,7 +41,7 @@ int main(int argc, char* argv[]) {
         //Mildred::CastRays(); 
         //Mildred::player->DrawPlayerOnMinimap();
         
-        GUI::DisplayText("Mildred Engine", 45, 750, 50, color);
+        GUI::DisplayText("Mildred Engine", 750, 50, color, 45);
         Mildred::DisplayFPS(); 
         GUI::Render();
 
