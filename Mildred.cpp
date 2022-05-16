@@ -205,11 +205,11 @@ void Mildred::DisplayFPS() {
 
 		Uint64 fps = 1000 / (now - ticks);
 		prevFps = fps;
-		GUI::DisplayText("FPS: " + to_string(fps), screenWidth - 100, 25, c, 16);
+		GUI::CreateLabel("FPS: " + to_string(fps), screenWidth - 100, 25, c, 16);
 		frameCount = 0;
 	}
 	else {
-		GUI::DisplayText("FPS: " + to_string(prevFps), screenWidth - 100, 25, c, 16);
+		GUI::CreateLabel("FPS: " + to_string(prevFps), screenWidth - 100, 25, c, 16);
 	}
 	ticks = now;
 }

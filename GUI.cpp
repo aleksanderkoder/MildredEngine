@@ -11,7 +11,7 @@ void GUI::SetRenderTarget(SDL_Renderer* r) {
 	TTF_Init(); // Initilize SDL_ttf
 }
 
-void GUI::DisplayText(string msg, int xpos, int ypos, SDL_Color color, int fontSize) {
+void GUI::CreateLabel(string msg, int xpos, int ypos, SDL_Color color, int fontSize) {
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
@@ -90,7 +90,7 @@ void GUI::Render() {
 		int* mesDim = GetTextDimensions(curr->label, 12); 
 
 		// Display button label
-		DisplayText(curr->label, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c);
+		CreateLabel(curr->label, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c);
 	}
 }
 
@@ -113,8 +113,8 @@ bool GUI::OnButtonHover(Button* b) {
 void GUI::SetFont(string fontUrl, int size) {
 	currentFont = TTF_OpenFont(fontUrl.c_str(), size);
 	if (!currentFont) {
-		string t = "Font error"; 
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t.c_str(), TTF_GetError(), NULL);
+		char t[] = "Font error";
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
 	fontSize = size; 
@@ -122,4 +122,8 @@ void GUI::SetFont(string fontUrl, int size) {
 
 void GUI::Init() {
 	TTF_Init(); 
+
+	// Loads default font
+	char fUrl[] = "fonts/arial.ttf";
+	currentFont = TTF_OpenFont(fUrl, fontSize);
 }

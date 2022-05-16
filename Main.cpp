@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
         //Mildred::CastRays(); 
         //Mildred::player->DrawPlayerOnMinimap();
         
-        GUI::DisplayText("Mildred Engine", 750, 50, color, 45);
+        GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
         Mildred::DisplayFPS(); 
         GUI::Render();
 

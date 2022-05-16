@@ -15,7 +15,7 @@ class GUI
 		static int fontSize; 
 
 		static void SetRenderTarget(SDL_Renderer*);
-		static void DisplayText(string msg, int xpos, int ypos, SDL_Color color, int fontSize = GUI::fontSize);
+		static void CreateLabel(string msg, int xpos, int ypos, SDL_Color color, int fontSize = GUI::fontSize);
 		static int* GetTextDimensions(string text, int fontSize);
 		static Button* CreateButton(string label, int width, int height, int x, int y);
 		static void Render(); 
