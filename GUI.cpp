@@ -8,7 +8,6 @@ int GUI::fontSize = 12;
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
-	TTF_Init(); // Initilize SDL_ttf
 }
 
 void GUI::CreateLabel(string msg, int xpos, int ypos, SDL_Color color, int fontSize) {
@@ -121,7 +120,7 @@ void GUI::SetFont(string fontUrl, int size) {
 }
 
 void GUI::Init() {
-	TTF_Init(); 
+	TTF_Init();	// Initializes the SDL font library
 
 	// Loads default font
 	char fUrl[] = "fonts/arial.ttf";
