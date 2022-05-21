@@ -7,20 +7,33 @@
 class GUI
 {
 	public:
-		static vector<Button*>* buttons;
 		static SDL_Renderer* targetRenderer;
 		// Contains a bitmask for the mouse buttons, which can be tested using SDL_BUTTON(x)
-		static Uint32 mouseButtons;
-		static TTF_Font* currentFont; 
-		static int fontSize; 
+		// Needs seperate variables for each control to avoid overlapping issues on button press
+		static Uint32 mouseButtonsForButtons, mouseButtonsForTextboxes;
+		static string currentFont;
+
+		// Data related to buttons 
+		static vector<Button*>* buttons;
+
+		// Data related to textboxes 
+		static vector<Textbox*>* textboxes;
+		static Textbox* activeTextbox;
+
 
 		static void SetRenderTarget(SDL_Renderer*);
-		static void CreateLabel(string msg, int xpos, int ypos, SDL_Color color, int fontSize = GUI::fontSize);
-		static int* GetTextDimensions(string text, int fontSize);
-		static Button* CreateButton(string label, int width, int height, int x, int y);
+		static void CreateLabel(string msg, int xpos, int ypos, SDL_Color color, int fontSize = 12);
+		static int* GetTextDimensions(string text, TTF_Font* font);
+		static Button* CreateButton(string label, int width, int height, int x, int y, int fontSize = 12);
+		static void RenderButtons();
+		static void RenderTextboxes(); 
+		static void CaptureInputText();
 		static void Render(); 
 		static bool OnButtonHover(Button* b);
-		static void SetFont(string fontUrl, int size = GUI::fontSize);
+		static TTF_Font* OpenFont(string fontUrl, int size);
+		static void SetFont(string fontPath); 
 		static void Init(); 
+		static Textbox* CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize = 12);
+		static bool OnTextboxHover(Textbox* tb); 
 };
 

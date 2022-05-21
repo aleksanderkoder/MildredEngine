@@ -24,7 +24,7 @@ double* Calc::LineToLineCollision(double x1, double y1, double x2, double y2, do
         ctxUI.closePath();*/
 
         // Use these values to determine projection slice height
-        double arr[2];
+        static double arr[2];
         //double* arrayPointer = arr;
         arr[0] = intersectionX;
         arr[1] = intersectionY;

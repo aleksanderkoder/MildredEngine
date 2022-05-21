@@ -6,20 +6,26 @@ using namespace std;
 
 class Controls
 {
-	public:
-		int width, height, x, y;
+public:
+	int width, height, x, y, fontSize;
+	SDL_Color color, hoverColor;
+
 };
 
-class Button: public Controls {
+class Button : public Controls {
 	public:
 		string label;
-		SDL_Color color;  
-		SDL_Color hoverColor; 
-		Button(string label, int width, int height, int x, int y); 
+		Button(string label, int width, int height, int x, int y, int fontSize); 
 		void Bind(void (*fn)()); 
 		void Invoke(); 
 
 	private:
 		void (*onClickCallback)();
+};
+
+class Textbox : public Controls {
+	public:
+		string placeholder, value;
+		Textbox(string placeholder, int width, int height, int x, int y, int fontSize);
 };
 

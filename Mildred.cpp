@@ -191,7 +191,7 @@ void Mildred::HandleEvents() {
 		{
 		case SDL_QUIT:
 			Mildred::isRunning = false;
-			cout << "Quitting";
+			cout << "Quitting.";
 			break;
 		}
 	}

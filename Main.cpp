@@ -21,11 +21,17 @@ int main(int argc, char* argv[]) {
     Mildred::assetManager->PrintAllAssetInfo();
 
     GUI::Init(); 
-    GUI::SetFont("fonts/OpenSans-Regular.ttf", 20); 
+    GUI::SetFont("fonts/OpenSans-Regular.ttf"); 
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
-    Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250); 
-    GUI::CreateButton("Hello, world!", 350, 50, 450, 250);
+    Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45); 
+    GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
+    GUI::CreateTextbox("placeholder", 250, 50, 50, 750, 20);
+    GUI::CreateTextbox("en annen tb", 250, 50, 500, 750, 20);
+    GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20);
+    GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 16);
+    GUI::CreateTextbox("Hello, world!", 350, 50, 750, 450, 16);
+
     SDL_Color color = { 0, 0, 0 };
     h->Bind(test); 
 
@@ -42,7 +48,8 @@ int main(int argc, char* argv[]) {
         //Mildred::player->DrawPlayerOnMinimap();
         
         GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
-        Mildred::DisplayFPS(); 
+        GUI::CreateLabel("Textbox value test: " + (*GUI::textboxes)[0]->value, 600, 500, color, 24);
+        //Mildred::DisplayFPS(); 
         GUI::Render();
 
         Mildred::RenderPresent(); 
