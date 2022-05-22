@@ -149,8 +149,11 @@ void GUI::CaptureInputText() {
 	int nk;
 	const Uint8* keys = SDL_GetKeyboardState(&nk);
 	for (int i = 0; i < nk; i++) {
-		if (keys[i])
+		if (keys[i] && i >= 4 && i <= 26) {
 			activeTextbox->value += SDL_GetKeyFromScancode(SDL_Scancode(i));
+			cout << i << endl; 
+		}
+			
 	}
 	//SDL_Event e;
 	//while (SDL_PollEvent(&e))
