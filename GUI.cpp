@@ -3,9 +3,10 @@
 vector<Button*>* GUI::buttons = new vector<Button*>(); 
 vector<Textbox*>* GUI::textboxes = new vector<Textbox*>();
 SDL_Renderer* GUI::targetRenderer;
-Uint32 GUI::mouseButtonsForButtons = NULL, GUI::mouseButtonsForTextboxes = NULL;
+Uint32 GUI::mouseButtonsForButtons = NULL, GUI::mouseButtonsForTextboxes = NULL, GUI::delta; 
 string GUI::currentFont;
 Textbox* GUI::activeTextbox = NULL; 
+char GUI::lastPressed; 
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
@@ -124,9 +125,9 @@ void GUI::RenderTextboxes() {
 			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
 		}
 		// If mouse clicks outside textbox area
-		else if (!OnTextboxHover(curr) && mouseButtonsForTextboxes == SDL_BUTTON(1)) {
-			//activeTextbox = NULL; 
-		}
+		//else if (!OnTextboxHover(curr) && mouseButtonsForTextboxes == SDL_BUTTON(1)) {
+		//	//activeTextbox = NULL; 
+		//}
 		
 		// Draw textbox rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
@@ -147,28 +148,43 @@ void GUI::CaptureInputText() {
 	if (!activeTextbox) return; 
 
 	int nk;
+	char key = NULL; 
+	Uint32 now = SDL_GetTicks(); 
 	const Uint8* keys = SDL_GetKeyboardState(&nk);
-	for (int i = 0; i < nk; i++) {
-		if (keys[i] && i >= 4 && i <= 26) {
-			activeTextbox->value += SDL_GetKeyFromScancode(SDL_Scancode(i));
-			cout << i << endl; 
-		}
-			
+
+	if (keys[SDL_SCANCODE_BACKSPACE] && DeltaTimeHasPassed(120)) {
+		activeTextbox->value = activeTextbox->value.substr(0, activeTextbox->value.size() - 1);
+		UpdateDelta(now);
+		return; 
 	}
-	//SDL_Event e;
-	//while (SDL_PollEvent(&e))
-	//{
-	//	if (SDL_KEYDOWN) {
-	//		activeTextbox->value += e.key; 
-	//	}
-	//	/*if (e.type == SDL_TEXTINPUT || e.type == SDL_KEYDOWN) {
-	//		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_BACKSPACE && activeTextbox->value.length() > 0)
-	//			activeTextbox->value = activeTextbox->value.substr(0, activeTextbox->value.length() - 1);
-	//		else if (e.type == SDL_TEXTINPUT)
-	//			activeTextbox->value += e.text.text; 
-	//	}*/
-	//}
-	//cout << activeTextbox->value << endl;
+
+	for (int i = 0; i < nk; i++) {
+		if (keys[i]) {
+			if (i >= 4 && i <= 39 || i == 44) {
+				if (keys[SDL_SCANCODE_LSHIFT]) {
+					key = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i)));
+					//lastPressed = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i))); 
+				}
+				else {
+					key = SDL_GetKeyFromScancode(SDL_Scancode(i));
+					//lastPressed = SDL_GetKeyFromScancode(SDL_Scancode(i)); 
+				}
+			}
+		}
+	}
+	// If pressed key is not the same as last key, then just print immediately 
+	if (key != lastPressed && key) {
+		activeTextbox->value += key; 
+		lastPressed = key; 
+		UpdateDelta(now);
+	}
+	// If same key, check if enough time has passed since last key press. 
+	// If enough time has passed, print pressed key
+	else if (DeltaTimeHasPassed(200) && key) {
+		activeTextbox->value += key;
+		lastPressed = key;
+		UpdateDelta(now);
+	}
 }
 
 void GUI::Render() {
@@ -224,6 +240,8 @@ void GUI::SetFont(string fontPath) {
 
 void GUI::Init() {
 	TTF_Init();	// Initializes the SDL font library
+	
+	delta = SDL_GetTicks(); // Init milliseconds to be used for textbox input 
 
 	// Sets default font
 	currentFont = "fonts/arial.ttf";
@@ -233,4 +251,16 @@ Textbox* GUI::CreateTextbox(string placeholder, int width, int height, int x, in
 	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize);
 	textboxes->push_back(tb); 
 	return tb; 
+}
+
+bool GUI::DeltaTimeHasPassed(int ms) {
+	Uint32 now = SDL_GetTicks();
+	if (now - delta >= ms) {
+		return true;
+	}
+	return false; 
+}
+
+void GUI::UpdateDelta(Uint32 now) {
+	delta = now; 
 }

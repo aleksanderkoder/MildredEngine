@@ -8,7 +8,7 @@ Button::Button(string label, int width, int height, int x, int y, int fontSize) 
 	this->y = y; 
 	this->fontSize = fontSize;
 	SDL_Color c = { 0, 0, 0, 175 };
-	SDL_Color hc = { 150, 150, 150, 175 };
+	SDL_Color hc = { 25, 25, 25, 175 };
 	this->color = c;
 	this->hoverColor = hc; 
 }
@@ -30,7 +30,7 @@ Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fo
 	this->y = y;
 	this->fontSize = fontSize; 
 	SDL_Color c = { 0, 0, 0, 175 };
-	SDL_Color hc = { 75, 75, 75, 175 };
+	SDL_Color hc = { 25, 25, 25, 175 };
 	this->color = c;
 	this->hoverColor = hc;
 }

@@ -30,7 +30,6 @@ int main(int argc, char* argv[]) {
     GUI::CreateTextbox("en annen tb", 250, 50, 500, 750, 20);
     GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20);
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 16);
-    GUI::CreateTextbox("Hello, world!", 350, 50, 750, 450, 16);
 
     SDL_Color color = { 0, 0, 0 };
     h->Bind(test); 
@@ -40,16 +39,16 @@ int main(int argc, char* argv[]) {
     {
         // Runs every frame 
         Mildred::HandleUserInput();
-        Mildred::HandleEvents(); 
+        Mildred::HandleEvents();
         Mildred::SetRenderDrawColor(255, 255, 255, 255);
         Mildred::RenderClear();
-        //Mildred::DrawMapBoundaries();
-        //Mildred::CastRays(); 
-        //Mildred::player->DrawPlayerOnMinimap();
+        /*Mildred::DrawMapBoundaries();
+        Mildred::CastRays(); 
+        Mildred::player->DrawPlayerOnMinimap();*/
         
         GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
         GUI::CreateLabel("Textbox value test: " + (*GUI::textboxes)[0]->value, 600, 500, color, 24);
-        //Mildred::DisplayFPS(); 
+        Mildred::DisplayFPS(); 
         GUI::Render();
 
         Mildred::RenderPresent(); 
