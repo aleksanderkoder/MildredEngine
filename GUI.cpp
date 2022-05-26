@@ -3,10 +3,11 @@
 vector<Button*>* GUI::buttons = new vector<Button*>(); 
 vector<Textbox*>* GUI::textboxes = new vector<Textbox*>();
 SDL_Renderer* GUI::targetRenderer;
-Uint32 GUI::mouseButtonsForButtons = NULL, GUI::mouseButtonsForTextboxes = NULL, GUI::delta; 
+Uint32 GUI::delta; 
 string GUI::currentFont;
 Textbox* GUI::activeTextbox = NULL; 
-char GUI::lastPressed; 
+char GUI::lastPressedKey;
+bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false;
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
@@ -72,18 +73,23 @@ void GUI::RenderButtons() {
 		rect.x = curr->x;
 		rect.y = curr->y;
 
+		bool mHover = OnMouseHover(curr->x, curr->y, curr->width, curr->height);
+
 		// If mouse doesn't hover over button, default idle state
 		SDL_SetRenderDrawColor(targetRenderer, curr->color.r, curr->color.g, curr->color.b, curr->color.a);
 
 		// If mouse hovers over button and activates
-		if (OnButtonHover(curr) && mouseButtonsForButtons == SDL_BUTTON(1)) {
+		if (mHover && leftMouseButtonPressedState) {
 			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
 			curr->Invoke();
 			activeTextbox = NULL;
 		}
 		// If mouse hovers over
-		else if (OnButtonHover(curr)) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
+		else if (mHover) {
+			if (!leftMouseButtonPressedLastState)
+				SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
+			else 
+				SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
 		}
 
 		// Draw button rectangle
@@ -112,17 +118,22 @@ void GUI::RenderTextboxes() {
 		rect.x = curr->x;
 		rect.y = curr->y;
 
+		bool mHover = OnMouseHover(curr->x, curr->y, curr->width, curr->height);
+
 		// If mouse doesn't hover over textbox, default idle state
 		SDL_SetRenderDrawColor(targetRenderer, curr->color.r, curr->color.g, curr->color.b, curr->color.a);
 
 		// If mouse hovers over textbox and activates
-		if (OnTextboxHover(curr) && mouseButtonsForTextboxes == SDL_BUTTON(1)) {
+		if (mHover && leftMouseButtonPressedState) {
 			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
 			activeTextbox = curr; 
 		}
 		// If mouse hovers over
-		else if (OnTextboxHover(curr)) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
+		else if (mHover) {
+			if (!leftMouseButtonPressedLastState)
+				SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
+			else
+				SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
 		}
 		// If mouse clicks outside textbox area
 		//else if (!OnTextboxHover(curr) && mouseButtonsForTextboxes == SDL_BUTTON(1)) {
@@ -173,55 +184,51 @@ void GUI::CaptureInputText() {
 		}
 	}
 	// If pressed key is not the same as last key, then just print immediately 
-	if (key != lastPressed && key) {
+	if (key != lastPressedKey && key) {
 		activeTextbox->value += key; 
-		lastPressed = key; 
+		lastPressedKey = key;
 		UpdateDelta(now);
 	}
 	// If same key, check if enough time has passed since last key press. 
 	// If enough time has passed, print pressed key
 	else if (DeltaTimeHasPassed(200) && key) {
 		activeTextbox->value += key;
-		lastPressed = key;
+		lastPressedKey = key;
 		UpdateDelta(now);
 	}
 }
 
 void GUI::Render() {
+	UpdateMouseButtonState(); 
 	RenderTextboxes(); 
 	RenderButtons();
 }
 
-bool GUI::OnButtonHover(Button* b) {
+bool GUI::OnMouseHover(int x, int y, int width, int height) {
 	int mX = 0, mY = 0;
-	if (mouseButtonsForButtons == NULL) {
-		mouseButtonsForButtons = SDL_GetMouseState(&mX, &mY);
-	}
-	else {
-		mouseButtonsForButtons = NULL;
-	}
+	SDL_GetMouseState(&mX, &mY);
 
 	// If mouse hovers over button
-	if (mX >= b->x && mX <= b->x + b->width && mY >= b->y && mY <= b->y + b->height) {
-		return true; 
-	}
-	return false; 
-}
-
-bool GUI::OnTextboxHover(Textbox* tb) {
-	int mX = 0, mY = 0;
-	if (mouseButtonsForTextboxes == NULL) {
-		mouseButtonsForTextboxes = SDL_GetMouseState(&mX, &mY);
-	}
-	else {
-		mouseButtonsForTextboxes = NULL;
-	}
-
-	// If mouse hovers over button
-	if (mX >= tb->x && mX <= tb->x + tb->width && mY >= tb->y && mY <= tb->y + tb->height) {
+	if (mX >= x && mX <= x + width && mY >= y && mY <= y + height) {
 		return true;
 	}
 	return false;
+}
+
+void GUI::UpdateMouseButtonState() {
+	Uint32 mb = SDL_GetMouseState(NULL, NULL);
+	if (mb == SDL_BUTTON(1) && !leftMouseButtonPressedLastState) {
+		leftMouseButtonPressedLastState = true; 
+		leftMouseButtonPressedState = true; 
+	}
+	else if (mb == SDL_BUTTON(1) && leftMouseButtonPressedLastState) {
+		leftMouseButtonPressedState = false; 
+	}
+	else if (mb != SDL_BUTTON(1)) {
+		leftMouseButtonPressedLastState = false; 
+		leftMouseButtonPressedState = false;
+	}
+	
 }
 
 TTF_Font* GUI::OpenFont(string fontUrl, int size) {

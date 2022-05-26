@@ -24,22 +24,20 @@ class GUI
 		static void RenderTextboxes(); 
 		static void CaptureInputText();
 		static void Render(); 
-		static bool OnButtonHover(Button* b);
 		static void SetFont(string fontPath); 
 		static void Init(); 
 		static Textbox* CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize = 12);
-		static bool OnTextboxHover(Textbox* tb); 
 
 	private:
-		// Contains a bitmask for the mouse buttons, which can be tested using SDL_BUTTON(x)
-		// Needs seperate variables for each control to avoid overlapping issues on button press
-		static Uint32 mouseButtonsForButtons, mouseButtonsForTextboxes;
 		static Uint32 delta;
-		static char lastPressed; 
+		static char lastPressedKey; 
+		static bool leftMouseButtonPressedState, leftMouseButtonPressedLastState; 
 
 		static TTF_Font* OpenFont(string fontUrl, int size);
 		static int* GetTextDimensions(string text, TTF_Font* font);
 		static bool DeltaTimeHasPassed(int ms); 
 		static void UpdateDelta(Uint32 now); 
+		static bool OnMouseHover(int x, int y, int width, int height);
+		static void UpdateMouseButtonState(); 
 };
 
