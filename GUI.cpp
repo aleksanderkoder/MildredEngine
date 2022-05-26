@@ -142,15 +142,28 @@ void GUI::RenderTextboxes() {
 		
 		// Draw textbox rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
-
+		
 		SDL_Color c = { 255, 255, 255 };
-
 		TTF_Font* font = OpenFont(currentFont, curr->fontSize);
-		int* mesDim = GetTextDimensions(curr->placeholder, font);
 
-		// Display textbox label
-		CreateLabel(curr->placeholder, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
-		TTF_CloseFont(font);
+		// If textbox has a user entered value, show that value in textbox
+		if (curr->value.empty()) {
+			int* mesDim = GetTextDimensions(curr->placeholder, font);
+			
+			// Display textbox label
+			CreateLabel(curr->placeholder, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
+			TTF_CloseFont(font);
+		}
+		// If no value, show placeholder
+		else {
+			int* mesDim = GetTextDimensions(curr->value, font);
+
+			// Display textbox label
+			CreateLabel(curr->value, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
+			TTF_CloseFont(font);
+		}
+
+		
 	} 
 	CaptureInputText(); 
 }
@@ -174,11 +187,9 @@ void GUI::CaptureInputText() {
 			if (i >= 4 && i <= 39 || i == 44) {
 				if (keys[SDL_SCANCODE_LSHIFT]) {
 					key = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i)));
-					//lastPressed = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i))); 
 				}
 				else {
 					key = SDL_GetKeyFromScancode(SDL_Scancode(i));
-					//lastPressed = SDL_GetKeyFromScancode(SDL_Scancode(i)); 
 				}
 			}
 		}

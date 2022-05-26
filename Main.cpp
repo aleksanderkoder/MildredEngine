@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
         Mildred::player->DrawPlayerOnMinimap();*/
         
         GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
-        GUI::CreateLabel("Textbox value test: " + (*GUI::textboxes)[0]->value, 600, 500, color, 24);
+        //GUI::CreateLabel("Textbox value test: " + (*GUI::textboxes)[0]->value, 600, 500, color, 24);
         Mildred::DisplayFPS(); 
         GUI::Render();
 
