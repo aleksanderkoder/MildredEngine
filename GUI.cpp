@@ -2,32 +2,48 @@
 
 vector<Button*>* GUI::buttons = new vector<Button*>(); 
 vector<Textbox*>* GUI::textboxes = new vector<Textbox*>();
+vector<Label*>* GUI::labels = new vector<Label*>();
 SDL_Renderer* GUI::targetRenderer;
-Uint32 GUI::delta; 
+Uint32 GUI::delta, GUI::textboxCursorDelta;
 string GUI::currentFont;
 Textbox* GUI::activeTextbox = NULL; 
 char GUI::lastPressedKey;
-bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false;
+bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
+GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false;
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 }
 
-void GUI::CreateLabel(string msg, int xpos, int ypos, SDL_Color color, int fontSize) {
+Label* GUI::CreateLabel(string text, int x, int y, SDL_Color color, int fontSize) {
+	Label* lbl = new Label(text, x, y, color, fontSize);
+	labels->push_back(lbl);
+	return lbl;
+}
+
+void GUI::RenderLabels() {
+	for (int i = 0; i < labels->size(); i++) {
+		Label* curr = (*labels)[i];
+			
+		RenderLabel(curr->text, curr->x, curr->y, curr->color, curr->fontSize);
+	}
+}
+
+void GUI::RenderLabel(string text, int x, int y, SDL_Color color, int fontSize) {
 
 	TTF_Font* font = OpenFont(currentFont, fontSize);
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, msg.c_str(), color);
+		TTF_RenderText_Blended(font, text.c_str(), color);
 
 	// Convert to texture
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
 
 	// Create a rectangle/shape of the message texture
 	SDL_Rect Message_rect;
-	Message_rect.x = xpos;
-	Message_rect.y = ypos;
+	Message_rect.x = x;
+	Message_rect.y = y;
 	Message_rect.w = surfaceMessage->w;
 	Message_rect.h = surfaceMessage->h;
 
@@ -101,7 +117,7 @@ void GUI::RenderButtons() {
 		int* mesDim = GetTextDimensions(curr->label, font); 
 
 		// Display button label
-		CreateLabel(curr->label, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
+		RenderLabel(curr->label, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
 		TTF_CloseFont(font);
 	}
 }
@@ -125,45 +141,69 @@ void GUI::RenderTextboxes() {
 
 		// If mouse hovers over textbox and activates
 		if (mHover && leftMouseButtonPressedState) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
+			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
 			activeTextbox = curr; 
 		}
 		// If mouse hovers over
 		else if (mHover) {
-			if (!leftMouseButtonPressedLastState)
-				SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
-			else
-				SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a - 75);
+			SDL_SetRenderDrawColor(targetRenderer, curr->hoverColor.r, curr->hoverColor.g, curr->hoverColor.b, curr->hoverColor.a);
 		}
-		// If mouse clicks outside textbox area
-		//else if (!OnTextboxHover(curr) && mouseButtonsForTextboxes == SDL_BUTTON(1)) {
-		//	//activeTextbox = NULL; 
-		//}
 		
 		// Draw textbox rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
 		
-		SDL_Color c = { 255, 255, 255 };
 		TTF_Font* font = OpenFont(currentFont, curr->fontSize);
+		int* txtDim; 
+		int lblX, lblY; 
 
-		// If textbox has a user entered value, show that value in textbox
+		// If no value, show placeholder
 		if (curr->value.empty()) {
-			int* mesDim = GetTextDimensions(curr->placeholder, font);
+			SDL_Color c = { 255, 255, 255, 150 };
+			txtDim = GetTextDimensions(curr->placeholder, font);
+			lblX = curr->x + curr->width / 2 - txtDim[0] / 2;
+			lblY = curr->y + curr->height / 2 - txtDim[1] / 2;
 			
 			// Display textbox label
-			CreateLabel(curr->placeholder, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
+			RenderLabel(curr->placeholder, lblX, lblY, c, curr->fontSize);
 			TTF_CloseFont(font);
 		}
-		// If no value, show placeholder
+		// If textbox has a user entered value, show that value in textbox
 		else {
-			int* mesDim = GetTextDimensions(curr->value, font);
+			SDL_Color c = { 255, 255, 255 };
+			txtDim = GetTextDimensions(curr->value, font);
+			lblX = curr->x + curr->width / 2 - txtDim[0] / 2;
+			lblY = curr->y + curr->height / 2 - txtDim[1] / 2; 
 
 			// Display textbox label
-			CreateLabel(curr->value, curr->x + curr->width / 2 - mesDim[0] / 2, curr->y + curr->height / 2 - mesDim[1] / 2, c, curr->fontSize);
+			RenderLabel(curr->value, lblX, lblY, c, curr->fontSize);
 			TTF_CloseFont(font);
 		}
 
-		
+		// If there's an active textbox, toggle textbox cursor every second
+		if (activeTextbox) {
+			Uint32 now = SDL_GetTicks();
+			Uint32 cursorDelta = now - textboxCursorDelta;
+			if (cursorDelta > 1000) {
+				if (drawTextBoxCursor) {
+					drawTextBoxCursor = false;
+				}
+				else {
+					drawTextBoxCursor = true; 
+				}
+				textboxCursorDelta = now;
+			}
+		}
+
+		if (activeTextbox == curr && drawTextBoxCursor)
+		{
+			SDL_Rect rect;
+			rect.w = 2;
+			rect.h = curr->fontSize;
+			rect.x = lblX + txtDim[0];
+			rect.y = lblY + curr->fontSize / 4;
+			SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 255);
+			SDL_RenderFillRect(targetRenderer, &rect);
+		}
 	} 
 	CaptureInputText(); 
 }
@@ -171,29 +211,43 @@ void GUI::RenderTextboxes() {
 void GUI::CaptureInputText() {
 	if (!activeTextbox) return; 
 
-	int nk;
+	int nK;
 	char key = NULL; 
 	Uint32 now = SDL_GetTicks(); 
-	const Uint8* keys = SDL_GetKeyboardState(&nk);
+	const Uint8* keys = SDL_GetKeyboardState(&nK);
 
-	if (keys[SDL_SCANCODE_BACKSPACE] && DeltaTimeHasPassed(120)) {
+	// Enable capital letters if capslock is pressed
+	if (keys[SDL_SCANCODE_CAPSLOCK] && DeltaTimeHasPassed(300)) {
+		if (capsLockEnabled)
+			capsLockEnabled = false;
+		else
+			capsLockEnabled = true;
+		UpdateDelta(now); 
+	}
+
+	// Delete last character from input string if backspace is pressed
+	if (keys[SDL_SCANCODE_BACKSPACE] && DeltaTimeHasPassed(110)) {
 		activeTextbox->value = activeTextbox->value.substr(0, activeTextbox->value.size() - 1);
 		UpdateDelta(now);
 		return; 
 	}
 
-	for (int i = 0; i < nk; i++) {
+	for (int i = 0; i < nK; i++) {
 		if (keys[i]) {
-			if (i >= 4 && i <= 39 || i == 44) {
-				if (keys[SDL_SCANCODE_LSHIFT]) {
+			if (ValidKey(i)) {
+				if (keys[SDL_SCANCODE_LSHIFT] || capsLockEnabled) {
 					key = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i)));
 				}
 				else {
 					key = SDL_GetKeyFromScancode(SDL_Scancode(i));
 				}
+				// Reset textbox cursor on key input
+				textboxCursorDelta = now;
+				drawTextBoxCursor = true; 
 			}
 		}
 	}
+
 	// If pressed key is not the same as last key, then just print immediately 
 	if (key != lastPressedKey && key) {
 		activeTextbox->value += key; 
@@ -209,10 +263,19 @@ void GUI::CaptureInputText() {
 	}
 }
 
+bool GUI::ValidKey(int key) {
+	// Determines what keys are considered valid (valid as in printable)
+	if (key >= 4 && key <= 39 || key >= 44 && key <= 49 || key >= 54 && key <= 56) {
+		return true;
+	}
+	return false;
+}
+
 void GUI::Render() {
 	UpdateMouseButtonState(); 
 	RenderTextboxes(); 
 	RenderButtons();
+	RenderLabels();
 }
 
 bool GUI::OnMouseHover(int x, int y, int width, int height) {
@@ -260,6 +323,7 @@ void GUI::Init() {
 	TTF_Init();	// Initializes the SDL font library
 	
 	delta = SDL_GetTicks(); // Init milliseconds to be used for textbox input 
+	textboxCursorDelta = SDL_GetTicks(); // Init milliseconds to be used for textbox cursor blinking 
 
 	// Sets default font
 	currentFont = "fonts/arial.ttf";

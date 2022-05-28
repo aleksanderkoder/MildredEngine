@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
     Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45); 
     GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
-    GUI::CreateTextbox("placeholder", 250, 50, 50, 750, 20);
+    GUI::CreateTextbox("Full name", 250, 50, 50, 750, 20);
     GUI::CreateTextbox("en annen tb", 250, 50, 500, 750, 20);
     GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20);
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 16);
@@ -34,10 +34,11 @@ int main(int argc, char* argv[]) {
     SDL_Color color = { 0, 0, 0 };
     h->Bind(test); 
 
-    // Begin game loop
+    GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
+
+    // Begin game loop, runs every frame
     while (Mildred::isRunning)
     {
-        // Runs every frame 
         Mildred::HandleUserInput();
         Mildred::HandleEvents();
         Mildred::SetRenderDrawColor(255, 255, 255, 255);
@@ -46,11 +47,8 @@ int main(int argc, char* argv[]) {
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();*/
         
-        GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
-        //GUI::CreateLabel("Textbox value test: " + (*GUI::textboxes)[0]->value, 600, 500, color, 24);
         Mildred::DisplayFPS(); 
         GUI::Render();
-
         Mildred::RenderPresent(); 
     }
    

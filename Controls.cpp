@@ -34,3 +34,11 @@ Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fo
 	this->color = c;
 	this->hoverColor = hc;
 }
+
+Label::Label(string text, int x, int y, SDL_Color color, int fontSize) {
+	this->text = text; 
+	this->x = x;
+	this->y = y;
+	this->color = color; 
+	this->fontSize = fontSize; 
+}

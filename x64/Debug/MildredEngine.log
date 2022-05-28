@@ -1,5 +1,3 @@
 ﻿  GUI.cpp
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(276,18): warning C4018: '>=': signed/unsigned mismatch
-  Main.cpp
-  Generating Code...
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(340,18): warning C4018: '>=': signed/unsigned mismatch
   MildredEngine.vcxproj -> C:\Users\neon1\Documents\MildredEngine\x64\Debug\MildredEngine.exe
