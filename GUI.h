@@ -22,16 +22,12 @@ class GUI
 
 		static void SetRenderTarget(SDL_Renderer*);
 		static Label* CreateLabel(string text, int x, int y, SDL_Color color, int fontSize = 12);
-		static void RenderLabel(string text, int x, int y, SDL_Color color, int fontSize = 12);
 		static Button* CreateButton(string label, int width, int height, int x, int y, int fontSize = 12);
-		static void RenderButtons();
-		static void RenderTextboxes(); 
-		static void RenderLabels();
-		static void CaptureInputText();
-		static void Render(); 
-		static void SetFont(string fontPath); 
-		static void Init(); 
 		static Textbox* CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize = 12);
+		static void RenderLabel(string text, int x, int y, SDL_Color color, int fontSize = 12);
+		static void Render();
+		static void SetFont(string fontPath);
+		static void Init();
 
 	private:
 		static Uint32 delta, textboxCursorDelta;
@@ -46,5 +42,9 @@ class GUI
 		static bool OnMouseHover(int x, int y, int width, int height);
 		static void UpdateMouseButtonState(); 
 		static bool ValidKey(int key); 
+		static void CaptureInputText();
+		static void RenderButtons();
+		static void RenderTextboxes();
+		static void RenderLabels();
 };
 
