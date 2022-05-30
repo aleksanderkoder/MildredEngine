@@ -38,6 +38,7 @@ class Button : public Controls {
 		void SetHoverColor(SDL_Color* color);
 		void SetWidth(int width);
 		void SetHeight(int height);
+		void SetDimensions(int width, int height);
 
 		void Bind(void (*fn)()); 
 		void Invoke(); 
@@ -65,6 +66,7 @@ class Textbox : public Controls {
 		void SetValue(string value); 
 		void SetWidth(int width);
 		void SetHeight(int height);
+		void SetDimensions(int width, int height); 
 		void SetHoverColor(SDL_Color* color);
 
 	private:

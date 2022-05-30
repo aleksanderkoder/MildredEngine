@@ -74,6 +74,11 @@ void Button::SetHeight(int height) {
 	this->height = height; 
 }
 
+void Button::SetDimensions(int width, int height) {
+	this->width = width;
+	this->height = height;
+}
+
 void Button::Bind(void (*fn)()) {
 	this->onClickCallback = fn;
 }
@@ -131,6 +136,11 @@ void Textbox::SetWidth(int width) {
 }
 
 void Textbox::SetHeight(int height) {
+	this->height = height; 
+}
+
+void Textbox::SetDimensions(int width, int height) {
+	this->width = width; 
 	this->height = height; 
 }
 
