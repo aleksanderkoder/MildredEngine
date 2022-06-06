@@ -34,7 +34,8 @@ int main(int argc, char* argv[]) {
     SDL_Color color = { 0, 0, 0 };
     h->Bind(test); 
 
-    GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
+    Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
+    //l->SetColor(&color); 
 
     // Begin game loop, runs every frame
     while (Mildred::isRunning)

@@ -184,12 +184,7 @@ void GUI::RenderTextboxes() {
 			Uint32 now = SDL_GetTicks();
 			Uint32 cursorDelta = now - textboxCursorDelta;
 			if (cursorDelta > 750) {
-				if (drawTextBoxCursor) {
-					drawTextBoxCursor = false;
-				}
-				else {
-					drawTextBoxCursor = true; 
-				}
+				drawTextBoxCursor = !drawTextBoxCursor; 
 				textboxCursorDelta = now;
 			}
 		}
