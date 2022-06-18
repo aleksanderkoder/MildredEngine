@@ -28,14 +28,13 @@ int main(int argc, char* argv[]) {
     GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
     GUI::CreateTextbox("Full name", 250, 50, 50, 750, 20);
     GUI::CreateTextbox("en annen tb", 250, 50, 500, 750, 20);
-    GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20);
+    Textbox* t = GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20);
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 16);
 
     SDL_Color color = { 0, 0, 0 };
     h->Bind(test); 
 
     Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
-    //l->SetColor(&color); 
 
     // Begin game loop, runs every frame
     while (Mildred::isRunning)

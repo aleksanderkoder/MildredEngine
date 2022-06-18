@@ -88,7 +88,5 @@ class Label : public Controls {
 
 	private:
 		string text;
-		SDL_Color color;
-
 };
 

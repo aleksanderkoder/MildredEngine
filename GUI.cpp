@@ -96,8 +96,8 @@ void GUI::RenderButtons() {
 
 		// If mouse hovers over button and activates
 		if (mHover && leftMouseButtonPressedState) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
 			curr->Invoke();
+			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
 			activeTextbox = NULL;
 		}
 		// If mouse hovers over
