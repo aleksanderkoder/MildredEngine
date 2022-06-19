@@ -37,6 +37,7 @@ class GUI
 
 		static TTF_Font* OpenFont(string fontUrl, int size);
 		static int* GetTextDimensions(string text, TTF_Font* font);
+		// TODO: Get rid of the 2 funtions below, as they are kinda pointless and add to confusion
 		static bool DeltaTimeHasPassed(int ms); 
 		static void UpdateDelta(Uint32 now); 
 		static bool OnMouseHover(int x, int y, int width, int height);
