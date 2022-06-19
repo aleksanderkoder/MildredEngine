@@ -55,7 +55,7 @@ void GUI::RenderLabel(string text, int x, int y, SDL_Color color, int fontSize) 
 	TTF_CloseFont(font); 
 }
 
-int* GUI::GetTextDimensions(string text, TTF_Font* font) {
+tuple<int, int> GUI::GetTextDimensions(string text, TTF_Font* font) {
 	// Text color
 	SDL_Color color = { 0, 0, 0 };
 
@@ -63,9 +63,7 @@ int* GUI::GetTextDimensions(string text, TTF_Font* font) {
 	SDL_Surface* surfaceMessage =
 		TTF_RenderText_Blended(font, text.c_str(), color);
 
-	static int dim[2];
-	dim[0] = surfaceMessage->w;
-	dim[1] = surfaceMessage->h;
+	tuple<int, int> dim(surfaceMessage->w, surfaceMessage->h);
 
 	SDL_FreeSurface(surfaceMessage);
 	return dim; 
@@ -112,12 +110,11 @@ void GUI::RenderButtons() {
 		SDL_RenderFillRect(targetRenderer, &rect);
 
 		SDL_Color c = { 255, 255, 255 };
-
 		TTF_Font* font = OpenFont(currentFont, curr->GetFontSize()); 
-		int* mesDim = GetTextDimensions(curr->GetLabel(), font);
+		tuple<int, int> mesDim = GetTextDimensions(curr->GetLabel(), font);
 
 		// Display button label
-		RenderLabel(curr->GetLabel(), curr->GetX() + curr->GetWidth() / 2 - mesDim[0] / 2, curr->GetY() + curr->GetHeight() / 2 - mesDim[1] / 2, c, curr->GetFontSize());
+		RenderLabel(curr->GetLabel(), curr->GetX() + curr->GetWidth() / 2 - get<0>(mesDim) / 2, curr->GetY() + curr->GetHeight() / 2 - get<1>(mesDim) / 2, c, curr->GetFontSize());
 		TTF_CloseFont(font);
 	}
 }
@@ -153,15 +150,15 @@ void GUI::RenderTextboxes() {
 		SDL_RenderFillRect(targetRenderer, &rect);
 		
 		TTF_Font* font = OpenFont(currentFont, curr->GetFontSize());
-		int* txtDim; 
+		tuple<int, int> txtDim; 
 		int lblX, lblY; 
 
 		// If no value, show placeholder
 		if (curr->GetValue().empty()) {
 			SDL_Color c = { 255, 255, 255, 150 };
 			txtDim = GetTextDimensions(curr->GetPlaceholder(), font);
-			lblX = curr->GetX() + curr->GetWidth() / 2 - txtDim[0] / 2;
-			lblY = curr->GetY() + curr->GetHeight() / 2 - txtDim[1] / 2;
+			lblX = curr->GetX() + curr->GetWidth() / 2 - get<0>(txtDim) / 2;
+			lblY = curr->GetY() + curr->GetHeight() / 2 - get<1>(txtDim) / 2;
 			
 			// Display textbox label
 			RenderLabel(curr->GetPlaceholder(), lblX, lblY, c, curr->GetFontSize());
@@ -171,15 +168,15 @@ void GUI::RenderTextboxes() {
 		else {
 			SDL_Color c = { 255, 255, 255 };
 			txtDim = GetTextDimensions(curr->GetValue(), font);
-			lblX = curr->GetX() + curr->GetWidth() / 2 - txtDim[0] / 2;
-			lblY = curr->GetY() + curr->GetHeight() / 2 - txtDim[1] / 2;
+			lblX = curr->GetX() + curr->GetWidth() / 2 - get<0>(txtDim) / 2;
+			lblY = curr->GetY() + curr->GetHeight() / 2 - get<1>(txtDim) / 2;
 
 			// Display textbox label
 			RenderLabel(curr->GetValue(), lblX, lblY, c, curr->GetFontSize());
 			TTF_CloseFont(font);
 		}
 
-		// If there's an active textbox, toggle textbox cursor every second
+		// If there's an active textbox, toggle textbox cursor every 750 millisecond
 		if (activeTextbox) {
 			Uint32 now = SDL_GetTicks();
 			Uint32 cursorDelta = now - textboxCursorDelta;
@@ -194,17 +191,18 @@ void GUI::RenderTextboxes() {
 			SDL_Rect cursorRect;
 			cursorRect.w = 2;
 			cursorRect.h = curr->GetFontSize();
-			cursorRect.x = lblX + txtDim[0];
+			cursorRect.x = lblX + get<0>(txtDim); 
 			cursorRect.y = lblY + curr->GetFontSize() / 4;
 			SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 255);
 			SDL_RenderFillRect(targetRenderer, &cursorRect);
 		}
+		CaptureInputText(); 
 	} 
-	CaptureInputText(); 
 }
 
 void GUI::CaptureInputText() {
 	if (!activeTextbox) return; 
+
 
 	int nK;
 	char key = NULL; 
@@ -227,6 +225,9 @@ void GUI::CaptureInputText() {
 		UpdateDelta(now);
 		return; 
 	}
+
+	// If character limit has been reached, jump out 
+	if (activeTextbox->GetValue().length() >= activeTextbox->GetCharLimit()) return;
 
 	for (int i = 0; i < nK; i++) {
 		if (keys[i]) {
@@ -325,8 +326,8 @@ void GUI::Init() {
 	currentFont = "fonts/arial.ttf";
 }
 
-Textbox* GUI::CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize) {
-	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize);
+Textbox* GUI::CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize, int limit) {
+	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit);
 	textboxes->push_back(tb); 
 	return tb; 
 }

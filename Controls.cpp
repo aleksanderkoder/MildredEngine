@@ -90,7 +90,7 @@ void Button::Invoke() {
 
 // TEXTBOX
 
-Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fontSize) {
+Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fontSize, int limit) {
 	this->placeholder = placeholder;
 	this->width = width;
 	this->height = height;
@@ -100,6 +100,7 @@ Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fo
 	SDL_Color c = { 0, 0, 0, 175 };
 	SDL_Color hc = { 25, 25, 25, 175 };
 	this->color = c;
+	this->charLimit = limit; 
 	this->hoverColor = hc;
 }
 
@@ -121,6 +122,10 @@ int Textbox::GetHeight() {
 
 SDL_Color Textbox::GetHoverColor() {
 	return this->hoverColor;
+}
+
+int Textbox::GetCharLimit() {
+	return this->charLimit; 
 }
 
 void Textbox::SetPlaceholder(string placeholder) {
@@ -146,6 +151,10 @@ void Textbox::SetDimensions(int width, int height) {
 
 void Textbox::SetHoverColor(SDL_Color* color) {
 	this->hoverColor = *color; 
+}
+
+void Textbox::SetCharLimit(int limit) {
+	this->charLimit = limit; 
 }
 
 // LABEL

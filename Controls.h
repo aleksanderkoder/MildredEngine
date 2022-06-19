@@ -52,13 +52,14 @@ class Button : public Controls {
 
 class Textbox : public Controls {
 	public:
-		Textbox(string placeholder, int width, int height, int x, int y, int fontSize = 12);
+		Textbox(string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25);
 
 		// GET functions 
 		string GetPlaceholder();
 		string GetValue(); 
 		int GetWidth();
 		int GetHeight();
+		int GetCharLimit(); 
 		SDL_Color GetHoverColor(); 
 
 		// SET functions 
@@ -66,12 +67,13 @@ class Textbox : public Controls {
 		void SetValue(string value); 
 		void SetWidth(int width);
 		void SetHeight(int height);
-		void SetDimensions(int width, int height); 
+		void SetDimensions(int width, int height);
+		void SetCharLimit(int limit); 
 		void SetHoverColor(SDL_Color* color);
 
 	private:
 		string placeholder, value;
-		int width, height;
+		int width, height, charLimit; 
 		SDL_Color hoverColor;
 
 };

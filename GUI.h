@@ -3,6 +3,7 @@
 #include "Mildred.h"
 #include "Controls.h"
 #include <SDL_ttf.h>
+#include <tuple>
 
 class GUI
 {
@@ -23,7 +24,7 @@ class GUI
 		static void SetRenderTarget(SDL_Renderer*);
 		static Label* CreateLabel(string text, int x, int y, SDL_Color color, int fontSize = 12);
 		static Button* CreateButton(string label, int width, int height, int x, int y, int fontSize = 12);
-		static Textbox* CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize = 12);
+		static Textbox* CreateTextbox(string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25);
 		static void RenderLabel(string text, int x, int y, SDL_Color color, int fontSize = 12);
 		static void Render();
 		static void SetFont(string fontPath);
@@ -36,7 +37,7 @@ class GUI
 			drawTextBoxCursor, capsLockEnabled; 
 
 		static TTF_Font* OpenFont(string fontUrl, int size);
-		static int* GetTextDimensions(string text, TTF_Font* font);
+		static tuple<int, int> GetTextDimensions(string text, TTF_Font* font);
 		// TODO: Get rid of the 2 funtions below, as they are kinda pointless and add to confusion
 		static bool DeltaTimeHasPassed(int ms); 
 		static void UpdateDelta(Uint32 now); 
