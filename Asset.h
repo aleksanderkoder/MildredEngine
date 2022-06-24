@@ -2,15 +2,13 @@
 #include <string>
 #include <SDL.h>
 
-using namespace std;
-
 class Asset
 {
-public:
-	string name;
-	string type;
-	string url;
-	SDL_Texture* tex; 
-	Asset(string name, string type, string url);
+	public:
+		std::string name;
+		std::string type;
+		std::string url;
+		SDL_Texture* tex; 
+		Asset(std::string name, std::string type, std::string url);
 };
 

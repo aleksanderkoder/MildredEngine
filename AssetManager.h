@@ -5,16 +5,14 @@
 #include <vector>
 #include "Asset.h"
 
-using namespace std;
-
 class AssetManager
 {
-public:
-	vector<Asset>* assets; 
-	AssetManager(); 
-	void CreateAsset(string name, string type, string url);
-	void LoadTexture(Asset& a); 
-	SDL_Texture* GetTextureByName(string name); 
-	void PrintAllAssetInfo();
+	public:
+		std::vector<Asset>* assets;
+		AssetManager(); 
+		void CreateAsset(std::string name, std::string type, std::string url);
+		void LoadTexture(Asset& a); 
+		SDL_Texture* GetTextureByName(std::string name);
+		void PrintAllAssetInfo();
 };
 

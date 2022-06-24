@@ -2,10 +2,10 @@
 #include "Mildred.h"
 
 AssetManager::AssetManager() {
-	AssetManager::assets = new vector<Asset>(); 
+	AssetManager::assets = new std::vector<Asset>();
 }
 
-void AssetManager::CreateAsset(string name, string type, string url) {
+void AssetManager::CreateAsset(std::string name, std::string type, std::string url) {
 	Asset a(name, type, url);
 	LoadTexture(a);
 	assets->push_back(a);
@@ -16,21 +16,21 @@ void AssetManager::LoadTexture(Asset& a) {
 		const char* u = a.url.c_str();
 		SDL_Surface* image = SDL_LoadBMP(u);
 		if (!image) {
-			cout << SDL_GetError() << endl;
+			std::cout << SDL_GetError() << std::endl;
 			return; 
 		}
 		a.tex = SDL_CreateTextureFromSurface(Mildred::GetRenderer(), image);
 		SDL_FreeSurface(image);
 		image = NULL;
-		cout << "Texture: " << a.name << " has been loaded!" << endl;
+		std::cout << "Texture: " << a.name << " has been loaded!" << std::endl;
 	}
 	else {
-		cout << "Texture: " << a.name << " has already been loaded!" << endl; 
+		std::cout << "Texture: " << a.name << " has already been loaded!" << std::endl;
 
 	}
 }
 
-SDL_Texture* AssetManager::GetTextureByName(string name) {
+SDL_Texture* AssetManager::GetTextureByName(std::string name) {
 	for (int i = 0; i < assets->size(); i++) {
 		if ((*assets)[i].name == name) {
 			return (*assets)[i].tex; 
@@ -42,12 +42,12 @@ SDL_Texture* AssetManager::GetTextureByName(string name) {
 void AssetManager::PrintAllAssetInfo() {
 	for (int i = 0; i < assets->size(); i++) {
 		Asset a = (*assets)[i]; 
-		cout << "Asset " << i + 1 << ":" << endl << a.name << endl << a.type << endl << a.url << endl;
+		std::cout << "Asset " << i + 1 << ":" << std::endl << a.name << std::endl << a.type << std::endl << a.url << std::endl;
 		if (a.tex) {
-			cout << "Texture set!" << endl;
+			std::cout << "Texture set!" << std::endl;
 		}
 		else {
-			cout << "Texture not set!" << endl;
+			std::cout << "Texture not set!" << std::endl;
 		}
 	}
 }

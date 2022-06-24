@@ -2,7 +2,7 @@
 #include "Mildred.h"
 
 void test() {
-    cout << "Hei fra test"; 
+    std::cout << "Hei fra test";
 }
 
 int main(int argc, char* argv[]) {

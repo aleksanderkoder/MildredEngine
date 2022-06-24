@@ -7,7 +7,7 @@ SDL_Renderer* Mildred::renderer;
 SDL_Window* Mildred::window;
 int Mildred::screenWidth, Mildred::screenHeight, Mildred::fieldOfView = 60, Mildred::viewDistance = 500, 
 Mildred::frameCount; 
-vector<MapBoundary>* Mildred::mapBoundaries = new vector<MapBoundary>();
+std::vector<MapBoundary>* Mildred::mapBoundaries = new std::vector<MapBoundary>();
 AssetManager* Mildred::assetManager = new AssetManager();
 bool Mildred::isRunning;
 Player* Mildred::player = new Player(250, 250, 30, 270, 3);
@@ -16,11 +16,11 @@ int test = 0;
 
 void Mildred::Init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		cout << "There was an error initilizing SDL: " << SDL_GetError() << endl;
+		std::cout << "There was an error initilizing SDL: " << SDL_GetError() << std::endl;
 	}
 	ticks = SDL_GetTicks64();	// Get store ticks since start for FPS counting
 }
-void Mildred::CreateWindow(string title, int width, int height) {
+void Mildred::CreateWindow(std::string title, int width, int height) {
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		width, height, SDL_WINDOW_SHOWN);
 
@@ -29,7 +29,7 @@ void Mildred::CreateWindow(string title, int width, int height) {
 	// Check what graphics backend is used 
 	SDL_RendererInfo info;
 	SDL_GetRendererInfo(renderer, &info);
-	cout << "Graphics API: " << info.name << endl;
+	std::cout << "Graphics API: " << info.name << std::endl;
 
 	// Captures mouse to window
 	//SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -66,7 +66,7 @@ void Mildred::DrawRect(int width, int height, int x, int y) {
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void Mildred::CreateMapBoundary(int x, int y, int endX, int endY, string textureName) {
+void Mildred::CreateMapBoundary(int x, int y, int endX, int endY, std::string textureName) {
 	MapBoundary ml(x, y, endX, endY, textureName);
 	mapBoundaries->push_back(ml);
 }
@@ -105,7 +105,7 @@ void Mildred::HandleUserInput() {
 	player->AdjustAngle(&mX, &mY);
 }
 
-void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, double angleRad, int lineLength, int lineStartX, int lineStartY, string textureName) {
+void Mildred::RenderWallSlice(double* lineCollisionPointer, int drawPoint, double angleRad, int lineLength, int lineStartX, int lineStartY, std::string textureName) {
 	// If the ray has hit a wall
 	if (lineCollisionPointer) {
 		double collisionDistance = Calc::GetDistance(player->posXCentered, player->posYCentered, lineCollisionPointer[0], lineCollisionPointer[1]);
@@ -191,7 +191,7 @@ void Mildred::HandleEvents() {
 		{
 		case SDL_QUIT:
 			Mildred::isRunning = false;
-			cout << "Quitting.";
+			std::cout << "Quitting.";
 			break;
 		}
 	}
@@ -205,11 +205,11 @@ void Mildred::DisplayFPS() {
 
 		Uint64 fps = 1000 / (now - ticks);
 		prevFps = fps;
-		GUI::RenderLabel("FPS: " + to_string(fps), screenWidth - 100, 25, c, 16);
+		GUI::RenderLabel("FPS: " + std::to_string(fps), screenWidth - 100, 25, c, 16);
 		frameCount = 0;
 	}
 	else {
-		GUI::RenderLabel("FPS: " + to_string(prevFps), screenWidth - 100, 25, c, 16);
+		GUI::RenderLabel("FPS: " + std::to_string(prevFps), screenWidth - 100, 25, c, 16);
 	}
 	ticks = now;
 }

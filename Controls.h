@@ -2,8 +2,6 @@
 #include <string>
 #include "SDL.h"
 
-using namespace std; 
-
 class Controls
 {
 	protected:
@@ -25,16 +23,16 @@ class Controls
 
 class Button : public Controls {
 	public:
-		Button(string label, int width, int height, int x, int y, int fontSize = 12); 
+		Button(std::string label, int width, int height, int x, int y, int fontSize = 12);
 
 		// GET functions 
-		string GetLabel();
+		std::string GetLabel();
 		SDL_Color GetHoverColor(); 
 		int GetWidth();
 		int GetHeight();
 
 		// SET functions 
-		void SetLabel(string label);
+		void SetLabel(std::string label);
 		void SetHoverColor(SDL_Color* color);
 		void SetWidth(int width);
 		void SetHeight(int height);
@@ -44,7 +42,7 @@ class Button : public Controls {
 		void Invoke(); 
 
 	private:
-		string label;
+		std::string label;
 		SDL_Color hoverColor;
 		int width, height;
 		void (*onClickCallback)();
@@ -52,19 +50,19 @@ class Button : public Controls {
 
 class Textbox : public Controls {
 	public:
-		Textbox(string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25);
+		Textbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25);
 
 		// GET functions 
-		string GetPlaceholder();
-		string GetValue(); 
+		std::string GetPlaceholder();
+		std::string GetValue();
 		int GetWidth();
 		int GetHeight();
 		int GetCharLimit(); 
 		SDL_Color GetHoverColor(); 
 
 		// SET functions 
-		void SetPlaceholder(string placeholder);
-		void SetValue(string value); 
+		void SetPlaceholder(std::string placeholder);
+		void SetValue(std::string value);
 		void SetWidth(int width);
 		void SetHeight(int height);
 		void SetDimensions(int width, int height);
@@ -72,7 +70,7 @@ class Textbox : public Controls {
 		void SetHoverColor(SDL_Color* color);
 
 	private:
-		string placeholder, value;
+		std::string placeholder, value;
 		int width, height, charLimit; 
 		SDL_Color hoverColor;
 
@@ -80,15 +78,15 @@ class Textbox : public Controls {
 
 class Label : public Controls {
 	public:
-		Label(string text, int x, int y, SDL_Color color, int fontSize = 12);
+		Label(std::string text, int x, int y, SDL_Color color, int fontSize = 12);
 
 		// GET functions 
-		string GetText();
+		std::string GetText();
 
 		// SET functions 
-		void SetText(string text); 
+		void SetText(std::string text);
 
 	private:
-		string text;
+		std::string text;
 };
 

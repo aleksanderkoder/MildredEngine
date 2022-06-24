@@ -29,7 +29,7 @@ void Controls::SetColor(SDL_Color* color) {
 
 // BUTTON
 
-Button::Button(string label, int width, int height, int x, int y, int fontSize) {
+Button::Button(std::string label, int width, int height, int x, int y, int fontSize) {
 	this->label = label; 
 	this->width = width;
 	this->height = height;
@@ -42,7 +42,7 @@ Button::Button(string label, int width, int height, int x, int y, int fontSize) 
 	this->hoverColor = hc; 
 }
 
-string Button::GetLabel() {
+std::string Button::GetLabel() {
 	return this->label; 
 }
 
@@ -58,7 +58,7 @@ int Button::GetHeight() {
 	return this->height; 
 }
 
-void Button::SetLabel(string label) {
+void Button::SetLabel(std::string label) {
 	this->label = label;
 }
 
@@ -90,7 +90,7 @@ void Button::Invoke() {
 
 // TEXTBOX
 
-Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fontSize, int limit) {
+Textbox::Textbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit) {
 	this->placeholder = placeholder;
 	this->width = width;
 	this->height = height;
@@ -104,11 +104,11 @@ Textbox::Textbox(string placeholder, int width, int height, int x, int y, int fo
 	this->hoverColor = hc;
 }
 
-string Textbox::GetPlaceholder() {
+std::string Textbox::GetPlaceholder() {
 	return this->placeholder; 
 }
 
-string Textbox::GetValue() {
+std::string Textbox::GetValue() {
 	return this->value; 
 }
 
@@ -128,11 +128,11 @@ int Textbox::GetCharLimit() {
 	return this->charLimit; 
 }
 
-void Textbox::SetPlaceholder(string placeholder) {
+void Textbox::SetPlaceholder(std::string placeholder) {
 	this->placeholder = placeholder; 
 }
 
-void Textbox::SetValue(string value) {
+void Textbox::SetValue(std::string value) {
 	this->value = value; 
 }
 
@@ -159,7 +159,7 @@ void Textbox::SetCharLimit(int limit) {
 
 // LABEL
 
-Label::Label(string text, int x, int y, SDL_Color color, int fontSize) {
+Label::Label(std::string text, int x, int y, SDL_Color color, int fontSize) {
 	this->text = text; 
 	this->x = x;
 	this->y = y;
@@ -167,10 +167,10 @@ Label::Label(string text, int x, int y, SDL_Color color, int fontSize) {
 	this->fontSize = fontSize; 
 }
 
-string Label::GetText() {
+std::string Label::GetText() {
 	return this->text; 
 }
 
-void Label::SetText(string text) {
+void Label::SetText(std::string text) {
 	this->text = text; 
 }

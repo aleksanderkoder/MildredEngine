@@ -11,14 +11,12 @@
 #include "AssetManager.h"
 #include "GUI.h"
 
-using namespace std;
-
 class Mildred {
 	private:
 		static SDL_Renderer* renderer; 
 		static SDL_Window* window;
 		static int screenWidth, screenHeight, fieldOfView, viewDistance, frameCount; 
-		static vector<MapBoundary>* mapBoundaries;
+		static std::vector<MapBoundary>* mapBoundaries;
 		static Uint64 ticks, prevFps; 
 
 	public: 
@@ -26,17 +24,17 @@ class Mildred {
 		static Player* player; 
 		static AssetManager* assetManager;
 		static void Init(); 
-		static void CreateWindow(string title, int width, int height); 
+		static void CreateWindow(std::string title, int width, int height);
 		static void CreateRenderer();
 		static void SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 		static void RenderPresent();
 		static void RenderClear();
 		static void DrawRect(int width, int height, int x, int y);
-		static void CreateMapBoundary(int x, int y, int endX, int endY, string textureName);
+		static void CreateMapBoundary(int x, int y, int endX, int endY, std::string textureName);
 		static void DrawMapBoundaries();
 		static SDL_Renderer* GetRenderer();
 		static void HandleUserInput();
-		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, string textureName); 
+		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, std::string textureName);
 		static void CastRays(); 
 		static void HandleEvents(); 
 		static void DisplayFPS(); 
