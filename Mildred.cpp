@@ -24,12 +24,22 @@ void Mildred::CreateWindow(std::string title, int width, int height) {
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		width, height, SDL_WINDOW_SHOWN);
 
-	CreateRenderer();
-
 	// Check what graphics backend is used 
-	SDL_RendererInfo info;
-	SDL_GetRendererInfo(renderer, &info);
-	std::cout << "Graphics API: " << info.name << std::endl;
+	SDL_RendererInfo info = {};
+
+	// Graphics device index to create renderer using correct graphics API, -1 is default
+	int deviceIndex = -1;
+
+	for (int i = 0; i < SDL_GetNumRenderDrivers(); i++) {
+		SDL_GetRenderDriverInfo(i, &info);
+		if (info.name == std::string("direct3d11")) {
+			deviceIndex = i; 
+			break; 
+		}
+	}
+
+	CreateRenderer(deviceIndex);
+	std::cout << "Using graphics API: " << info.name << std::endl; 
 
 	// Captures mouse to window
 	//SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -38,8 +48,9 @@ void Mildred::CreateWindow(std::string title, int width, int height) {
 	isRunning = true;
 }
 
-void Mildred::CreateRenderer() {
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+void Mildred::CreateRenderer(int graphicsDeviceIndex) {
+	// NOTE: Remove SDL_RENDERER_PRESENTVSYNC flag to turn off v-sync
+	renderer = SDL_CreateRenderer(window, graphicsDeviceIndex, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	// To enable aplha channel on draw calls
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "BEST"); 

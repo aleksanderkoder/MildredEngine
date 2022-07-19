@@ -223,6 +223,10 @@ void GUI::CaptureInputText() {
 	if (keys[SDL_SCANCODE_BACKSPACE] && DeltaTimeHasPassed(110)) {
 		activeTextbox->SetValue(activeTextbox->GetValue().substr(0, activeTextbox->GetValue().size() - 1));
 		UpdateDelta(now);
+
+		// Reset textbox cursor on key input
+		textboxCursorDelta = now;
+		drawTextBoxCursor = true;
 		return; 
 	}
 
@@ -230,18 +234,16 @@ void GUI::CaptureInputText() {
 	if (activeTextbox->GetValue().length() >= activeTextbox->GetCharLimit()) return;
 
 	for (int i = 0; i < nK; i++) {
-		if (keys[i]) {
-			if (ValidKey(i)) {
-				if (keys[SDL_SCANCODE_LSHIFT] || capsLockEnabled) {
-					key = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i)));
-				}
-				else {
-					key = SDL_GetKeyFromScancode(SDL_Scancode(i));
-				}
-				// Reset textbox cursor on key input
-				textboxCursorDelta = now;
-				drawTextBoxCursor = true; 
+		if (keys[i] && ValidKey(i)) {
+			if (keys[SDL_SCANCODE_LSHIFT] || capsLockEnabled) {
+				key = toupper(SDL_GetKeyFromScancode(SDL_Scancode(i)));
 			}
+			else {
+				key = SDL_GetKeyFromScancode(SDL_Scancode(i));
+			}
+			// Reset textbox cursor on key input
+			textboxCursorDelta = now;
+			drawTextBoxCursor = true; 
 		}
 	}
 

@@ -25,7 +25,7 @@ class Mildred {
 		static AssetManager* assetManager;
 		static void Init(); 
 		static void CreateWindow(std::string title, int width, int height);
-		static void CreateRenderer();
+		static void CreateRenderer(int graphicsDeviceIndex);
 		static void SetRenderDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 		static void RenderPresent();
 		static void RenderClear();
