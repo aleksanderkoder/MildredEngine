@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
 #include "SDL.h"
+#include <SDL_ttf.h>
 
 class Controls
 {
 	protected:
 		int x, y, fontSize;
 		SDL_Color color;
+		TTF_Font* font; 
 
 	public:
 		// GET functions 
@@ -14,16 +16,18 @@ class Controls
 		int GetY();
 		SDL_Color GetColor();
 		int GetFontSize();
+		TTF_Font* GetFont(); 
 
 		// SET functions 
 		void SetPosition(int x, int y);
 		void SetColor(SDL_Color* color);
+		void SetFont(std::string fontPath); 
 
 };
 
 class Button : public Controls {
 	public:
-		Button(std::string label, int width, int height, int x, int y, int fontSize = 12);
+		Button(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath);
 
 		// GET functions 
 		std::string GetLabel();
@@ -50,7 +54,7 @@ class Button : public Controls {
 
 class Textbox : public Controls {
 	public:
-		Textbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25);
+		Textbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath);
 
 		// GET functions 
 		std::string GetPlaceholder();
@@ -78,7 +82,7 @@ class Textbox : public Controls {
 
 class Label : public Controls {
 	public:
-		Label(std::string text, int x, int y, SDL_Color color, int fontSize = 12);
+		Label(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath);
 
 		// GET functions 
 		std::string GetText();

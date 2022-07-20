@@ -18,6 +18,10 @@ int Controls::GetFontSize() {
 	return this->fontSize; 
 }
 
+TTF_Font* Controls::GetFont() {
+	return this->font;
+}
+
 void Controls::SetPosition(int x, int y) {
 	this->x = x;
 	this->y = y; 
@@ -27,9 +31,13 @@ void Controls::SetColor(SDL_Color* color) {
 	this->color = *color; 
 }
 
+void Controls::SetFont(std::string fontPath) {
+	this->font = TTF_OpenFont(fontPath.c_str(), this->fontSize);
+}
+
 // BUTTON
 
-Button::Button(std::string label, int width, int height, int x, int y, int fontSize) {
+Button::Button(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
 	this->label = label; 
 	this->width = width;
 	this->height = height;
@@ -40,6 +48,12 @@ Button::Button(std::string label, int width, int height, int x, int y, int fontS
 	SDL_Color hc = { 25, 25, 25, 175 };
 	this->color = c;
 	this->hoverColor = hc; 
+
+	if (!(this->font = TTF_OpenFont(fontPath.c_str(), fontSize))) {
+		char t[] = "Font error";
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
+		exit(0);
+	}
 }
 
 std::string Button::GetLabel() {
@@ -90,7 +104,7 @@ void Button::Invoke() {
 
 // TEXTBOX
 
-Textbox::Textbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit) {
+Textbox::Textbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
 	this->placeholder = placeholder;
 	this->width = width;
 	this->height = height;
@@ -102,6 +116,12 @@ Textbox::Textbox(std::string placeholder, int width, int height, int x, int y, i
 	this->color = c;
 	this->charLimit = limit; 
 	this->hoverColor = hc;
+
+	if (!(this->font = TTF_OpenFont(fontPath.c_str(), fontSize))) {
+		char t[] = "Font error";
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
+		exit(0);
+	}
 }
 
 std::string Textbox::GetPlaceholder() {
@@ -159,12 +179,18 @@ void Textbox::SetCharLimit(int limit) {
 
 // LABEL
 
-Label::Label(std::string text, int x, int y, SDL_Color color, int fontSize) {
+Label::Label(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
 	this->text = text; 
 	this->x = x;
 	this->y = y;
 	this->color = color; 
 	this->fontSize = fontSize; 
+
+	if (!(this->font = TTF_OpenFont(fontPath.c_str(), fontSize))) {
+		char t[] = "Font error";
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
+		exit(0);
+	}
 }
 
 std::string Label::GetText() {

@@ -50,7 +50,8 @@ void Mildred::CreateWindow(std::string title, int width, int height) {
 
 void Mildred::CreateRenderer(int graphicsDeviceIndex) {
 	// NOTE: Remove SDL_RENDERER_PRESENTVSYNC flag to turn off v-sync
-	renderer = SDL_CreateRenderer(window, graphicsDeviceIndex, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	//  | SDL_RENDERER_PRESENTVSYNC
+	renderer = SDL_CreateRenderer(window, graphicsDeviceIndex, SDL_RENDERER_ACCELERATED);
 	// To enable aplha channel on draw calls
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "BEST"); 
@@ -200,30 +201,30 @@ void Mildred::HandleEvents() {
 	{
 		switch (e.type)
 		{
-		case SDL_QUIT:
-			Mildred::isRunning = false;
-			std::cout << "Quitting.";
-			break;
+			case SDL_QUIT:
+				Mildred::isRunning = false;
+				std::cout << "Quitting";
+				break;
 		}
 	}
 }
 
-void Mildred::DisplayFPS() {
-	frameCount++;
-	Uint64 now = SDL_GetTicks64();
-	SDL_Color c = { 0, 255, 0 };
-	if (frameCount >= 12) {
-
-		Uint64 fps = 1000 / (now - ticks);
-		prevFps = fps;
-		GUI::RenderLabel("FPS: " + std::to_string(fps), screenWidth - 100, 25, c, 16);
-		frameCount = 0;
-	}
-	else {
-		GUI::RenderLabel("FPS: " + std::to_string(prevFps), screenWidth - 100, 25, c, 16);
-	}
-	ticks = now;
-}
+//void Mildred::DisplayFPS() {
+//	frameCount++;
+//	Uint64 now = SDL_GetTicks64();
+//	SDL_Color c = { 0, 255, 0 };
+//	if (frameCount >= 12) {
+//
+//		Uint64 fps = 1000 / (now - ticks);
+//		prevFps = fps;
+//		GUI::RenderLabel("FPS: " + std::to_string(fps), screenWidth - 100, 25, c, 16);
+//		frameCount = 0;
+//	}
+//	else {
+//		GUI::RenderLabel("FPS: " + std::to_string(prevFps), screenWidth - 100, 25, c, 16);
+//	}
+//	ticks = now;
+//}
 
 void Mildred::DrawTempBackground() {
 	SetRenderDrawColor(101, 67, 33, 255);

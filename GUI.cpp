@@ -5,18 +5,18 @@ std::vector<Textbox*>* GUI::textboxes = new std::vector<Textbox*>();
 std::vector<Label*>* GUI::labels = new std::vector<Label*>();
 SDL_Renderer* GUI::targetRenderer;
 Uint32 GUI::delta, GUI::textboxCursorDelta;
-std::string GUI::currentFont;
 Textbox* GUI::activeTextbox = NULL; 
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
-GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false;
+GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = true;
+SDL_Texture* GUI::previousFrame; 
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 }
 
-Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize) {
-	Label* lbl = new Label(text, x, y, color, fontSize);
+Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
+	Label* lbl = new Label(text, x, y, color, fontSize, fontPath);
 	labels->push_back(lbl);
 	return lbl;
 }
@@ -25,34 +25,38 @@ void GUI::RenderLabels() {
 	for (int i = 0; i < labels->size(); i++) {
 		Label* curr = (*labels)[i];
 			
-		RenderLabel(curr->GetText(), curr->GetX(), curr->GetY(), curr->GetColor(), curr->GetFontSize());
+		RenderLabel(curr->GetText(), curr->GetX(), curr->GetY(), curr->GetColor(), curr->GetFont(), curr->GetFontSize());
 	}
 }
 
-void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, int fontSize) {
-
-	TTF_Font* font = OpenFont(currentFont, fontSize);
+void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize) {
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
 		TTF_RenderText_Blended(font, text.c_str(), color);
 
 	// Convert to texture
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
+	SDL_Texture* message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
 
 	// Create a rectangle/shape of the message texture
-	SDL_Rect Message_rect;
-	Message_rect.x = x;
-	Message_rect.y = y;
-	Message_rect.w = surfaceMessage->w;
-	Message_rect.h = surfaceMessage->h;
+	SDL_Rect message_rect;
+	message_rect.x = x;
+	message_rect.y = y;
+	message_rect.w = surfaceMessage->w;
+	message_rect.h = surfaceMessage->h;
 
-	SDL_RenderCopy(targetRenderer, Message, NULL, &Message_rect);
+	// FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/*if (!SDL_SetRenderTarget(targetRenderer, previousFrame)) {
+		std::cout << SDL_GetError() << std::endl; 
+	}*/
+	//SDL_RenderClear(targetRenderer); 
+	SDL_RenderCopy(targetRenderer, message, NULL, &message_rect); 
+	SDL_SetRenderTarget(targetRenderer, NULL); 
+	//SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
 
 	// Frees resources 
 	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
-	TTF_CloseFont(font); 
+	SDL_DestroyTexture(message);
 }
 
 std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
@@ -69,8 +73,8 @@ std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
 	return dim; 
 }
 
-Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize) {
-	Button* b = new Button(label, width, height, x, y, fontSize);
+Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
+	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
 	buttons->push_back(b);
 	return b; 
 }
@@ -110,12 +114,12 @@ void GUI::RenderButtons() {
 		SDL_RenderFillRect(targetRenderer, &rect);
 
 		SDL_Color c = { 255, 255, 255 };
-		TTF_Font* font = OpenFont(currentFont, curr->GetFontSize()); 
-		std::tuple<int, int> mesDim = GetTextDimensions(curr->GetLabel(), font);
+		//TTF_Font* font = OpenFont(currentFont, curr->GetFontSize()); 
+		std::tuple<int, int> mesDim = GetTextDimensions(curr->GetLabel(), curr->GetFont());
 
 		// Display button label
-		RenderLabel(curr->GetLabel(), curr->GetX() + curr->GetWidth() / 2 - std::get<0>(mesDim) / 2, curr->GetY() + curr->GetHeight() / 2 - std::get<1>(mesDim) / 2, c, curr->GetFontSize());
-		TTF_CloseFont(font);
+		RenderLabel(curr->GetLabel(), curr->GetX() + curr->GetWidth() / 2 - std::get<0>(mesDim) / 2, curr->GetY() + curr->GetHeight() / 2 - std::get<1>(mesDim) / 2, c, curr->GetFont(), curr->GetFontSize());
+		//TTF_CloseFont(font);
 	}
 }
 
@@ -149,31 +153,28 @@ void GUI::RenderTextboxes() {
 		// Draw textbox rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
 		
-		TTF_Font* font = OpenFont(currentFont, curr->GetFontSize());
 		std::tuple<int, int> txtDim;
 		int lblX, lblY; 
 
 		// If no value, show placeholder
 		if (curr->GetValue().empty()) {
 			SDL_Color c = { 255, 255, 255, 150 };
-			txtDim = GetTextDimensions(curr->GetPlaceholder(), font);
+			txtDim = GetTextDimensions(curr->GetPlaceholder(), curr->GetFont());
 			lblX = curr->GetX() + curr->GetWidth() / 2 - std::get<0>(txtDim) / 2;
 			lblY = curr->GetY() + curr->GetHeight() / 2 - std::get<1>(txtDim) / 2;
 			
 			// Display textbox label
-			RenderLabel(curr->GetPlaceholder(), lblX, lblY, c, curr->GetFontSize());
-			TTF_CloseFont(font);
+			RenderLabel(curr->GetPlaceholder(), lblX, lblY, c, curr->GetFont(), curr->GetFontSize());
 		}
 		// If textbox has a user entered value, show that value in textbox
 		else {
 			SDL_Color c = { 255, 255, 255 };
-			txtDim = GetTextDimensions(curr->GetValue(), font);
+			txtDim = GetTextDimensions(curr->GetValue(), curr->GetFont());
 			lblX = curr->GetX() + curr->GetWidth() / 2 - std::get<0>(txtDim) / 2;
 			lblY = curr->GetY() + curr->GetHeight() / 2 - std::get<1>(txtDim) / 2;
 
 			// Display textbox label
-			RenderLabel(curr->GetValue(), lblX, lblY, c, curr->GetFontSize());
-			TTF_CloseFont(font);
+			RenderLabel(curr->GetValue(), lblX, lblY, c, curr->GetFont(), curr->GetFontSize());
 		}
 
 		// If there's an active textbox, toggle textbox cursor every 750 millisecond
@@ -192,7 +193,7 @@ void GUI::RenderTextboxes() {
 			cursorRect.w = 2;
 			cursorRect.h = curr->GetFontSize();
 			cursorRect.x = lblX + std::get<0>(txtDim);
-			cursorRect.y = lblY + curr->GetFontSize() / 4;
+			cursorRect.y = curr->GetY() + curr->GetHeight() / 2 - curr->GetFontSize() / 2;
 			SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 255);
 			SDL_RenderFillRect(targetRenderer, &cursorRect);
 		}
@@ -314,22 +315,17 @@ TTF_Font* GUI::OpenFont(std::string fontUrl, int size) {
 	return font; 
 }
 
-void GUI::SetFont(std::string fontPath) {
-	currentFont = fontPath; 
-}
-
 void GUI::Init() {
 	TTF_Init();	// Initializes the SDL font library
 	
 	delta = SDL_GetTicks(); // Init milliseconds to be used for textbox input 
 	textboxCursorDelta = SDL_GetTicks(); // Init milliseconds to be used for textbox cursor blinking 
 
-	// Sets default font
-	currentFont = "fonts/arial.ttf";
+	previousFrame = SDL_CreateTexture(targetRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1920, 1080);
 }
 
-Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit) {
-	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit);
+Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
+	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
 	textboxes->push_back(tb); 
 	return tb; 
 }

@@ -21,21 +21,21 @@ int main(int argc, char* argv[]) {
     Mildred::assetManager->PrintAllAssetInfo();
 
     GUI::Init(); 
-    GUI::SetFont("fonts/OpenSans-Regular.ttf"); 
+    //GUI::SetFont("fonts/OpenSans-Regular.ttf"); 
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
-    Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45); 
+    Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45, "fonts/comicz.ttf");
     GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
-    GUI::CreateTextbox("Full name", 850, 50, 50, 750, 20);
-    GUI::CreateTextbox("en annen tb", 550, 50, 500, 750, 20);
+    GUI::CreateTextbox("Full name", 850, 50, 50, 750, 20, 50, "fonts/comicz.ttf");
+    GUI::CreateTextbox("en annen tb", 550, 50, 500, 750, 45);
     Textbox* t = GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20, 50);
-    t->SetCharLimit(3);
-    GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 16);
+    //t->SetCharLimit(3);
+    GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 56);
 
     SDL_Color color = { 0, 0, 0 };
     h->Bind(test); 
 
-    Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36);
+    Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36, "fonts/comicz.ttf");
 
     // Begin game loop, runs every frame
     while (Mildred::isRunning)
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();*/
         
-        Mildred::DisplayFPS(); 
+        //Mildred::DisplayFPS(); 
         GUI::Render();
         Mildred::RenderPresent(); 
     }
