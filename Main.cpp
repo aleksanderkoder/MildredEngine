@@ -21,7 +21,6 @@ int main(int argc, char* argv[]) {
     Mildred::assetManager->PrintAllAssetInfo();
 
     GUI::Init(); 
-    //GUI::SetFont("fonts/OpenSans-Regular.ttf"); 
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
     Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45, "fonts/comicz.ttf");

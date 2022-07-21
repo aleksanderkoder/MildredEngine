@@ -1,6 +1,6 @@
 #include "Controls.h"
 
-// CONTROLS - Common for every control type
+// CONTROLS - Common methods for every control type
 
 int Controls::GetX() {
 	return this->x; 
