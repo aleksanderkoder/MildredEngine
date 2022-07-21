@@ -1,8 +1,20 @@
-﻿  GUI.cpp
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(335,18): warning C4018: '>=': signed/unsigned mismatch
+﻿  Mildred.cpp
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(124,44): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(136,12): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(137,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(139,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(151,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(153,40): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(153,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(170,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,88): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,77): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(192,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   Generating code
-  3 of 639 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+  14 of 641 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    10 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   MildredEngine.vcxproj -> C:\Users\neon1\Documents\MildredEngine\x64\Release\MildredEngine.exe

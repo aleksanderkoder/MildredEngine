@@ -209,22 +209,26 @@ void Mildred::HandleEvents() {
 	}
 }
 
-//void Mildred::DisplayFPS() {
-//	frameCount++;
-//	Uint64 now = SDL_GetTicks64();
-//	SDL_Color c = { 0, 255, 0 };
-//	if (frameCount >= 12) {
-//
-//		Uint64 fps = 1000 / (now - ticks);
-//		prevFps = fps;
-//		GUI::RenderLabel("FPS: " + std::to_string(fps), screenWidth - 100, 25, c, 16);
-//		frameCount = 0;
-//	}
-//	else {
-//		GUI::RenderLabel("FPS: " + std::to_string(prevFps), screenWidth - 100, 25, c, 16);
-//	}
-//	ticks = now;
-//}
+
+void Mildred::DisplayFPS() {
+	// TODO: Needs to store font in memory for faster access time 
+	char d[] = "fonts/arial.ttf";
+	TTF_Font* font = TTF_OpenFont(d, 16);
+	frameCount++;
+	Uint64 now = SDL_GetTicks64();
+	SDL_Color c = { 0, 255, 0 };
+	if (frameCount >= 10) {
+
+		Uint64 fps = 1000 / (now - ticks);
+		prevFps = fps;
+		GUI::RenderLabel("FPS: " + std::to_string(fps), screenWidth - 100, 25, c, font, 16);
+		frameCount = 0;
+	}
+	else {
+		GUI::RenderLabel("FPS: " + std::to_string(prevFps), screenWidth - 100, 25, c, font, 16);
+	}
+	ticks = now;
+}
 
 void Mildred::DrawTempBackground() {
 	SetRenderDrawColor(101, 67, 33, 255);

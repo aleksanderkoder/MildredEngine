@@ -33,7 +33,7 @@ void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font*
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, text.c_str(), color);
+		TTF_RenderText_Blended(font, text.c_str(), color); 
 
 	// Convert to texture
 	SDL_Texture* message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
@@ -51,7 +51,7 @@ void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font*
 	}*/
 	//SDL_RenderClear(targetRenderer); 
 	SDL_RenderCopy(targetRenderer, message, NULL, &message_rect); 
-	SDL_SetRenderTarget(targetRenderer, NULL); 
+	//SDL_SetRenderTarget(targetRenderer, NULL); 
 	//SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
 
 	// Frees resources 
@@ -163,7 +163,7 @@ void GUI::RenderTextboxes() {
 			lblX = curr->GetX() + curr->GetWidth() / 2 - std::get<0>(txtDim) / 2;
 			lblY = curr->GetY() + curr->GetHeight() / 2 - std::get<1>(txtDim) / 2;
 			
-			// Display textbox label
+			// Display textbox placeholder text
 			RenderLabel(curr->GetPlaceholder(), lblX, lblY, c, curr->GetFont(), curr->GetFontSize());
 		}
 		// If textbox has a user entered value, show that value in textbox
