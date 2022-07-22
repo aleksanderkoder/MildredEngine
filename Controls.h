@@ -9,6 +9,7 @@ class Controls
 		int x, y, fontSize;
 		SDL_Color color;
 		TTF_Font* font; 
+		bool display; 
 
 	public:
 		// GET methods 
@@ -22,6 +23,10 @@ class Controls
 		void SetPosition(int x, int y);
 		void SetColor(SDL_Color* color);
 		void SetFont(std::string fontPath); 
+
+		// Utility methods
+		void Show(); 
+		void Hide(); 
 
 };
 
@@ -101,12 +106,16 @@ class Checkbox : public Controls {
 		// GET methods  
 		std::string GetLabel();
 		SDL_Color GetHoverColor();
+		SDL_Color GetCheckmarkColor(); 
+		SDL_Color GetLabelColor(); 
 		int GetWidth();
 		int GetHeight();
 
 		// SET methods 
 		void SetLabel(std::string label);
 		void SetHoverColor(SDL_Color* color);
+		void SetCheckmarkColor(SDL_Color* color); 
+		void SetLabelColor(SDL_Color* color);
 		void SetWidth(int width);
 		void SetHeight(int height);
 		void SetState(bool state);
@@ -118,7 +127,7 @@ class Checkbox : public Controls {
 		int width, height; 
 		bool checked; 
 		std::string label; 
-		SDL_Color checkmarkColor, labelColor; 
+		SDL_Color checkmarkColor, labelColor, hoverColor; 
 };
 
 class Slider : public Controls {
@@ -128,6 +137,8 @@ class Slider : public Controls {
 		// GET methods  
 		std::string GetLabel();
 		SDL_Color GetHoverColor();
+		SDL_Color GetLabelColor();
+		SDL_Color GetThumbColor();
 		int GetWidth();
 		int GetHeight();
 		int GetThumbWidth();
@@ -137,17 +148,17 @@ class Slider : public Controls {
 		// SET methods 
 		void SetLabel(std::string label);
 		void SetHoverColor(SDL_Color* color);
+		void SetLabelColor(SDL_Color* color); 
+		void SetThumbColor(SDL_Color* color);
 		void SetWidth(int width);
 		void SetHeight(int height);
-		void SetValue(int value); 
 		int SetThumbWidth(int width);
 		int SetThumbHeight(int height);
+		void SetValue(int value); 
 	
-
 	private:
-		int width, height;
-		bool checked;
+		int width, height, value, thumbWidth, thumbHeight;
 		std::string label;
-		SDL_Color checkmarkColor, labelColor;
+		SDL_Color labelColor, hoverColor, thumbColor;
 };
 

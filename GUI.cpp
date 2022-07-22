@@ -15,7 +15,7 @@ void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 }
 
-Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
+Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/arial.ttf") {
 	Label* lbl = new Label(text, x, y, color, fontSize, fontPath);
 	labels->push_back(lbl);
 	return lbl;
@@ -29,7 +29,7 @@ void GUI::RenderLabels() {
 	}
 }
 
-void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize) {
+void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12) {
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
@@ -73,7 +73,7 @@ std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
 	return dim; 
 }
 
-Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
+Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/arial.ttf") {
 	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
 	buttons->push_back(b);
 	return b; 
@@ -324,7 +324,7 @@ void GUI::Init() {
 	previousFrame = SDL_CreateTexture(targetRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1920, 1080);
 }
 
-Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
+Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/arial.ttf") {
 	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
 	textboxes->push_back(tb); 
 	return tb; 
