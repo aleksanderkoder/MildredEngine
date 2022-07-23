@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Mildred.h"
-#include "Controls.h"
+#include "Elements.h"
 #include <tuple>
 
 class GUI
@@ -20,10 +20,10 @@ class GUI
 		static std::vector<Label*>* labels;
 
 		static void SetRenderTarget(SDL_Renderer* r);
-		static Label* CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath);
-		static Button* CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath);
-		static Textbox* CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath);
-		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize);
+		static Label* CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/arial.ttf");
+		static Button* CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/arial.ttf");
+		static Textbox* CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/arial.ttf");
+		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);
 		static void Render();
 		static void Init();
 

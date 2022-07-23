@@ -173,7 +173,7 @@
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Calc.cpp" />
-    <ClCompile Include="Controls.cpp" />
+    <ClCompile Include="Elements.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapBoundary.cpp" />
@@ -184,7 +184,7 @@
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Calc.h" />
-    <ClInclude Include="Controls.h" />
+    <ClInclude Include="Elements.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="MapBoundary.h" />
     <ClInclude Include="Mildred.h" />

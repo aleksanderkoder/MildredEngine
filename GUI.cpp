@@ -15,7 +15,7 @@ void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 }
 
-Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/arial.ttf") {
+Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
 	Label* lbl = new Label(text, x, y, color, fontSize, fontPath);
 	labels->push_back(lbl);
 	return lbl;
@@ -24,12 +24,14 @@ Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fon
 void GUI::RenderLabels() {
 	for (int i = 0; i < labels->size(); i++) {
 		Label* curr = (*labels)[i];
+
+		if (!curr->GetDisplayState()) continue;
 			
 		RenderLabel(curr->GetText(), curr->GetX(), curr->GetY(), curr->GetColor(), curr->GetFont(), curr->GetFontSize());
 	}
 }
 
-void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12) {
+void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize) {
 
 	// Create surface to render text on
 	SDL_Surface* surfaceMessage =
@@ -73,7 +75,7 @@ std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
 	return dim; 
 }
 
-Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/arial.ttf") {
+Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
 	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
 	buttons->push_back(b);
 	return b; 
@@ -83,6 +85,8 @@ void GUI::RenderButtons() {
 	// Loop through all buttons
 	for (int i = 0; i < buttons->size(); i++) {
 		Button* curr = (*buttons)[i];
+
+		if (!curr->GetDisplayState()) continue;
 
 		// Create button rectangle data
 		SDL_Rect rect;
@@ -95,10 +99,11 @@ void GUI::RenderButtons() {
 
 		// If mouse doesn't hover over button, default idle state
 		SDL_SetRenderDrawColor(targetRenderer, curr->GetColor().r, curr->GetColor().g, curr->GetColor().b, curr->GetColor().a);
+		curr->SetPressedState(false);
 
 		// If mouse hovers over button and activates
 		if (mHover && leftMouseButtonPressedState) {
-			curr->Invoke();
+			curr->SetPressedState(true); 
 			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
 			activeTextbox = NULL;
 		}
@@ -127,6 +132,8 @@ void GUI::RenderTextboxes() {
 	// Loop through all textboxes
 	for (int i = 0; i < textboxes->size(); i++) {
 		Textbox* curr = (*textboxes)[i];
+
+		if (!curr->GetDisplayState()) continue;
 
 		// Create textbox rectangle data
 		SDL_Rect rect;
@@ -324,7 +331,7 @@ void GUI::Init() {
 	previousFrame = SDL_CreateTexture(targetRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1920, 1080);
 }
 
-Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/arial.ttf") {
+Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
 	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
 	textboxes->push_back(tb); 
 	return tb; 

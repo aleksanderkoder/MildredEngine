@@ -1,10 +1,6 @@
 #include <iostream>
 #include "Mildred.h"
 
-void test() {
-    std::cout << "Hei fra test";
-}
-
 int main(int argc, char* argv[]) {
 
     // Prepare engine settings 
@@ -28,11 +24,10 @@ int main(int argc, char* argv[]) {
     GUI::CreateTextbox("Full name", 850, 50, 50, 750, 20, 50, "fonts/comicz.ttf");
     GUI::CreateTextbox("en annen tb", 550, 50, 500, 750, 45);
     Textbox* t = GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20, 50);
-    t->SetCharLimit(3);
+    t->SetCharLimit(3); 
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 56);
 
     SDL_Color color = { 0, 0, 0 };
-    h->Bind(test); 
 
     Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36, "fonts/comicz.ttf");
 
@@ -46,6 +41,10 @@ int main(int argc, char* argv[]) {
         /*Mildred::DrawMapBoundaries();
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();*/
+
+        if (h->IsPressed()) {
+            std::cout << "Hei is pressed" << std::endl; 
+        }
         
         //Mildred::DisplayFPS(); 
         GUI::Render();
