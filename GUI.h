@@ -19,10 +19,14 @@ class GUI
 		// Data related to labels
 		static std::vector<Label*>* labels;
 
+		// Data related to checkboxes
+		static std::vector<Checkbox*>* checkboxes; 
+
 		static void SetRenderTarget(SDL_Renderer* r);
 		static Label* CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/arial.ttf");
 		static Button* CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/arial.ttf");
 		static Textbox* CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/arial.ttf");
+		static Checkbox* CreateCheckbox(int x, int y, int width, int height, bool defaultState = false);
 		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);
 		static void Render();
 		static void Init();
@@ -32,7 +36,6 @@ class GUI
 		static char lastPressedKey; 
 		static bool leftMouseButtonPressedState, leftMouseButtonPressedLastState,
 			drawTextBoxCursor, capsLockEnabled, rerender; 
-		static SDL_Texture* previousFrame; 
 
 		static TTF_Font* OpenFont(std::string fontUrl, int size);
 		static std::tuple<int, int> GetTextDimensions(std::string text, TTF_Font* font);
@@ -46,5 +49,6 @@ class GUI
 		static void RenderButtons();
 		static void RenderTextboxes();
 		static void RenderLabels();
+		static void RenderCheckboxes(); 
 };
 

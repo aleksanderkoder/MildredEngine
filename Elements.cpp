@@ -1,6 +1,6 @@
 #include "Elements.h"
 
-// Elements - Common methods for every control type
+// Elements - Common methods for every element type
 
 int Elements::GetX() {
 	return this->x; 
@@ -113,15 +113,6 @@ bool Button::IsPressed() {
 void Button::SetPressedState(bool state) {
 	this->pressed = state; 
 }
-
-//void Button::Bind(void (*fn)()) {
-//	this->onClickCallback = fn;
-//}
-//
-//void Button::Invoke() {
-//	if (this->onClickCallback)
-//		this->onClickCallback();
-//}
 
 // TEXTBOX
 
@@ -248,15 +239,15 @@ void Label::SetFont(std::string fontPath) {
 	this->font = TTF_OpenFont(fontPath.c_str(), this->fontSize);
 }
 
-// Checkbox
+// CHECKBOX
 
-Checkbox::Checkbox(int x, int y, int width, int height) {
+Checkbox::Checkbox(int x, int y, int width, int height, bool defaultState) {
 	this->x = x;
 	this->y = y;
 	this->width = width; 
 	this->height = height; 
 	this->display = true;
-	this->checked = false; 
+	this->checked = defaultState; 
 	SDL_Color c = { 0, 0, 0, 175 };
 	SDL_Color hc = { 25, 25, 25, 175 }; 
 	SDL_Color cC = { 3, 75, 3, 255 };
@@ -305,7 +296,7 @@ bool Checkbox::IsChecked() {
 	return this->checked; 
 }
 
-// Slider
+// SLIDER
 
 Slider::Slider(int x, int y, int width, int height, int thumbWidth, int thumbHeight) {
 	this->x = x;

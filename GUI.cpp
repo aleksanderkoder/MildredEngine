@@ -3,23 +3,54 @@
 std::vector<Button*>* GUI::buttons = new std::vector<Button*>();
 std::vector<Textbox*>* GUI::textboxes = new std::vector<Textbox*>();
 std::vector<Label*>* GUI::labels = new std::vector<Label*>();
+std::vector<Checkbox*>* GUI::checkboxes = new std::vector<Checkbox*>(); 
 SDL_Renderer* GUI::targetRenderer;
 Uint32 GUI::delta, GUI::textboxCursorDelta;
 Textbox* GUI::activeTextbox = NULL; 
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
 GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = true;
-SDL_Texture* GUI::previousFrame; 
+
+// LIBRARY SETUP METHODS
+
+void GUI::Init() {
+	TTF_Init();	// Initializes the SDL font library
+
+	delta = SDL_GetTicks(); // Init milliseconds to be used for textbox input 
+	textboxCursorDelta = SDL_GetTicks(); // Init milliseconds to be used for textbox cursor blinking 
+}
 
 void GUI::SetRenderTarget(SDL_Renderer* r) {
 	targetRenderer = r; 
 }
+
+// ELEMENT CREATION METHODS 
 
 Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
 	Label* lbl = new Label(text, x, y, color, fontSize, fontPath);
 	labels->push_back(lbl);
 	return lbl;
 }
+
+Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
+	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
+	textboxes->push_back(tb);
+	return tb;
+}
+
+Checkbox* GUI::CreateCheckbox(int x, int y, int width, int height, bool defaultState) {
+	Checkbox* cb = new Checkbox(x, y, width, height, defaultState);
+	checkboxes->push_back(cb);
+	return cb;
+}
+
+Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
+	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
+	buttons->push_back(b);
+	return b;
+}
+
+// ELEMENT RENDERING METHODS 
 
 void GUI::RenderLabels() {
 	for (int i = 0; i < labels->size(); i++) {
@@ -29,56 +60,6 @@ void GUI::RenderLabels() {
 			
 		RenderLabel(curr->GetText(), curr->GetX(), curr->GetY(), curr->GetColor(), curr->GetFont(), curr->GetFontSize());
 	}
-}
-
-void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize) {
-
-	// Create surface to render text on
-	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, text.c_str(), color); 
-
-	// Convert to texture
-	SDL_Texture* message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
-
-	// Create a rectangle/shape of the message texture
-	SDL_Rect message_rect;
-	message_rect.x = x;
-	message_rect.y = y;
-	message_rect.w = surfaceMessage->w;
-	message_rect.h = surfaceMessage->h;
-
-	// FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	/*if (!SDL_SetRenderTarget(targetRenderer, previousFrame)) {
-		std::cout << SDL_GetError() << std::endl; 
-	}*/
-	//SDL_RenderClear(targetRenderer); 
-	SDL_RenderCopy(targetRenderer, message, NULL, &message_rect); 
-	//SDL_SetRenderTarget(targetRenderer, NULL); 
-	//SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
-
-	// Frees resources 
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(message);
-}
-
-std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
-	// Text color
-	SDL_Color color = { 0, 0, 0 };
-
-	// Create surface to render text on
-	SDL_Surface* surfaceMessage =
-		TTF_RenderText_Blended(font, text.c_str(), color);
-
-	std::tuple<int, int> dim(surfaceMessage->w, surfaceMessage->h);
-
-	SDL_FreeSurface(surfaceMessage);
-	return dim; 
-}
-
-Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
-	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
-	buttons->push_back(b);
-	return b; 
 }
 
 void GUI::RenderButtons() {
@@ -208,6 +189,98 @@ void GUI::RenderTextboxes() {
 	} 
 }
 
+void GUI::RenderCheckboxes() {	// TODO: Draw v-mark inside checkbox (if selected) to show its state
+	// Loop through all buttons
+	for (int i = 0; i < checkboxes->size(); i++) {
+		Checkbox* curr = (*checkboxes)[i];
+
+		if (!curr->GetDisplayState()) continue;
+
+		// Create checkbox rectangle data
+		SDL_Rect rect;
+		rect.w = curr->GetWidth();
+		rect.h = curr->GetHeight();
+		rect.x = curr->GetX();
+		rect.y = curr->GetY();
+
+		bool mHover = OnMouseHover(curr->GetX(), curr->GetY(), curr->GetWidth(), curr->GetHeight());
+
+		// If mouse doesn't hover over checkbox, default idle state
+		SDL_SetRenderDrawColor(targetRenderer, curr->GetColor().r, curr->GetColor().g, curr->GetColor().b, curr->GetColor().a);
+
+		// If mouse hovers over button and activates
+		if (mHover && leftMouseButtonPressedState) {
+			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
+			curr->SetState(!curr->IsChecked()); 
+			activeTextbox = NULL;
+		}
+		// If mouse hovers over
+		else if (mHover) {
+			if (!leftMouseButtonPressedLastState)
+				SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a);
+			else
+				SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
+		}
+
+		// Draw checkbox rectangle
+		SDL_RenderFillRect(targetRenderer, &rect);
+	}
+}
+
+void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize) {
+
+	// Create surface to render text on
+	SDL_Surface* surfaceMessage =
+		TTF_RenderText_Blended(font, text.c_str(), color);
+
+	// Convert to texture
+	SDL_Texture* message = SDL_CreateTextureFromSurface(targetRenderer, surfaceMessage);
+
+	// Create a rectangle/shape of the message texture
+	SDL_Rect message_rect;
+	message_rect.x = x;
+	message_rect.y = y;
+	message_rect.w = surfaceMessage->w;
+	message_rect.h = surfaceMessage->h;
+
+	// FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/*if (!SDL_SetRenderTarget(targetRenderer, previousFrame)) {
+		std::cout << SDL_GetError() << std::endl;
+	}*/
+	//SDL_RenderClear(targetRenderer); 
+	SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
+	//SDL_SetRenderTarget(targetRenderer, NULL); 
+	//SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
+
+	// Frees resources 
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(message);
+}
+
+void GUI::Render() {
+	UpdateMouseButtonState();
+	RenderLabels();
+	RenderButtons();
+	RenderTextboxes();
+	RenderCheckboxes();
+}
+
+// UTILITY METHODS 
+
+std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
+	// Text color
+	SDL_Color color = { 0, 0, 0 };
+
+	// Create surface to render text onto
+	SDL_Surface* surfaceMessage =
+		TTF_RenderText_Blended(font, text.c_str(), color);
+
+	std::tuple<int, int> dim(surfaceMessage->w, surfaceMessage->h);
+
+	SDL_FreeSurface(surfaceMessage);
+	return dim;
+}
+
 void GUI::CaptureInputText() {
 	if (!activeTextbox) return; 
 
@@ -278,13 +351,6 @@ bool GUI::ValidKey(int key) {
 	return false;
 }
 
-void GUI::Render() {
-	UpdateMouseButtonState(); 
-	RenderTextboxes(); 
-	RenderButtons();
-	RenderLabels();
-}
-
 bool GUI::OnMouseHover(int x, int y, int width, int height) {
 	int mX = 0, mY = 0;
 	SDL_GetMouseState(&mX, &mY);
@@ -320,21 +386,6 @@ TTF_Font* GUI::OpenFont(std::string fontUrl, int size) {
 		exit(0);
 	}
 	return font; 
-}
-
-void GUI::Init() {
-	TTF_Init();	// Initializes the SDL font library
-	
-	delta = SDL_GetTicks(); // Init milliseconds to be used for textbox input 
-	textboxCursorDelta = SDL_GetTicks(); // Init milliseconds to be used for textbox cursor blinking 
-
-	previousFrame = SDL_CreateTexture(targetRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1920, 1080);
-}
-
-Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
-	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
-	textboxes->push_back(tb); 
-	return tb; 
 }
 
 bool GUI::DeltaTimeHasPassed(int ms) {

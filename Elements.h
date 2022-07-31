@@ -112,7 +112,7 @@ class Label : public Elements {
 
 class Checkbox : public Elements {
 	public:
-		Checkbox(int x, int y, int width, int height);
+		Checkbox(int x, int y, int width, int height, bool defaultState);
 
 		// GET methods  
 		SDL_Color GetHoverColor();

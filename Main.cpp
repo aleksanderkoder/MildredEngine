@@ -27,6 +27,8 @@ int main(int argc, char* argv[]) {
     t->SetCharLimit(3); 
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 56);
 
+    Checkbox* cb = GUI::CreateCheckbox(400, 400, 50, 50); 
+
     SDL_Color color = { 0, 0, 0 };
 
     Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36, "fonts/comicz.ttf");
@@ -45,6 +47,13 @@ int main(int argc, char* argv[]) {
         if (h->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 
         }
+
+        if (cb->IsChecked()) {
+            std::cout << "Checked!" << std::endl; 
+            cb->SetState(false); 
+        }
+
+
         
         //Mildred::DisplayFPS(); 
         GUI::Render();
