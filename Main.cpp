@@ -49,8 +49,8 @@ int main(int argc, char* argv[]) {
         }
 
         if (cb->IsChecked()) {
-            std::cout << "Checked!" << std::endl; 
-            cb->SetState(false); 
+            //std::cout << "Checked!" << std::endl; 
+            //cb->SetState(false); 
         }
 
 

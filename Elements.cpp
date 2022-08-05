@@ -250,7 +250,7 @@ Checkbox::Checkbox(int x, int y, int width, int height, bool defaultState) {
 	this->checked = defaultState; 
 	SDL_Color c = { 0, 0, 0, 175 };
 	SDL_Color hc = { 25, 25, 25, 175 }; 
-	SDL_Color cC = { 3, 75, 3, 255 };
+	SDL_Color cC = { 255, 255, 255, 255 };
 	this->color = c; 
 	this->hoverColor = hc;
 	this->checkmarkColor = cC; 

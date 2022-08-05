@@ -190,7 +190,7 @@ void GUI::RenderTextboxes() {
 }
 
 void GUI::RenderCheckboxes() {	// TODO: Draw v-mark inside checkbox (if selected) to show its state
-	// Loop through all buttons
+	// Loop through all checkboxes
 	for (int i = 0; i < checkboxes->size(); i++) {
 		Checkbox* curr = (*checkboxes)[i];
 
@@ -224,6 +224,17 @@ void GUI::RenderCheckboxes() {	// TODO: Draw v-mark inside checkbox (if selected
 
 		// Draw checkbox rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
+
+		// Draw checkmark if checked 
+		if (curr->IsChecked()) {
+			rect.w = curr->GetWidth() - 30; 
+			rect.h = curr->GetHeight() - 30;
+			rect.x = curr->GetX() + 15;
+			rect.y = curr->GetY() + 15;
+
+			SDL_SetRenderDrawColor(targetRenderer, curr->GetCheckmarkColor().r, curr->GetCheckmarkColor().g, curr->GetCheckmarkColor().b, curr->GetCheckmarkColor().a); 
+			SDL_RenderFillRect(targetRenderer, &rect);
+		}
 	}
 }
 
