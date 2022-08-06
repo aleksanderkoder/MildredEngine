@@ -9,7 +9,7 @@ Uint32 GUI::delta, GUI::textboxCursorDelta;
 Textbox* GUI::activeTextbox = NULL; 
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
-GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = true;
+GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false;
 
 // LIBRARY SETUP METHODS
 
@@ -38,8 +38,8 @@ Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int 
 	return tb;
 }
 
-Checkbox* GUI::CreateCheckbox(int x, int y, int width, int height, bool defaultState) {
-	Checkbox* cb = new Checkbox(x, y, width, height, defaultState);
+Checkbox* GUI::CreateCheckbox(int x, int y, int size, bool defaultState) {
+	Checkbox* cb = new Checkbox(x, y, size, defaultState);
 	checkboxes->push_back(cb);
 	return cb;
 }
@@ -69,41 +69,51 @@ void GUI::RenderButtons() {
 
 		if (!curr->GetDisplayState()) continue;
 
+		// Get necessary data from current object
+		int height = curr->GetHeight(); 
+		int width = curr->GetWidth(); 
+		int x = curr->GetX(); 
+		int y = curr->GetY(); 
+		SDL_Color color = curr->GetColor(); 
+		SDL_Color hoverColor = curr->GetHoverColor(); 
+		TTF_Font* font = curr->GetFont(); 
+		std::string label = curr->GetLabel(); 
+
 		// Create button rectangle data
 		SDL_Rect rect;
-		rect.w = curr->GetWidth();
-		rect.h = curr->GetHeight();
-		rect.x = curr->GetX();
-		rect.y = curr->GetY();
+		rect.w = width;
+		rect.h = height; 
+		rect.x = x;
+		rect.y = y;
 
-		bool mHover = OnMouseHover(curr->GetX(), curr->GetY(), curr->GetWidth(), curr->GetHeight());
+		bool mHover = OnMouseHover(x, y, width, height);
 
 		// If mouse doesn't hover over button, default idle state
-		SDL_SetRenderDrawColor(targetRenderer, curr->GetColor().r, curr->GetColor().g, curr->GetColor().b, curr->GetColor().a);
+		SDL_SetRenderDrawColor(targetRenderer, color.r, color.g, color.b, color.a);
 		curr->SetPressedState(false);
 
 		// If mouse hovers over button and activates
 		if (mHover && leftMouseButtonPressedState) {
 			curr->SetPressedState(true); 
-			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
+			SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a - 75);
 			activeTextbox = NULL;
 		}
 		// If mouse hovers over
 		else if (mHover) {
 			if (!leftMouseButtonPressedLastState)
-				SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a);
+				SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a);
 			else 
-				SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
+				SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a - 75);
 		}
 
 		// Draw button rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
 
 		SDL_Color c = { 255, 255, 255 };
-		std::tuple<int, int> mesDim = GetTextDimensions(curr->GetLabel(), curr->GetFont());
+		std::tuple<int, int> mesDim = GetTextDimensions(label, font);
 
 		// Display button label
-		RenderLabel(curr->GetLabel(), curr->GetX() + curr->GetWidth() / 2 - std::get<0>(mesDim) / 2, curr->GetY() + curr->GetHeight() / 2 - std::get<1>(mesDim) / 2, c, curr->GetFont(), curr->GetFontSize());
+		RenderLabel(label, x + width / 2 - std::get<0>(mesDim) / 2, y + height / 2 - std::get<1>(mesDim) / 2, c, font, curr->GetFontSize());
 	}
 }
 
@@ -114,26 +124,38 @@ void GUI::RenderTextboxes() {
 
 		if (!curr->GetDisplayState()) continue;
 
+		// Get necessary data from current object
+		int height = curr->GetHeight();
+		int width = curr->GetWidth();
+		int x = curr->GetX();
+		int y = curr->GetY();
+		SDL_Color color = curr->GetColor();
+		SDL_Color hoverColor = curr->GetHoverColor();
+		TTF_Font* font = curr->GetFont();
+		int fontSize = curr->GetFontSize(); 
+		std::string value = curr->GetValue(); 
+		std::string placeholder = curr->GetPlaceholder(); 
+
 		// Create textbox rectangle data
 		SDL_Rect rect;
-		rect.w = curr->GetWidth();
-		rect.h = curr->GetHeight();
-		rect.x = curr->GetX();
-		rect.y = curr->GetY();
+		rect.w = width;
+		rect.h = height;
+		rect.x = x;
+		rect.y = y; 
 
-		bool mHover = OnMouseHover(curr->GetX(), curr->GetY(), curr->GetWidth(), curr->GetHeight());
+		bool mHover = OnMouseHover(x, y, width, height);
 
 		// If mouse doesn't hover over textbox, default idle state
-		SDL_SetRenderDrawColor(targetRenderer, curr->GetColor().r, curr->GetColor().g, curr->GetColor().b, curr->GetColor().a);
+		SDL_SetRenderDrawColor(targetRenderer, color.r, color.g, color.b, color.a);
 
 		// If mouse hovers over textbox and activates
 		if (mHover && leftMouseButtonPressedState) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a);
+			SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a);
 			activeTextbox = curr; 
 		}
 		// If mouse hovers over
 		else if (mHover) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a);
+			SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a);
 		}
 		
 		// Draw textbox rectangle
@@ -143,24 +165,24 @@ void GUI::RenderTextboxes() {
 		int lblX, lblY; 
 
 		// If no value, show placeholder
-		if (curr->GetValue().empty()) {
+		if (value.empty()) {
 			SDL_Color c = { 255, 255, 255, 150 };
-			txtDim = GetTextDimensions(curr->GetPlaceholder(), curr->GetFont());
-			lblX = curr->GetX() + curr->GetWidth() / 2 - std::get<0>(txtDim) / 2;
-			lblY = curr->GetY() + curr->GetHeight() / 2 - std::get<1>(txtDim) / 2;
+			txtDim = GetTextDimensions(placeholder, font);
+			lblX = x + width / 2 - std::get<0>(txtDim) / 2;
+			lblY = y + height / 2 - std::get<1>(txtDim) / 2;
 			
 			// Display textbox placeholder text
-			RenderLabel(curr->GetPlaceholder(), lblX, lblY, c, curr->GetFont(), curr->GetFontSize());
+			RenderLabel(placeholder, lblX, lblY, c, font, fontSize);
 		}
 		// If textbox has a user entered value, show that value in textbox
 		else {
 			SDL_Color c = { 255, 255, 255 };
-			txtDim = GetTextDimensions(curr->GetValue(), curr->GetFont());
-			lblX = curr->GetX() + curr->GetWidth() / 2 - std::get<0>(txtDim) / 2;
-			lblY = curr->GetY() + curr->GetHeight() / 2 - std::get<1>(txtDim) / 2;
+			txtDim = GetTextDimensions(value, font);
+			lblX = x + width / 2 - std::get<0>(txtDim) / 2;
+			lblY = y + height / 2 - std::get<1>(txtDim) / 2;
 
 			// Display textbox label
-			RenderLabel(curr->GetValue(), lblX, lblY, c, curr->GetFont(), curr->GetFontSize());
+			RenderLabel(value, lblX, lblY, c, font, fontSize);
 		}
 
 		// If there's an active textbox, toggle textbox cursor every 750 millisecond
@@ -177,9 +199,9 @@ void GUI::RenderTextboxes() {
 		{
 			rect;
 			rect.w = 2;
-			rect.h = curr->GetFontSize();
+			rect.h = fontSize;
 			rect.x = lblX + std::get<0>(txtDim);
-			rect.y = curr->GetY() + curr->GetHeight() / 2 - curr->GetFontSize() / 2;
+			rect.y = y + height / 2 - fontSize / 2;
 			SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 255);
 			SDL_RenderFillRect(targetRenderer, &rect);
 		}
@@ -194,43 +216,52 @@ void GUI::RenderCheckboxes() {	// TODO: Draw v-mark inside checkbox (if selected
 
 		if (!curr->GetDisplayState()) continue;
 
+		// Get necessary data from current object
+		int size = curr->GetSize();
+		int x = curr->GetX(); 
+		int y = curr->GetY(); 
+		bool checked = curr->IsChecked(); 
+		SDL_Color color = curr->GetColor(); 
+		SDL_Color checkmarkColor = curr->GetCheckmarkColor();
+		SDL_Color hoverColor = curr->GetHoverColor(); 
+
 		// Create checkbox rectangle data
 		SDL_Rect rect;
-		rect.w = curr->GetWidth();
-		rect.h = curr->GetHeight();
-		rect.x = curr->GetX();
-		rect.y = curr->GetY();
+		rect.w = size; 
+		rect.h = size; 
+		rect.x = x;
+		rect.y = y; 
 
-		bool mHover = OnMouseHover(curr->GetX(), curr->GetY(), curr->GetWidth(), curr->GetHeight());
+		bool mHover = OnMouseHover(x, y, size, size);
 
 		// If mouse doesn't hover over checkbox, default idle state
-		SDL_SetRenderDrawColor(targetRenderer, curr->GetColor().r, curr->GetColor().g, curr->GetColor().b, curr->GetColor().a);
+		SDL_SetRenderDrawColor(targetRenderer, color.r, color.g, color.b, color.a);
 
 		// If mouse hovers over button and activates
 		if (mHover && leftMouseButtonPressedState) {
-			SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
-			curr->SetState(!curr->IsChecked()); 
+			SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a - 75);
+			curr->SetState(!checked);
 			activeTextbox = NULL;
 		}
 		// If mouse hovers over
 		else if (mHover) {
 			if (!leftMouseButtonPressedLastState)
-				SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a);
+				SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a);
 			else
-				SDL_SetRenderDrawColor(targetRenderer, curr->GetHoverColor().r, curr->GetHoverColor().g, curr->GetHoverColor().b, curr->GetHoverColor().a - 75);
+				SDL_SetRenderDrawColor(targetRenderer, hoverColor.r, hoverColor.g, hoverColor.b, hoverColor.a - 75);
 		}
 
 		// Draw checkbox rectangle
 		SDL_RenderFillRect(targetRenderer, &rect);
 
 		// Draw checkmark if checked 
-		if (curr->IsChecked()) {
-			rect.w = curr->GetWidth() - 30; 
-			rect.h = curr->GetHeight() - 30;
-			rect.x = curr->GetX() + 15;
-			rect.y = curr->GetY() + 15;
+		if (checked) {
+			rect.w = size - size * 0.6;
+			rect.h = size - size * 0.6;
+			rect.x = x + size * 0.6 / 2;
+			rect.y = y + size * 0.6 / 2;
 
-			SDL_SetRenderDrawColor(targetRenderer, curr->GetCheckmarkColor().r, curr->GetCheckmarkColor().g, curr->GetCheckmarkColor().b, curr->GetCheckmarkColor().a); 
+			SDL_SetRenderDrawColor(targetRenderer, checkmarkColor.r, checkmarkColor.g, checkmarkColor.b, checkmarkColor.a);
 			SDL_RenderFillRect(targetRenderer, &rect);
 		}
 	}
@@ -276,6 +307,46 @@ void GUI::Render() {
 
 // UTILITY METHODS 
 
+void GUI::DrawCircle(int32_t centreX, int32_t centreY, int32_t radius)
+{
+	const int32_t diameter = (radius * 2);
+
+	int32_t x = (radius - 1);
+	int32_t y = 0;
+	int32_t tx = 1;
+	int32_t ty = 1;
+	int32_t error = (tx - diameter);
+
+	SDL_SetRenderDrawColor(targetRenderer, 0, 0, 0, 255); 
+
+	while (x >= y)
+	{
+		//  Each of the following renders an octant of the circle
+		SDL_RenderDrawPoint(targetRenderer, centreX + x, centreY - y);
+		SDL_RenderDrawPoint(targetRenderer, centreX + x, centreY + y);
+		SDL_RenderDrawPoint(targetRenderer, centreX - x, centreY - y);
+		SDL_RenderDrawPoint(targetRenderer, centreX - x, centreY + y);
+		SDL_RenderDrawPoint(targetRenderer, centreX + y, centreY - x);
+		SDL_RenderDrawPoint(targetRenderer, centreX + y, centreY + x);
+		SDL_RenderDrawPoint(targetRenderer, centreX - y, centreY - x);
+		SDL_RenderDrawPoint(targetRenderer, centreX - y, centreY + x);
+
+		if (error <= 0)
+		{
+			++y;
+			error += ty;
+			ty += 2;
+		}
+
+		if (error > 0)
+		{
+			--x;
+			tx += 2;
+			error += (tx - diameter);
+		}
+	}
+}
+
 std::tuple<int, int> GUI::GetTextDimensions(std::string text, TTF_Font* font) {
 	// Text color
 	SDL_Color color = { 0, 0, 0 };
@@ -298,21 +369,18 @@ void GUI::CaptureInputText() {
 	char key = NULL; 
 	Uint32 now = SDL_GetTicks(); 
 	const Uint8* keys = SDL_GetKeyboardState(&nK);
+	std::string value = activeTextbox->GetValue(); 
 
 	// Enable capital letters if capslock is pressed
-	if (keys[SDL_SCANCODE_CAPSLOCK] && DeltaTimeHasPassed(300)) {
-		if (capsLockEnabled)
-			capsLockEnabled = false;
-		else
-			capsLockEnabled = true;
-
-		UpdateDelta(now); 
+	if (keys[SDL_SCANCODE_CAPSLOCK] && now - delta >= 300) {
+		capsLockEnabled = !capsLockEnabled;
+		delta = now; 
 	}
 
 	// Delete last character from input string if backspace is pressed
-	if (keys[SDL_SCANCODE_BACKSPACE] && DeltaTimeHasPassed(110)) {
-		activeTextbox->SetValue(activeTextbox->GetValue().substr(0, activeTextbox->GetValue().size() - 1));
-		UpdateDelta(now);
+	if (keys[SDL_SCANCODE_BACKSPACE] && now - delta >= 110) {
+		activeTextbox->SetValue(value.substr(0, value.size() - 1));
+		delta = now; 
 
 		// Reset textbox cursor on key input
 		textboxCursorDelta = now;
@@ -321,7 +389,7 @@ void GUI::CaptureInputText() {
 	}
 
 	// If character limit has been reached, jump out 
-	if (activeTextbox->GetValue().length() >= activeTextbox->GetCharLimit()) return;
+	if (value.length() >= activeTextbox->GetCharLimit()) return;
 
 	for (int i = 0; i < nK; i++) {
 		if (keys[i] && ValidKey(i)) {
@@ -339,16 +407,16 @@ void GUI::CaptureInputText() {
 
 	// If pressed key is not the same as last key, then just print immediately 
 	if (key != lastPressedKey && key) {
-		activeTextbox->SetValue(activeTextbox->GetValue() += key);
+		activeTextbox->SetValue(value += key);
 		lastPressedKey = key;
-		UpdateDelta(now);
+		delta = now; 
 	}
 	// If same key, check if enough time has passed since last key press. 
 	// If enough time has passed, print pressed key
-	else if (DeltaTimeHasPassed(200) && key) {
-		activeTextbox->SetValue(activeTextbox->GetValue() += key);
+	else if (now - delta >= 200 && key) {
+		activeTextbox->SetValue(value += key);
 		lastPressedKey = key;
-		UpdateDelta(now);
+		delta = now; 
 	}
 }
 
@@ -395,16 +463,4 @@ TTF_Font* GUI::OpenFont(std::string fontUrl, int size) {
 		exit(0);
 	}
 	return font; 
-}
-
-bool GUI::DeltaTimeHasPassed(int ms) {
-	Uint32 now = SDL_GetTicks();
-	if (now - delta >= ms) {
-		return true;
-	}
-	return false; 
-}
-
-void GUI::UpdateDelta(Uint32 now) {
-	delta = now; 
 }

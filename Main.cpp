@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     t->SetCharLimit(3); 
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 56);
 
-    Checkbox* cb = GUI::CreateCheckbox(400, 400, 50, 50); 
+    Checkbox* cb = GUI::CreateCheckbox(400, 400, 30); 
 
     SDL_Color color = { 0, 0, 0 };
 
@@ -43,6 +43,7 @@ int main(int argc, char* argv[]) {
         /*Mildred::DrawMapBoundaries();
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();*/
+        //GUI::DrawCircle(400, 400, 100); 
 
         if (h->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 

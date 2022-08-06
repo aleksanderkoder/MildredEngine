@@ -241,11 +241,10 @@ void Label::SetFont(std::string fontPath) {
 
 // CHECKBOX
 
-Checkbox::Checkbox(int x, int y, int width, int height, bool defaultState) {
+Checkbox::Checkbox(int x, int y, int size, bool defaultState) {
 	this->x = x;
 	this->y = y;
-	this->width = width; 
-	this->height = height; 
+	this->size = size; 
 	this->display = true;
 	this->checked = defaultState; 
 	SDL_Color c = { 0, 0, 0, 175 };
@@ -264,12 +263,8 @@ SDL_Color Checkbox::GetCheckmarkColor() {
 	return this->checkmarkColor;
 }
 
-int Checkbox::GetWidth() {
-	return this->width;
-}
-
-int Checkbox::GetHeight() {
-	return this->height;
+int Checkbox::GetSize() {
+	return this->size; 
 }
 
 void Checkbox::SetHoverColor(SDL_Color* color) {
@@ -280,12 +275,8 @@ void Checkbox::SetCheckmarkColor(SDL_Color* color) {
 	this->checkmarkColor = *color;
 }
 
-void Checkbox::SetWidth(int width) {
-	this->width = width;
-}
-
-void Checkbox::SetHeight(int height) {
-	this->height = height;
+void Checkbox::SetSize(int size) {
+	this->size = size; 
 }
 
 void Checkbox::SetState(bool state) {

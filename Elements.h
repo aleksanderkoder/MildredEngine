@@ -112,26 +112,24 @@ class Label : public Elements {
 
 class Checkbox : public Elements {
 	public:
-		Checkbox(int x, int y, int width, int height, bool defaultState);
+		Checkbox(int x, int y, int size, bool defaultState);
 
 		// GET methods  
 		SDL_Color GetHoverColor();
 		SDL_Color GetCheckmarkColor(); 
-		int GetWidth();
-		int GetHeight();
+		int GetSize(); 
 
 		// SET methods 
 		void SetHoverColor(SDL_Color* color);
 		void SetCheckmarkColor(SDL_Color* color); 
-		void SetWidth(int width);
-		void SetHeight(int height);
 		void SetState(bool state);
+		void SetSize(int size); 
 
 		// Utility methods 
 		bool IsChecked(); 
 
 	private:
-		int width, height; 
+		int size; 
 		bool checked; 
 		SDL_Color checkmarkColor, hoverColor; 
 };
