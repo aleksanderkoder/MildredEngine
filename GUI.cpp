@@ -100,12 +100,10 @@ void GUI::RenderButtons() {
 		SDL_RenderFillRect(targetRenderer, &rect);
 
 		SDL_Color c = { 255, 255, 255 };
-		//TTF_Font* font = OpenFont(currentFont, curr->GetFontSize()); 
 		std::tuple<int, int> mesDim = GetTextDimensions(curr->GetLabel(), curr->GetFont());
 
 		// Display button label
 		RenderLabel(curr->GetLabel(), curr->GetX() + curr->GetWidth() / 2 - std::get<0>(mesDim) / 2, curr->GetY() + curr->GetHeight() / 2 - std::get<1>(mesDim) / 2, c, curr->GetFont(), curr->GetFontSize());
-		//TTF_CloseFont(font);
 	}
 }
 
@@ -177,13 +175,13 @@ void GUI::RenderTextboxes() {
 		// If active textbox is the current textbox and timing is right, draw cursor on textbox
 		if (activeTextbox == curr && drawTextBoxCursor)
 		{
-			SDL_Rect cursorRect;
-			cursorRect.w = 2;
-			cursorRect.h = curr->GetFontSize();
-			cursorRect.x = lblX + std::get<0>(txtDim);
-			cursorRect.y = curr->GetY() + curr->GetHeight() / 2 - curr->GetFontSize() / 2;
+			rect;
+			rect.w = 2;
+			rect.h = curr->GetFontSize();
+			rect.x = lblX + std::get<0>(txtDim);
+			rect.y = curr->GetY() + curr->GetHeight() / 2 - curr->GetFontSize() / 2;
 			SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 255);
-			SDL_RenderFillRect(targetRenderer, &cursorRect);
+			SDL_RenderFillRect(targetRenderer, &rect);
 		}
 		CaptureInputText(); 
 	} 
