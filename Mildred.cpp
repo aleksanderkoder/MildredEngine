@@ -50,10 +50,9 @@ void Mildred::CreateWindow(std::string title, int width, int height) {
 
 void Mildred::CreateRenderer(int graphicsDeviceIndex) {
 	// NOTE: Remove SDL_RENDERER_PRESENTVSYNC flag to turn off v-sync
-	//  | SDL_RENDERER_PRESENTVSYNC
-	renderer = SDL_CreateRenderer(window, graphicsDeviceIndex, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, graphicsDeviceIndex, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	// To enable aplha channel on draw calls
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND); 
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "BEST"); 
 }
 
@@ -92,6 +91,10 @@ void Mildred::DrawMapBoundaries() {
 
 SDL_Renderer* Mildred::GetRenderer() {
 	return renderer;
+}
+
+SDL_Window* Mildred::GetWindow() {
+	return window; 
 }
 
 void Mildred::HandleUserInput() {

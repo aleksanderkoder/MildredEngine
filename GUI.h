@@ -7,11 +7,11 @@
 class GUI
 {
 	public:
-		// PUBLIC METHODS 
-		static void SetRenderTarget(SDL_Renderer* r);
-		static Label* CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/arial.ttf");
-		static Button* CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/arial.ttf");
-		static Textbox* CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/arial.ttf");
+		// Public methods 
+		static void SetRenderTarget(SDL_Renderer* renderer);
+		static Label* CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/CascadiaCode.ttf");
+		static Button* CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/CascadiaCode.ttf");
+		static Textbox* CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/CascadiaCode.ttf");
 		static Checkbox* CreateCheckbox(int x, int y, int size, bool defaultState = false);
 		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);
 		static void Render();
@@ -19,27 +19,27 @@ class GUI
 		static void DrawCircle(int32_t centreX, int32_t centreY, int32_t radius); 
 		
 	private:
-		// GENERAL LIBRARY DATA 
+		// General library data 
 		static SDL_Renderer* targetRenderer;
-		static bool leftMouseButtonPressedState, leftMouseButtonPressedLastState; 
+		static bool leftMouseButtonPressedState, leftMouseButtonPressedLastState, rerender; 
 
-		//	BUTTONS - Related data 
+		//	BUTTON - Related data 
 		static std::vector<Button*>* buttons;
 
-		// TEXTBOXES - Related data  
+		// TEXTBOX - Related data  
 		static std::vector<Textbox*>* textboxes;
 		static Textbox* activeTextbox;
 		static Uint32 textboxCursorDelta, delta;
 		static char lastPressedKey; 
 		static bool drawTextBoxCursor, capsLockEnabled;
 
-		// LABELS - Related data 
+		// LABEL - Related data 
 		static std::vector<Label*>* labels;
 
-		// CHECKBOXES - Related data 
+		// CHECKBOX - Related data 
 		static std::vector<Checkbox*>* checkboxes;
 
-		// PRIVATE METHODS 
+		// Private methods  
 		static TTF_Font* OpenFont(std::string fontUrl, int size);
 		static std::tuple<int, int> GetTextDimensions(std::string text, TTF_Font* font); 
 		static bool OnMouseHover(int x, int y, int width, int height);

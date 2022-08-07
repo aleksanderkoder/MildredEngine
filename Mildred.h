@@ -33,6 +33,7 @@ class Mildred {
 		static void CreateMapBoundary(int x, int y, int endX, int endY, std::string textureName);
 		static void DrawMapBoundaries();
 		static SDL_Renderer* GetRenderer();
+		static SDL_Window* GetWindow(); 
 		static void HandleUserInput();
 		static void RenderWallSlice(double* lineCollisionPointer, int drawPoint, double rayAngleRad, int lineLenght, int lineStartX, int lineStartY, std::string textureName);
 		static void CastRays(); 

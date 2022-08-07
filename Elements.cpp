@@ -1,6 +1,6 @@
 #include "Elements.h"
 
-// Elements - Common methods for every element type
+// ELEMENTS - Common methods for every element type
 
 int Elements::GetX() {
 	return this->x; 

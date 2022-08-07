@@ -9,7 +9,7 @@ Uint32 GUI::delta, GUI::textboxCursorDelta;
 Textbox* GUI::activeTextbox = NULL; 
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
-GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false;
+GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = false;
 
 // LIBRARY SETUP METHODS
 
@@ -20,8 +20,8 @@ void GUI::Init() {
 	textboxCursorDelta = SDL_GetTicks(); // Init milliseconds to be used for textbox cursor blinking 
 }
 
-void GUI::SetRenderTarget(SDL_Renderer* r) {
-	targetRenderer = r; 
+void GUI::SetRenderTarget(SDL_Renderer* renderer) {
+	targetRenderer = renderer; 
 }
 
 // ELEMENT CREATION METHODS 

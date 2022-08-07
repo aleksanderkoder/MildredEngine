@@ -44,6 +44,28 @@ int main(int argc, char* argv[]) {
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();*/
         //GUI::DrawCircle(400, 400, 100); 
+GUI::Render();
+        // Example of how to render to texture!
+        SDL_Texture* tex = SDL_CreateTexture(Mildred::GetRenderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, 500, 500);
+        SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND); 
+        SDL_SetRenderTarget(Mildred::GetRenderer(), tex);
+        Mildred::SetRenderDrawColor(255, 255, 255, 0);
+        SDL_RenderClear(Mildred::GetRenderer()); 
+        SDL_SetRenderDrawColor(Mildred::GetRenderer(), 0, 255, 0, 255); 
+        SDL_RenderDrawLine(Mildred::GetRenderer(), 20, 20, 100, 100); 
+        SDL_Rect rect; 
+        rect.w = 500; 
+        rect.h = 500;
+        rect.x = 0;
+        rect.y = 0; 
+        SDL_SetRenderTarget(Mildred::GetRenderer(), NULL); 
+        Mildred::SetRenderDrawColor(255, 255, 255, 255);
+        SDL_RenderCopy(Mildred::GetRenderer(), tex, NULL, &rect);
+        
+        SDL_DestroyTexture(tex); 
+        
+
+
 
         if (h->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 
@@ -54,10 +76,8 @@ int main(int argc, char* argv[]) {
             //cb->SetState(false); 
         }
 
-
-        
         //Mildred::DisplayFPS(); 
-        GUI::Render();
+        
         Mildred::RenderPresent(); 
     }
    
