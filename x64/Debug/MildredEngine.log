@@ -1,15 +1,6 @@
-﻿  Mildred.cpp
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(127,44): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(139,12): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(140,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(142,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(154,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(156,40): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(156,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(173,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,88): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,77): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(195,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+﻿  GUI.cpp
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(265,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(266,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(267,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(268,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   MildredEngine.vcxproj -> C:\Users\neon1\Documents\MildredEngine\x64\Debug\MildredEngine.exe

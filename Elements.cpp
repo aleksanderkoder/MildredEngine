@@ -14,25 +14,39 @@ SDL_Color Elements::GetColor() {
 	return this->color;
 }
 
+std::string Elements::GetPage() {
+	return this->page; 
+}
+
 void Elements::SetPosition(int x, int y) {
 	this->x = x;
 	this->y = y; 
+	GUI::Rerender(); 
 }
 
 void Elements::SetColor(SDL_Color* color) {
-	this->color = *color; 
+	this->color = *color;
+	GUI::Rerender();
+}
+
+void Elements::SetPage(std::string name) {
+	this->page = name;
+	GUI::Rerender();
 }
 
 bool Elements::GetDisplayState() {
 	return this->display; 
 }
 
+
 void Elements::Show() {
-	this->display = true; 
+	this->display = true;
+	GUI::Rerender();
 }
 
 void Elements::Hide() {
-	this->display = false; 
+	this->display = false;
+	GUI::Rerender();
 }
 
 // BUTTON
@@ -55,6 +69,7 @@ Button::Button(std::string label, int width, int height, int x, int y, int fontS
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
+	GUI::Rerender();
 }
 
 std::string Button::GetLabel() {
@@ -83,27 +98,33 @@ TTF_Font* Button::GetFont() {
 
 void Button::SetFont(std::string fontPath) {
 	this->font = TTF_OpenFont(fontPath.c_str(), this->fontSize);
+	GUI::Rerender();
 }
 
 void Button::SetLabel(std::string label) {
 	this->label = label;
+	GUI::Rerender();
 }
 
 void Button::SetHoverColor(SDL_Color* color) {
 	this->hoverColor = *color; 
+	GUI::Rerender();
 }
 
 void Button::SetWidth(int width) {
 	this->width = width; 
+	GUI::Rerender();
 }
 
 void Button::SetHeight(int height) {
 	this->height = height; 
+	GUI::Rerender();
 }
 
 void Button::SetDimensions(int width, int height) {
 	this->width = width;
 	this->height = height;
+	GUI::Rerender();
 }
 
 bool Button::IsPressed() {
@@ -112,6 +133,7 @@ bool Button::IsPressed() {
 
 void Button::SetPressedState(bool state) {
 	this->pressed = state; 
+	GUI::Rerender();
 }
 
 // TEXTBOX
@@ -135,6 +157,7 @@ Textbox::Textbox(std::string placeholder, int width, int height, int x, int y, i
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
+	GUI::Rerender();
 }
 
 std::string Textbox::GetPlaceholder() {
@@ -171,35 +194,42 @@ TTF_Font* Textbox::GetFont() {
 
 void Textbox::SetPlaceholder(std::string placeholder) {
 	this->placeholder = placeholder; 
+	GUI::Rerender();
 }
 
 void Textbox::SetValue(std::string value) {
 	this->value = value; 
+	GUI::Rerender();
 }
 
 void Textbox::SetWidth(int width) {
 	this->width = width; 
+	GUI::Rerender();
 }
 
 void Textbox::SetHeight(int height) {
 	this->height = height; 
+	GUI::Rerender();
 }
 
 void Textbox::SetDimensions(int width, int height) {
 	this->width = width; 
 	this->height = height; 
+	GUI::Rerender();
 }
 
 void Textbox::SetFont(std::string fontPath) {
 	this->font = TTF_OpenFont(fontPath.c_str(), this->fontSize);
+	GUI::Rerender();
 }
 
 void Textbox::SetHoverColor(SDL_Color* color) {
 	this->hoverColor = *color; 
+	GUI::Rerender();
 }
 
 void Textbox::SetCharLimit(int limit) {
-	this->charLimit = limit; 
+	this->charLimit = limit;
 }
 
 // LABEL
@@ -217,6 +247,7 @@ Label::Label(std::string text, int x, int y, SDL_Color color, int fontSize, std:
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
+	GUI::Rerender();
 }
 
 std::string Label::GetText() {
@@ -233,10 +264,12 @@ TTF_Font* Label::GetFont() {
 
 void Label::SetText(std::string text) {
 	this->text = text; 
+	GUI::Rerender();
 }
 
 void Label::SetFont(std::string fontPath) {
 	this->font = TTF_OpenFont(fontPath.c_str(), this->fontSize);
+	GUI::Rerender();
 }
 
 // CHECKBOX
@@ -252,7 +285,9 @@ Checkbox::Checkbox(int x, int y, int size, bool defaultState) {
 	SDL_Color cC = { 255, 255, 255, 255 };
 	this->color = c; 
 	this->hoverColor = hc;
-	this->checkmarkColor = cC; 
+	this->checkmarkColor = cC;
+
+	GUI::Rerender();
 }
 
 SDL_Color Checkbox::GetHoverColor() {
@@ -269,18 +304,22 @@ int Checkbox::GetSize() {
 
 void Checkbox::SetHoverColor(SDL_Color* color) {
 	this->hoverColor = *color;
+	GUI::Rerender();
 }
 
 void Checkbox::SetCheckmarkColor(SDL_Color* color) {
 	this->checkmarkColor = *color;
+	GUI::Rerender();
 }
 
 void Checkbox::SetSize(int size) {
 	this->size = size; 
+	GUI::Rerender();
 }
 
 void Checkbox::SetState(bool state) {
 	this->checked = state;
+	GUI::Rerender();
 }
 
 bool Checkbox::IsChecked() {
@@ -304,6 +343,8 @@ Slider::Slider(int x, int y, int width, int height, int thumbWidth, int thumbHei
 	this->color = c;
 	this->hoverColor = hc;
 	this->thumbColor = tC;
+
+	GUI::Rerender();
 }
 
 // TODO: Continue class implementation

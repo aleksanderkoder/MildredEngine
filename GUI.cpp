@@ -10,11 +10,18 @@ Textbox* GUI::activeTextbox = NULL;
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
 GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = false;
+int GUI::viewWidth = 0, GUI::viewHeight = 0; 
+SDL_Texture* GUI::snapshotFrame = NULL;
+std::string currentPage; 
 
 // LIBRARY SETUP METHODS
 
-void GUI::Init() {
+void GUI::Setup(int viewWidth, int viewHeight) {
 	TTF_Init();	// Initializes the SDL font library
+
+	// To be used for creating frame snapshots
+	viewWidth = viewWidth; 
+	viewHeight = viewHeight;
 
 	delta = SDL_GetTicks(); // Init milliseconds to be used for textbox input 
 	textboxCursorDelta = SDL_GetTicks(); // Init milliseconds to be used for textbox cursor blinking 
@@ -256,10 +263,10 @@ void GUI::RenderCheckboxes() {	// TODO: Draw v-mark inside checkbox (if selected
 
 		// Draw checkmark if checked 
 		if (checked) {
-			rect.w = size - size * 0.6;
-			rect.h = size - size * 0.6;
-			rect.x = x + size * 0.6 / 2;
-			rect.y = y + size * 0.6 / 2;
+			rect.w = size - size * 0.6f;
+			rect.h = size - size * 0.6f;
+			rect.x = x + size * 0.6f / 2;
+			rect.y = y + size * 0.6f / 2;
 
 			SDL_SetRenderDrawColor(targetRenderer, checkmarkColor.r, checkmarkColor.g, checkmarkColor.b, checkmarkColor.a);
 			SDL_RenderFillRect(targetRenderer, &rect);
@@ -283,14 +290,7 @@ void GUI::RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font*
 	message_rect.w = surfaceMessage->w;
 	message_rect.h = surfaceMessage->h;
 
-	// FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	/*if (!SDL_SetRenderTarget(targetRenderer, previousFrame)) {
-		std::cout << SDL_GetError() << std::endl;
-	}*/
-	//SDL_RenderClear(targetRenderer); 
 	SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
-	//SDL_SetRenderTarget(targetRenderer, NULL); 
-	//SDL_RenderCopy(targetRenderer, message, NULL, &message_rect);
 
 	// Frees resources 
 	SDL_FreeSurface(surfaceMessage);
@@ -463,4 +463,45 @@ TTF_Font* GUI::OpenFont(std::string fontUrl, int size) {
 		exit(0);
 	}
 	return font; 
+}
+
+void GUI::prepareNewSnapshotFrame() {
+	// Destroy old snapshot frame
+	/*SDL_DestroyTexture(snapshotFrame);*/
+
+	// Create texture
+	snapshotFrame = SDL_CreateTexture(targetRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, viewWidth, viewHeight);
+	SDL_SetTextureBlendMode(snapshotFrame, SDL_BLENDMODE_BLEND);
+
+	// Give drawing focus to texture
+	SDL_SetRenderTarget(targetRenderer, snapshotFrame);
+
+	// Clear texture
+	SDL_SetRenderDrawColor(targetRenderer, 255, 255, 255, 0);
+	SDL_RenderClear(targetRenderer);
+}
+
+void GUI::finalizeNewSnapshotFrame() {
+	/*SDL_SetRenderDrawColor(Mildred::GetRenderer(), 0, 255, 0, 255);
+	SDL_RenderDrawLine(Mildred::GetRenderer(), 20, 20, 100, 100);*/
+	SDL_Rect rect;
+	rect.w = viewWidth;
+	rect.h = viewHeight;
+	rect.x = 0;
+	rect.y = 0;
+
+	// Return drawing focus to screen 
+	SDL_SetRenderTarget(targetRenderer, NULL);
+	//Mildred::SetRenderDrawColor(255, 255, 255, 255);
+	// Draw texture to screen
+	SDL_RenderCopy(targetRenderer, snapshotFrame, NULL, &rect);
+
+}
+
+void GUI::SwitchPage(std::string name) {
+	currentPage = name; 
+}
+
+void GUI::Rerender() {
+	rerender = true; 
 }

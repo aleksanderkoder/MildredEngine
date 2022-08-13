@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
 
-    GUI::Init(); 
+    GUI::Setup(1920, 1080); 
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
     Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45, "fonts/comicz.ttf");
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         Mildred::CastRays(); 
         Mildred::player->DrawPlayerOnMinimap();*/
         //GUI::DrawCircle(400, 400, 100); 
-GUI::Render();
+
         // Example of how to render to texture!
         SDL_Texture* tex = SDL_CreateTexture(Mildred::GetRenderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, 500, 500);
         SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND); 
@@ -66,7 +66,6 @@ GUI::Render();
         
 
 
-
         if (h->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 
         }
@@ -77,7 +76,7 @@ GUI::Render();
         }
 
         //Mildred::DisplayFPS(); 
-        
+        GUI::Render();
         Mildred::RenderPresent(); 
     }
    

@@ -3,6 +3,7 @@
 #include "Mildred.h"
 #include "Elements.h"
 #include <tuple>
+#include "SDL_ttf.h"
 
 class GUI
 {
@@ -15,15 +16,20 @@ class GUI
 		static Checkbox* CreateCheckbox(int x, int y, int size, bool defaultState = false);
 		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);
 		static void Render();
-		static void Init();
+		static void Setup(int viewWidth, int viewHeight);
 		static void DrawCircle(int32_t centreX, int32_t centreY, int32_t radius); 
+		static void SwitchPage(std::string name);	// TODO: Make rendering respect current page
+		static void Rerender(); 
 		
 	private:
 		// General library data 
 		static SDL_Renderer* targetRenderer;
 		static bool leftMouseButtonPressedState, leftMouseButtonPressedLastState, rerender; 
+		static int viewWidth, viewHeight; 
+		static SDL_Texture* snapshotFrame; 
+		static std::string currentPage; 
 
-		//	BUTTON - Related data 
+		// BUTTON - Related data 
 		static std::vector<Button*>* buttons;
 
 		// TEXTBOX - Related data  
@@ -40,6 +46,8 @@ class GUI
 		static std::vector<Checkbox*>* checkboxes;
 
 		// Private methods  
+		static void prepareNewSnapshotFrame(); 
+		static void finalizeNewSnapshotFrame(); 
 		static TTF_Font* OpenFont(std::string fontUrl, int size);
 		static std::tuple<int, int> GetTextDimensions(std::string text, TTF_Font* font); 
 		static bool OnMouseHover(int x, int y, int width, int height);

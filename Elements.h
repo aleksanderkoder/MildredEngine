@@ -1,7 +1,6 @@
 #pragma once
-#include <string>
 #include "SDL.h"
-#include <SDL_ttf.h>
+#include "GUI.h"
 
 class Elements
 {
@@ -9,6 +8,7 @@ class Elements
 		int x, y;
 		SDL_Color color;
 		bool display; 
+		std::string page; 
 
 	public:
 		// GET methods 
@@ -16,10 +16,12 @@ class Elements
 		int GetY();
 		SDL_Color GetColor();
 		bool GetDisplayState(); 
+		std::string GetPage(); 
 
 		// SET methods 
 		void SetPosition(int x, int y);
 		void SetColor(SDL_Color* color); 
+		void SetPage(std::string name); 
 
 		// Utility methods
 		void Show(); 
