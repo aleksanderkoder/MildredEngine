@@ -2,24 +2,33 @@
 
 #include "Mildred.h"
 #include "Elements.h"
+#include "Page.h"
 #include <tuple>
 #include "SDL_ttf.h"
 
 class GUI
 {
 	public:
-		// Public methods 
+		// Library setup methods 
+		static void Setup(int viewWidth, int viewHeight);
 		static void SetRenderTarget(SDL_Renderer* renderer);
+
+		// Element creation methods 
 		static Label* CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize = 12, std::string fontPath = "fonts/CascadiaCode.ttf");
 		static Button* CreateButton(std::string label, int width, int height, int x, int y, int fontSize = 12, std::string fontPath = "fonts/CascadiaCode.ttf");
 		static Textbox* CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize = 12, int limit = 25, std::string fontPath = "fonts/CascadiaCode.ttf");
 		static Checkbox* CreateCheckbox(int x, int y, int size, bool defaultState = false);
+		
+		// Page related methods 
+		static Page* CreatePage(); 
+		static void DeletePage(Page* page);
+		static void SwitchPage(Page* page);	// TODO: Make rendering respect current page 
+		
+		// Library utility methods 
 		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);
-		static void Render();
-		static void Setup(int viewWidth, int viewHeight);
 		static void DrawCircle(int32_t centreX, int32_t centreY, int32_t radius); 
-		static void SwitchPage(std::string name);	// TODO: Make rendering respect current page
-		static void Rerender(); 
+		static void Render();
+		static void Rerender(); // TODO: Only render new frame texture when rerender bool is true!
 		
 	private:
 		// General library data 
@@ -27,23 +36,17 @@ class GUI
 		static bool leftMouseButtonPressedState, leftMouseButtonPressedLastState, rerender; 
 		static int viewWidth, viewHeight; 
 		static SDL_Texture* snapshotFrame; 
-		static std::string currentPage; 
+		
 
-		// BUTTON - Related data 
-		static std::vector<Button*>* buttons;
+		// PAGES - Related data 
+		static std::vector<Page*>* pages; 
+		static Page* currentPage; 
 
 		// TEXTBOX - Related data  
-		static std::vector<Textbox*>* textboxes;
 		static Textbox* activeTextbox;
 		static Uint32 textboxCursorDelta, delta;
 		static char lastPressedKey; 
 		static bool drawTextBoxCursor, capsLockEnabled;
-
-		// LABEL - Related data 
-		static std::vector<Label*>* labels;
-
-		// CHECKBOX - Related data 
-		static std::vector<Checkbox*>* checkboxes;
 
 		// Private methods  
 		static void prepareNewSnapshotFrame(); 

@@ -1,9 +1,5 @@
 #include "GUI.h"
 
-std::vector<Button*>* GUI::buttons = new std::vector<Button*>();
-std::vector<Textbox*>* GUI::textboxes = new std::vector<Textbox*>();
-std::vector<Label*>* GUI::labels = new std::vector<Label*>();
-std::vector<Checkbox*>* GUI::checkboxes = new std::vector<Checkbox*>(); 
 SDL_Renderer* GUI::targetRenderer;
 Uint32 GUI::delta, GUI::textboxCursorDelta;
 Textbox* GUI::activeTextbox = NULL; 
@@ -12,7 +8,7 @@ bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastSt
 GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = false;
 int GUI::viewWidth = 0, GUI::viewHeight = 0; 
 SDL_Texture* GUI::snapshotFrame = NULL;
-std::string currentPage; 
+Page* currentPage; 
 
 // LIBRARY SETUP METHODS
 
@@ -35,29 +31,26 @@ void GUI::SetRenderTarget(SDL_Renderer* renderer) {
 
 Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
 	Label* lbl = new Label(text, x, y, color, fontSize, fontPath);
-	labels->push_back(lbl);
 	return lbl;
 }
 
 Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
 	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
-	textboxes->push_back(tb);
 	return tb;
 }
 
 Checkbox* GUI::CreateCheckbox(int x, int y, int size, bool defaultState) {
 	Checkbox* cb = new Checkbox(x, y, size, defaultState);
-	checkboxes->push_back(cb);
 	return cb;
 }
 
 Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
 	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
-	buttons->push_back(b);
 	return b;
 }
 
 // ELEMENT RENDERING METHODS 
+	// TODO: Make this render elements taken from pages!
 
 void GUI::RenderLabels() {
 	for (int i = 0; i < labels->size(); i++) {
@@ -67,7 +60,7 @@ void GUI::RenderLabels() {
 			
 		RenderLabel(curr->GetText(), curr->GetX(), curr->GetY(), curr->GetColor(), curr->GetFont(), curr->GetFontSize());
 	}
-}
+}	
 
 void GUI::RenderButtons() {
 	// Loop through all buttons
@@ -305,6 +298,18 @@ void GUI::Render() {
 	RenderCheckboxes();
 }
 
+// PAGES 
+
+Page* GUI::CreatePage() {
+	Page* page = new Page(); 
+	pages->push_back(page); 
+	return page; 
+}
+
+void GUI::DeletePage(Page* page) {	// TODO: Implement this!
+
+}
+
 // UTILITY METHODS 
 
 void GUI::DrawCircle(int32_t centreX, int32_t centreY, int32_t radius)
@@ -498,8 +503,8 @@ void GUI::finalizeNewSnapshotFrame() {
 
 }
 
-void GUI::SwitchPage(std::string name) {
-	currentPage = name; 
+void GUI::SwitchPage(Page* page) {
+	currentPage = page; 
 }
 
 void GUI::Rerender() {

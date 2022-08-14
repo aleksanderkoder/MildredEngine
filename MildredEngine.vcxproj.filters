@@ -42,6 +42,9 @@
     <ClCompile Include="Elements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Page.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mildred.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Elements.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Page.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
