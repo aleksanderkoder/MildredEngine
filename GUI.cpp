@@ -2,18 +2,19 @@
 
 SDL_Renderer* GUI::targetRenderer;
 Uint32 GUI::delta, GUI::textboxCursorDelta;
-Textbox* GUI::activeTextbox = NULL; 
+Textbox* GUI::activeTextbox; 
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
 GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = false;
 int GUI::viewWidth = 0, GUI::viewHeight = 0; 
-SDL_Texture* GUI::snapshotFrame = NULL;
-Page* GUI::currentPage = NULL; 
+SDL_Texture* GUI::snapshotFrame;
+Page* GUI::currentPage; 
 
 // LIBRARY SETUP METHODS
 
-void GUI::Setup(int viewWidth, int viewHeight) {
+void GUI::Setup(int viewWidth, int viewHeight, SDL_Renderer* renderer) {
 	TTF_Init();	// Initializes the SDL font library
+	targetRenderer = renderer;
 
 	// To be used for creating frame snapshots
 	viewWidth = viewWidth; 
@@ -54,6 +55,7 @@ Button* GUI::CreateButton(std::string label, int width, int height, int x, int y
 
 void GUI::RenderLabels() {
 	auto labels = currentPage->GetLabels();
+	// Loop through all labels
 	for (int i = 0; i < labels->size(); i++) {
 		Label* curr = (*labels)[i];
 
@@ -309,12 +311,13 @@ Page* GUI::CreatePage() {
 	return page; 
 }
 
-void GUI::DeletePage(Page* page) {	// TODO: Implement this!
-	 
+void GUI::DeletePage(Page* page) {	
+	delete page; 
 }
 
-void GUI::SetPage(Page* page) {
+void GUI::DisplayPage(Page* page) {
 	currentPage = page;
+	rerender = true; 
 }
 
 // UTILITY METHODS 

@@ -10,7 +10,7 @@ class GUI
 {
 	public:
 		// Library setup methods 
-		static void Setup(int viewWidth, int viewHeight);
+		static void Setup(int viewWidth, int viewHeight, SDL_Renderer* targetRenderer = NULL);
 		static void SetRenderTarget(SDL_Renderer* renderer);
 
 		// Element creation methods 
@@ -22,7 +22,7 @@ class GUI
 		// Page related methods 
 		static Page* CreatePage(); 
 		static void DeletePage(Page* page);
-		static void SetPage(Page* page);	// TODO: Make rendering respect current page 
+		static void DisplayPage(Page* page); 
 		
 		// Library utility methods 
 		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);

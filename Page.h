@@ -13,15 +13,15 @@ class Page
 	public: 
 		Page(); 
 
-		void Add(Button* button); 
-		void Add(Label* label);
-		void Add(Checkbox* checkbox);
-		void Add(Textbox* textbox);
+		void AddElement(Button* button);
+		void AddElement(Label* label);
+		void AddElement(Checkbox* checkbox);
+		void AddElement(Textbox* textbox);
 
-		void Remove(Button* button);
-		void Remove(Label* label);
-		void Remove(Checkbox* checkbox);
-		void Remove(Textbox* textbox);
+		void RemoveElement(Button* button);
+		void RemoveElement(Label* label);
+		void RemoveElement(Checkbox* checkbox);
+		void RemoveElement(Textbox* textbox);
 
 		std::vector<Button*>* GetButtons(); 
 		std::vector<Label*>* GetLabels();

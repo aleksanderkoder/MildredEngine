@@ -3,7 +3,7 @@
 // Forward declare needed GUI class and methods 
 class GUI {
 	public:
-		static void Rerender(); 
+		static void Rerender();
 };
 
 // ELEMENTS - Common methods for every element type
@@ -35,7 +35,6 @@ bool Elements::GetDisplayState() {
 	return this->display; 
 }
 
-
 void Elements::Show() {
 	this->display = true;
 	GUI::Rerender();
@@ -66,7 +65,6 @@ Button::Button(std::string label, int width, int height, int x, int y, int fontS
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
-	GUI::Rerender();
 }
 
 std::string Button::GetLabel() {
@@ -158,7 +156,6 @@ Textbox::Textbox(std::string placeholder, int width, int height, int x, int y, i
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
-	GUI::Rerender();
 }
 
 std::string Textbox::GetPlaceholder() {
@@ -248,7 +245,6 @@ Label::Label(std::string text, int x, int y, SDL_Color color, int fontSize, std:
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, TTF_GetError(), NULL);
 		exit(0);
 	}
-	GUI::Rerender();
 }
 
 std::string Label::GetText() {
@@ -283,12 +279,10 @@ Checkbox::Checkbox(int x, int y, int size, bool defaultState) {
 	this->checked = defaultState; 
 	SDL_Color c = { 0, 0, 0, 175 };
 	SDL_Color hc = { 25, 25, 25, 175 }; 
-	SDL_Color cC = { 255, 255, 255, 255 };
+	SDL_Color cc = { 255, 255, 255, 255 };
 	this->color = c; 
 	this->hoverColor = hc;
-	this->checkmarkColor = cC;
-
-	GUI::Rerender();
+	this->checkmarkColor = cc;
 }
 
 SDL_Color Checkbox::GetHoverColor() {
@@ -340,20 +334,73 @@ Slider::Slider(int x, int y, int width, int height, int thumbWidth, int thumbHei
 	this->value = 50; 
 	SDL_Color c = { 0, 0, 0, 175 };
 	SDL_Color hc = { 25, 25, 25, 175 };
-	SDL_Color tC = { 25, 25, 25, 175 };
+	SDL_Color tc = { 25, 25, 25, 175 };
 	this->color = c;
 	this->hoverColor = hc;
-	this->thumbColor = tC;
-
-	GUI::Rerender();
+	this->thumbColor = tc;
 }
 
 // TODO: Continue class implementation
 
-//int Slider::GetThumbWidth() {
-//	return this->thumbWidth;
-//}
-//
-//int Slider::GetThumbHeight() {
-//	return this->thumbHeight;
-//}
+SDL_Color Slider::GetHoverColor() {
+	return this->hoverColor;
+}
+
+SDL_Color Slider::GetThumbColor() {
+	return this->thumbColor;
+}
+
+int Slider::GetThumbWidth() {
+	return this->thumbWidth;
+}
+
+int Slider::GetThumbHeight() {
+	return this->thumbHeight;
+}
+
+int Slider::GetWidth() {
+	return this->width;
+}
+
+int Slider::GetHeight() {
+	return this->height;
+}
+
+int Slider::GetValue() {
+	return this->value; 
+}
+
+void Slider::SetHoverColor(SDL_Color* hoverColor) {
+	this->hoverColor = *hoverColor;
+	GUI::Rerender();
+}
+
+void Slider::SetThumbColor(SDL_Color* color) {
+	this->thumbColor = *color;
+	GUI::Rerender();
+}
+
+void Slider::SetThumbWidth(int width) {
+	this->thumbWidth = width;
+	GUI::Rerender();
+}
+
+void Slider::SetThumbHeight(int height) {
+	this->thumbHeight = thumbHeight;
+	GUI::Rerender();
+}
+
+void Slider::SetWidth(int width) {
+	this->width = width;
+	GUI::Rerender();
+}
+
+void Slider::SetHeight(int height) {
+	this->height = height;
+	GUI::Rerender();
+}
+
+void Slider::SetValue(int value) {
+	this->value = value; 
+	GUI::Rerender();
+}

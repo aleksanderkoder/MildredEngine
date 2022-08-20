@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
     Mildred::CreateMapBoundary(1000, 200, 1000, 500, "wallpaper");
     Mildred::assetManager->PrintAllAssetInfo();
 
-    GUI::Setup(1920, 1080); 
-    GUI::SetRenderTarget(Mildred::GetRenderer()); 
+    GUI::Setup(1920, 1080, Mildred::GetRenderer()); 
+    //GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
     Button* b1 = GUI::CreateButton("Hei", 350, 50, 50, 250, 45, "fonts/comicz.ttf");
     Button* b2 = GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
@@ -35,12 +35,13 @@ int main(int argc, char* argv[]) {
 
     Page* page1 = GUI::CreatePage(); 
     Page* page2 = GUI::CreatePage(); 
-    page1->Add(b1);
-    page1->Add(t1);
-    page1->Add(t2);
-    page2->Add(cb);
-    page2->Add(l); 
-    GUI::SetPage(page1);
+    page1->AddElement(b1);
+    page1->AddElement(t1);
+    page1->AddElement(t2);
+    page2->AddElement(cb);
+    page2->AddElement(l);
+    page2->AddElement(b2); 
+    GUI::DisplayPage(page1);
 
     // Begin game loop, runs every frame
     while (Mildred::isRunning)
@@ -77,14 +78,15 @@ int main(int argc, char* argv[]) {
 
         if (b1->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 
-            GUI::SetPage(page2); 
+            GUI::DisplayPage(page2); 
+            GUI::DeletePage(page1); 
 
         }
 
         if (cb->IsChecked()) {
             //std::cout << "Checked!" << std::endl; 
             //cb->SetState(false);
-            GUI::SetPage(page1);
+            GUI::DisplayPage(page1);
             cb->SetState(false); // Have to set false otherwise this will keep triggering. Fix this!
         }
 

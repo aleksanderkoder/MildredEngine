@@ -145,7 +145,7 @@ class Slider : public Elements {
 		int GetHeight();
 		int GetThumbWidth();
 		int GetThumbHeight();
-		int Getvalue();	// Should return a value from 0 to 100 based on slider thumb position relative to slider bar length
+		int GetValue();	
 
 		// SET methods 
 		void SetHoverColor(SDL_Color* color);
