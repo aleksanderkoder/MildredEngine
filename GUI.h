@@ -5,7 +5,7 @@
 #include "Page.h"
 #include <tuple>
 #include "SDL_ttf.h"
-
+ 
 class GUI
 {
 	public:
@@ -22,7 +22,7 @@ class GUI
 		// Page related methods 
 		static Page* CreatePage(); 
 		static void DeletePage(Page* page);
-		static void SwitchPage(Page* page);	// TODO: Make rendering respect current page 
+		static void SetPage(Page* page);	// TODO: Make rendering respect current page 
 		
 		// Library utility methods 
 		static void RenderLabel(std::string text, int x, int y, SDL_Color color, TTF_Font* font, int fontSize = 12);
@@ -39,7 +39,6 @@ class GUI
 		
 
 		// PAGES - Related data 
-		static std::vector<Page*>* pages; 
 		static Page* currentPage; 
 
 		// TEXTBOX - Related data  

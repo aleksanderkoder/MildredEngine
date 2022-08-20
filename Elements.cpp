@@ -1,5 +1,11 @@
 #include "Elements.h"
 
+// Forward declare needed GUI class and methods 
+class GUI {
+	public:
+		static void Rerender(); 
+};
+
 // ELEMENTS - Common methods for every element type
 
 int Elements::GetX() {
@@ -14,10 +20,6 @@ SDL_Color Elements::GetColor() {
 	return this->color;
 }
 
-std::string Elements::GetPage() {
-	return this->page; 
-}
-
 void Elements::SetPosition(int x, int y) {
 	this->x = x;
 	this->y = y; 
@@ -26,11 +28,6 @@ void Elements::SetPosition(int x, int y) {
 
 void Elements::SetColor(SDL_Color* color) {
 	this->color = *color;
-	GUI::Rerender();
-}
-
-void Elements::SetPage(std::string name) {
-	this->page = name;
 	GUI::Rerender();
 }
 
@@ -128,7 +125,11 @@ void Button::SetDimensions(int width, int height) {
 }
 
 bool Button::IsPressed() {
-	return this->pressed; 
+	if (this->pressed) {
+		this->pressed = false;
+		return true; 
+	}
+	return false; 
 }
 
 void Button::SetPressedState(bool state) {
@@ -349,10 +350,10 @@ Slider::Slider(int x, int y, int width, int height, int thumbWidth, int thumbHei
 
 // TODO: Continue class implementation
 
-int Slider::GetThumbWidth() {
-	return this->thumbWidth;
-}
-
-int Slider::GetThumbHeight() {
-	return this->thumbHeight;
-}
+//int Slider::GetThumbWidth() {
+//	return this->thumbWidth;
+//}
+//
+//int Slider::GetThumbHeight() {
+//	return this->thumbHeight;
+//}

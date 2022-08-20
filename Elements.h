@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL.h"
-#include "GUI.h"
+#include <string>
+#include "SDL_ttf.h"
 
 class Elements
 {
@@ -8,7 +9,6 @@ class Elements
 		int x, y;
 		SDL_Color color;
 		bool display; 
-		std::string page; 
 
 	public:
 		// GET methods 
@@ -16,12 +16,10 @@ class Elements
 		int GetY();
 		SDL_Color GetColor();
 		bool GetDisplayState(); 
-		std::string GetPage(); 
 
 		// SET methods 
 		void SetPosition(int x, int y);
 		void SetColor(SDL_Color* color); 
-		void SetPage(std::string name); 
 
 		// Utility methods
 		void Show(); 
@@ -154,8 +152,8 @@ class Slider : public Elements {
 		void SetThumbColor(SDL_Color* color);
 		void SetWidth(int width);
 		void SetHeight(int height);
-		int SetThumbWidth(int width);
-		int SetThumbHeight(int height);
+		void SetThumbWidth(int width);
+		void SetThumbHeight(int height);
 		void SetValue(int value); 
 	
 	private:

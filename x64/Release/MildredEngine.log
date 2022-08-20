@@ -1,20 +1,214 @@
-﻿  Mildred.cpp
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(124,44): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(136,12): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(137,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(139,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(151,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(153,40): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(153,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(170,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,88): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,77): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(183,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(192,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Generating code
-  14 of 641 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    10 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  MildredEngine.vcxproj -> C:\Users\neon1\Documents\MildredEngine\x64\Release\MildredEngine.exe
+﻿  Asset.cpp
+  AssetManager.cpp
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,17): error C2238: unexpected token(s) preceding ';'
+  Calc.cpp
+  Elements.cpp
+C:\Users\neon1\Documents\MildredEngine\Page.h(7,15): error C2065: 'Button': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(7,22): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(8,15): error C2065: 'Label': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(8,21): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(9,15): error C2065: 'Checkbox': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(9,24): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(10,15): error C2065: 'Textbox': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(10,23): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(15,12): error C2061: syntax error: identifier 'Button'
+C:\Users\neon1\Documents\MildredEngine\Page.h(16,12): error C2061: syntax error: identifier 'Label'
+C:\Users\neon1\Documents\MildredEngine\Page.h(16,25): error C2535: 'void Page::Add(void)': member function already defined or declared
+C:\Users\neon1\Documents\MildredEngine\Page.h(15): message : see declaration of 'Page::Add'
+C:\Users\neon1\Documents\MildredEngine\Page.h(17,12): error C2061: syntax error: identifier 'Checkbox'
+C:\Users\neon1\Documents\MildredEngine\Page.h(17,31): error C2535: 'void Page::Add(void)': member function already defined or declared
+C:\Users\neon1\Documents\MildredEngine\Page.h(15): message : see declaration of 'Page::Add'
+C:\Users\neon1\Documents\MildredEngine\Page.h(18,12): error C2061: syntax error: identifier 'Textbox'
+C:\Users\neon1\Documents\MildredEngine\Page.h(18,29): error C2535: 'void Page::Add(void)': member function already defined or declared
+C:\Users\neon1\Documents\MildredEngine\Page.h(15): message : see declaration of 'Page::Add'
+C:\Users\neon1\Documents\MildredEngine\Page.h(20,15): error C2061: syntax error: identifier 'Button'
+C:\Users\neon1\Documents\MildredEngine\Page.h(21,15): error C2061: syntax error: identifier 'Label'
+C:\Users\neon1\Documents\MildredEngine\Page.h(21,28): error C2535: 'void Page::Remove(void)': member function already defined or declared
+C:\Users\neon1\Documents\MildredEngine\Page.h(20): message : see declaration of 'Page::Remove'
+C:\Users\neon1\Documents\MildredEngine\Page.h(22,15): error C2061: syntax error: identifier 'Checkbox'
+C:\Users\neon1\Documents\MildredEngine\Page.h(22,34): error C2535: 'void Page::Remove(void)': member function already defined or declared
+C:\Users\neon1\Documents\MildredEngine\Page.h(20): message : see declaration of 'Page::Remove'
+C:\Users\neon1\Documents\MildredEngine\Page.h(23,15): error C2061: syntax error: identifier 'Textbox'
+C:\Users\neon1\Documents\MildredEngine\Page.h(23,32): error C2535: 'void Page::Remove(void)': member function already defined or declared
+C:\Users\neon1\Documents\MildredEngine\Page.h(20): message : see declaration of 'Page::Remove'
+C:\Users\neon1\Documents\MildredEngine\Page.h(25,15): error C2065: 'Button': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(25,22): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(26,15): error C2065: 'Label': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(26,21): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(27,15): error C2065: 'Checkbox': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(27,24): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\Page.h(28,15): error C2065: 'Textbox': undeclared identifier
+C:\Users\neon1\Documents\MildredEngine\Page.h(28,23): error C2059: syntax error: '>'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(17,15): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(17,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(17,145): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(18,16): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(18,16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(18,154): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(19,17): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(19,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(19,178): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(20,18): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(20,18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(20,85): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(45,17): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(45,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(45,10): error C2086: 'int GUI::Textbox': redefinition
+C:\Users\neon1\Documents\MildredEngine\GUI.h(45,32): error C2238: unexpected token(s) preceding ';'
+  GUI.cpp
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(62,84): error C2039: 'GetFont': is not a member of 'Label'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(93): message : see declaration of 'Label'
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(62,114): error C2664: 'void GUI::RenderLabel(std::string,int,int,SDL_Color,TTF_Font *,int)': cannot convert argument 5 from 'int' to 'TTF_Font *'
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(62,112): message : Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or parenthesized function-style cast
+C:\Users\neon1\Documents\MildredEngine\GUI.h(28,15): message : see declaration of 'GUI::RenderLabel'
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(81,26): error C2039: 'GetFont': is not a member of 'Button'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(29): message : see declaration of 'Button'
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(137,26): error C2039: 'GetFont': is not a member of 'Textbox'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(61): message : see declaration of 'Textbox'
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(263,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(264,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(265,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\GUI.cpp(266,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Main.cpp
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,17): error C2238: unexpected token(s) preceding ';'
+  MapBoundary.cpp
+  Mildred.cpp
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(127,44): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(139,12): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(140,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(142,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(154,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(156,40): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(156,16): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(173,50): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,88): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,77): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(195,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Page.cpp
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(23,14): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(23,14): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(23,28): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(24,26): error C2061: syntax error: identifier 'Page'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(25,23): error C2061: syntax error: identifier 'Page'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(42,14): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\GUI.h(42,14): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\GUI.h(42,10): error C2086: 'int GUI::Page': redefinition
+C:\Users\neon1\Documents\MildredEngine\GUI.h(42,27): error C2238: unexpected token(s) preceding ';'
+  Player.cpp
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(39,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(55,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(73,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(87,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(100,22): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\neon1\Documents\MildredEngine\Elements.h(108,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(12,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(45,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(46,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(47,72): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(47,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(61,68): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(61,51): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(61,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\neon1\Documents\MildredEngine\Player.cpp(61,27): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data

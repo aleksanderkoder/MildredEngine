@@ -8,7 +8,7 @@ bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastSt
 GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = false;
 int GUI::viewWidth = 0, GUI::viewHeight = 0; 
 SDL_Texture* GUI::snapshotFrame = NULL;
-Page* currentPage; 
+Page* GUI::currentPage = NULL; 
 
 // LIBRARY SETUP METHODS
 
@@ -53,6 +53,7 @@ Button* GUI::CreateButton(std::string label, int width, int height, int x, int y
 	// TODO: Make this render elements taken from pages!
 
 void GUI::RenderLabels() {
+	auto labels = currentPage->GetLabels();
 	for (int i = 0; i < labels->size(); i++) {
 		Label* curr = (*labels)[i];
 
@@ -63,6 +64,7 @@ void GUI::RenderLabels() {
 }	
 
 void GUI::RenderButtons() {
+	auto buttons = currentPage->GetButtons(); 
 	// Loop through all buttons
 	for (int i = 0; i < buttons->size(); i++) {
 		Button* curr = (*buttons)[i];
@@ -118,6 +120,7 @@ void GUI::RenderButtons() {
 }
 
 void GUI::RenderTextboxes() {
+	auto textboxes = currentPage->GetTextboxes(); 
 	// Loop through all textboxes
 	for (int i = 0; i < textboxes->size(); i++) {
 		Textbox* curr = (*textboxes)[i];
@@ -210,6 +213,7 @@ void GUI::RenderTextboxes() {
 }
 
 void GUI::RenderCheckboxes() {	// TODO: Draw v-mark inside checkbox (if selected) to show its state
+	auto checkboxes = currentPage->GetCheckboxes(); 
 	// Loop through all checkboxes
 	for (int i = 0; i < checkboxes->size(); i++) {
 		Checkbox* curr = (*checkboxes)[i];
@@ -302,12 +306,15 @@ void GUI::Render() {
 
 Page* GUI::CreatePage() {
 	Page* page = new Page(); 
-	pages->push_back(page); 
 	return page; 
 }
 
 void GUI::DeletePage(Page* page) {	// TODO: Implement this!
+	 
+}
 
+void GUI::SetPage(Page* page) {
+	currentPage = page;
 }
 
 // UTILITY METHODS 
@@ -501,10 +508,6 @@ void GUI::finalizeNewSnapshotFrame() {
 	// Draw texture to screen
 	SDL_RenderCopy(targetRenderer, snapshotFrame, NULL, &rect);
 
-}
-
-void GUI::SwitchPage(Page* page) {
-	currentPage = page; 
 }
 
 void GUI::Rerender() {

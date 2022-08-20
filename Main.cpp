@@ -19,12 +19,12 @@ int main(int argc, char* argv[]) {
     GUI::Setup(1920, 1080); 
     GUI::SetRenderTarget(Mildred::GetRenderer()); 
 
-    Button* h = GUI::CreateButton("Hei", 350, 50, 50, 250, 45, "fonts/comicz.ttf");
-    GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
-    GUI::CreateTextbox("Full name", 850, 50, 50, 750, 20, 50, "fonts/comicz.ttf");
-    GUI::CreateTextbox("en annen tb", 550, 50, 500, 750, 45);
-    Textbox* t = GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20, 50);
-    t->SetCharLimit(3); 
+    Button* b1 = GUI::CreateButton("Hei", 350, 50, 50, 250, 45, "fonts/comicz.ttf");
+    Button* b2 = GUI::CreateButton("Hello, world!", 350, 50, 450, 250, 16);
+    Textbox* t1 = GUI::CreateTextbox("Full name", 850, 50, 50, 750, 20, 50, "fonts/comicz.ttf");
+    Textbox* t2 = GUI::CreateTextbox("en annen tb", 550, 50, 500, 750, 45);
+    Textbox* t3 = GUI::CreateTextbox("enda en tb", 250, 50, 500, 1000, 20, 50);
+    t1->SetCharLimit(3); 
     GUI::CreateButton("Hello, world!", 350, 50, 450, 450, 56);
 
     Checkbox* cb = GUI::CreateCheckbox(400, 400, 30); 
@@ -32,6 +32,15 @@ int main(int argc, char* argv[]) {
     SDL_Color color = { 0, 0, 0 };
 
     Label* l = GUI::CreateLabel("Mildred Engine", 25, 25, color, 36, "fonts/comicz.ttf");
+
+    Page* page1 = GUI::CreatePage(); 
+    Page* page2 = GUI::CreatePage(); 
+    page1->Add(b1);
+    page1->Add(t1);
+    page1->Add(t2);
+    page2->Add(cb);
+    page2->Add(l); 
+    GUI::SetPage(page1);
 
     // Begin game loop, runs every frame
     while (Mildred::isRunning)
@@ -46,7 +55,7 @@ int main(int argc, char* argv[]) {
         //GUI::DrawCircle(400, 400, 100); 
 
         // Example of how to render to texture!
-        SDL_Texture* tex = SDL_CreateTexture(Mildred::GetRenderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, 500, 500);
+        /*SDL_Texture* tex = SDL_CreateTexture(Mildred::GetRenderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, 500, 500);
         SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND); 
         SDL_SetRenderTarget(Mildred::GetRenderer(), tex);
         Mildred::SetRenderDrawColor(255, 255, 255, 0);
@@ -62,17 +71,21 @@ int main(int argc, char* argv[]) {
         Mildred::SetRenderDrawColor(255, 255, 255, 255);
         SDL_RenderCopy(Mildred::GetRenderer(), tex, NULL, &rect);
         
-        SDL_DestroyTexture(tex); 
+        SDL_DestroyTexture(tex); */
         
 
 
-        if (h->IsPressed()) {
+        if (b1->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 
+            GUI::SetPage(page2); 
+
         }
 
         if (cb->IsChecked()) {
             //std::cout << "Checked!" << std::endl; 
-            //cb->SetState(false); 
+            //cb->SetState(false);
+            GUI::SetPage(page1);
+            cb->SetState(false); // Have to set false otherwise this will keep triggering. Fix this!
         }
 
         //Mildred::DisplayFPS(); 
