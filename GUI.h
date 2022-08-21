@@ -21,7 +21,6 @@ class GUI
 		
 		// Page related methods 
 		static Page* CreatePage(); 
-		static void DeletePage(Page* page);
 		static void DisplayPage(Page* page); 
 		
 		// Library utility methods 

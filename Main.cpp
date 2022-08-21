@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
     Page* page2 = GUI::CreatePage(); 
     page1->AddElement(b1);
     page1->AddElement(t1);
+    page1->AddElement(b2); 
     page1->AddElement(t2);
     page2->AddElement(cb);
     page2->AddElement(l);
@@ -76,10 +77,12 @@ int main(int argc, char* argv[]) {
         
 
 
-        if (b1->IsPressed()) {
+        if (b2->IsPressed()) {
             std::cout << "Hei is pressed" << std::endl; 
-            GUI::DisplayPage(page2); 
-            GUI::DeletePage(page1); 
+            //GUI::DisplayPage(page2); 
+           // GUI::DeletePage(page1); 
+            page1->RemoveElement(t2); 
+            b2->SetFont("fonts/comicz.ttf"); 
 
         }
 

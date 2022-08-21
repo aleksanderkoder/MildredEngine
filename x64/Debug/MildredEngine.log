@@ -1,5 +1,4 @@
 ﻿  AssetManager.cpp
-  Elements.cpp
   GUI.cpp
 C:\Users\neon1\Documents\MildredEngine\GUI.cpp(265,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\neon1\Documents\MildredEngine\GUI.cpp(266,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
@@ -20,7 +19,6 @@ C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,77): warning C4244: 'argu
 C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(186,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\neon1\Documents\MildredEngine\Mildred.cpp(195,22): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Page.cpp
   Player.cpp
 C:\Users\neon1\Documents\MildredEngine\Player.cpp(12,39): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\neon1\Documents\MildredEngine\Player.cpp(45,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data

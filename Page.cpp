@@ -24,17 +24,37 @@ void Page::AddElement(Textbox* textbox) {
 }
 
 void Page::RemoveElement(Button* button) {	// TODO: Implement these!
-
+	auto btns = this->buttons; 
+	for (int i = 0; i < btns->size(); i++) {
+		Button* curr = (*btns)[i]; 
+		if (curr == button)
+			btns->erase(btns->begin() + i); 
+	}
 }
 void Page::RemoveElement(Label* label) {
-
+	auto lbls = this->labels;
+	for (int i = 0; i < lbls->size(); i++) {
+		Label* curr = (*lbls)[i];
+		if (curr == label)
+			lbls->erase(lbls->begin() + i);
+	}
 }
 void Page::RemoveElement(Checkbox* checkbox) {
-
+	auto chkb = this->checkboxes;
+	for (int i = 0; i < chkb->size(); i++) {
+		Checkbox* curr = (*chkb)[i];
+		if (curr == checkbox)
+			chkb->erase(chkb->begin() + i);
+	}
 }
 
 void Page::RemoveElement(Textbox* textbox) {
-
+	auto txtb = this->textboxes;
+	for (int i = 0; i < txtb->size(); i++) {
+		Textbox* curr = (*txtb)[i];
+		if (curr == textbox)
+			txtb->erase(txtb->begin() + i);
+	}
 }
 
 std::vector<Button*>* Page::GetButtons() {

@@ -311,10 +311,6 @@ Page* GUI::CreatePage() {
 	return page; 
 }
 
-void GUI::DeletePage(Page* page) {	
-	delete page; 
-}
-
 void GUI::DisplayPage(Page* page) {
 	currentPage = page;
 	rerender = true; 
