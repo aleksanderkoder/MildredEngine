@@ -1,14 +1,14 @@
 #include "GUI.h"
 
-SDL_Renderer* GUI::targetRenderer;
+SDL_Renderer* GUI::targetRenderer = NULL;
 Uint32 GUI::delta, GUI::textboxCursorDelta;
-Textbox* GUI::activeTextbox; 
+Textbox* GUI::activeTextbox = NULL; 
 char GUI::lastPressedKey;
 bool GUI::leftMouseButtonPressedState = false, GUI::leftMouseButtonPressedLastState = false,
 GUI::drawTextBoxCursor = true, GUI::capsLockEnabled = false, GUI::rerender = false;
 int GUI::viewWidth = 0, GUI::viewHeight = 0; 
-SDL_Texture* GUI::snapshotFrame;
-Page* GUI::currentPage; 
+SDL_Texture* GUI::snapshotFrame = NULL;
+Page* GUI::currentPage = NULL; 
 
 // LIBRARY SETUP METHODS
 
