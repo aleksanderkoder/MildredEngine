@@ -5,6 +5,7 @@
 #include "Page.h"
 #include <tuple>
 #include "SDL_ttf.h"
+#include <SDL_image.h>
  
 class GUI
 {
@@ -28,6 +29,7 @@ class GUI
 		static void DrawCircle(int32_t centreX, int32_t centreY, int32_t radius); 
 		static void Render();
 		static void Rerender(); // TODO: Only render new frame texture when rerender bool is true!
+		static SDL_Texture* LoadImage(std::string imagePath); 
 		
 	private:
 		// General library data 

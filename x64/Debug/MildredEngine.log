@@ -1,6 +1,2 @@
-﻿  GUI.cpp
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(265,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(266,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(267,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\neon1\Documents\MildredEngine\GUI.cpp(268,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+﻿  Main.cpp
   MildredEngine.vcxproj -> C:\Users\neon1\Documents\MildredEngine\x64\Debug\MildredEngine.exe

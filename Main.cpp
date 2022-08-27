@@ -44,6 +44,10 @@ int main(int argc, char* argv[]) {
     page2->AddElement(b2); 
     GUI::DisplayPage(page1);
 
+    // Load an image and show it on screen example
+    //SDL_Texture* s = GUI::LoadImage("hei.PNG"); 
+    //SDL_RenderCopy(Mildred::GetRenderer(), s, NULL, NULL);
+
     // Begin game loop, runs every frame
     while (Mildred::isRunning)
     {

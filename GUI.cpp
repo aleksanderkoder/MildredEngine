@@ -14,6 +14,7 @@ Page* GUI::currentPage = NULL;
 
 void GUI::Setup(int viewWidth, int viewHeight, SDL_Renderer* renderer) {
 	TTF_Init();	// Initializes the SDL font library
+	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_WEBP);	// Initializes the SDL image library
 	targetRenderer = renderer;
 
 	// To be used for creating frame snapshots
@@ -31,23 +32,19 @@ void GUI::SetRenderTarget(SDL_Renderer* renderer) {
 // ELEMENT CREATION METHODS 
 
 Label* GUI::CreateLabel(std::string text, int x, int y, SDL_Color color, int fontSize, std::string fontPath) {
-	Label* lbl = new Label(text, x, y, color, fontSize, fontPath);
-	return lbl;
+	return new Label(text, x, y, color, fontSize, fontPath);
 }
 
 Textbox* GUI::CreateTextbox(std::string placeholder, int width, int height, int x, int y, int fontSize, int limit, std::string fontPath) {
-	Textbox* tb = new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
-	return tb;
+	return new Textbox(placeholder, width, height, x, y, fontSize, limit, fontPath);
 }
 
 Checkbox* GUI::CreateCheckbox(int x, int y, int size, bool defaultState) {
-	Checkbox* cb = new Checkbox(x, y, size, defaultState);
-	return cb;
+	return new Checkbox(x, y, size, defaultState);
 }
 
 Button* GUI::CreateButton(std::string label, int width, int height, int x, int y, int fontSize, std::string fontPath) {
-	Button* b = new Button(label, width, height, x, y, fontSize, fontPath);
-	return b;
+	return new Button(label, width, height, x, y, fontSize, fontPath);
 }
 
 // ELEMENT RENDERING METHODS 
@@ -307,8 +304,7 @@ void GUI::Render() {
 // PAGES 
 
 Page* GUI::CreatePage() {
-	Page* page = new Page(); 
-	return page; 
+	return new Page(); 
 }
 
 void GUI::DisplayPage(Page* page) {
@@ -511,4 +507,14 @@ void GUI::finalizeNewSnapshotFrame() {
 
 void GUI::Rerender() {
 	rerender = true; 
+}
+
+SDL_Texture* GUI::LoadImage(std::string imagePath) {
+	SDL_Texture* image = IMG_LoadTexture(targetRenderer, imagePath.c_str()); 
+	if (!image) {
+		char t[] = "Image error";
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, t, IMG_GetError(), NULL);
+		exit(0);
+	}
+	return image; 
 }
